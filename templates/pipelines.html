@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    <h2>Pipelines</h2>
+    <p>
+      <a href="{% url 'add_pipeline' %}" class="btn btn-primary">Add Pipeline</a>
+    </p>
+  {% endblock %}
+
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Code</th>
+        <th>Model</th>
+        <th>Protocol No</th>
+        <th>Started</th>
+        <th>Ended</th>
+        <th>PI</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pipeline in list_pipelines %}
+        <tr>
+          <td>{{ pipeline.pipeline_id }}</td>
+          <td>{{ pipeline.type }}</td>
+          <td>{{ pipeline.model }}</td>
+          <td>{{ pipeline.protocol }}</td>
+          <td>{{ pipeline.pip_start }}</td>
+          <td>{{ pipeline.pip_end }}</td>
+          <td>{{ pipeline.pi }}</td>
+          <td>{{ pipeline.status }}</td>         
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -13,9 +13,65 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls import url
+from django.conf.urls.static import static
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+from base.views import *
+from assays.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',home_view, name='home'),
+    #Assays
+    #path('assays/', include('assays.urls', namespace="assays")),
+	#Assays
+#
+	path('assays/',AssaysListView.as_view(),name='assays'),
+#
+	path('assays/add/',add_assay,name='add_assay'),
+#
+	path('assays/update/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
+	#path('assays/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
+#
+	path('assays/<int:pk>/delete/', AssaysDeleteView.as_view(), name='assay-delete'),
+#
+	path('assays/types/',AtypeListView.as_view(),name='atypes'),
+#
+	path('assays/types/<int:pk>/', AtypeDetailView.as_view(), name='assaytype-detail'),
+#
+	path('assays/types/<int:pk>/edit', Atype2UpdateView.as_view(), name='assaytype-detail-update'),
+#
+	path('assays/types/add',add_atype,name='add_atype'),
+#
+	path('assays/types/update/<int:pk>/', AtypeUpdateView.as_view(), name='assaytype-update'),
+#
+	path('assays/types/<int:pk>/delete/', AtypeDeleteView.as_view(), name='assaytype-delete'),
 ]
+
+''''
+	#Mouse
+	path('mice',AssaysListView.as_view(),name='assays'),
+	path('mice/add/',add_assay,name='add_assay'),
+	path('mice/update/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
+	path('assays/<int:pk>/delete/', AssaysDeleteView.as_view(), name='assay-delete'),
+'''
+'''
+	#Pipelines
+	path('pipelines/',PipelinesListView.as_view(),name='pipelines'),
+	path('pipelines/add/',add_pipeline,name='add_pipeline'),
+	path('pipelines/update/<int:pk>/', PipelinesUpdateView.as_view(), name='pipeline-update'),
+    #path('pipelines/<int:pk>/delete/', PipelinesDeleteView.as_view(), name='pipeline-delete'),
+
+	path('test',test_view, name='test'),
+		#Infopages
+	path('pipelines/info/',pipeline_info_view,name='pipelines_info'),
+	path('pipelines/info/GIP-1/',gip1_view,name='gip1'),
+'''
+
+if settings.DEBUG:
+	urlpatterns += static(settings.STATIC_URL, document_root= settings.STATIC_ROOT)
+	urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

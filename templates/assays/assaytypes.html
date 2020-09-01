@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    <h2>Assay Types</h2>
+    <p>
+      <a href="{% url 'add_atype' %}" class="btn btn-primary">New</a>
+    </p>
+  {% endblock %}
+
+  <table class='table table-bordered table-condensed table-striped table-hover'>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Facility</th>
+        <th>Unit</th>
+        <th>Staff</th>
+        <th>Publication Date</th>
+        <th>Version</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for type in list_assays %}
+        <tr class="table-row" data-href="{% url 'assaytype-detail' type.id %}">
+          <!--<td>{{ assay.assayid }}</td>-->
+          <td>{{ type.id }}</td>
+          <td>{{ type.code }}</td>
+          <td>{{ type.name }}</td>
+          <td>{{ type.facility }}</td>
+          <td>{{ type.unit }}</td>
+          <td>{{ type.staff }}</td>
+          <td>{{ type.publication_date }}</td>
+          <td>{{ type.version }}</td>
+          <td>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1 ti-pencil" href="{% url 'assaytype-update' type.id %}"></a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1 ti-close" href="{% url 'assaytype-delete' type.id %}"></a>
+          </td>
+
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+

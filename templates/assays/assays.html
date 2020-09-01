@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    <h2>Assays</h2>
+    <p>
+      <a href="{% url 'add_assay' %}" class="btn btn-primary">Add Assay</a>
+    </p>
+  {% endblock %}
+
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <!--<<th>ID</th>-->
+        <th>Code</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Version</th>
+        <th>Staff</th>
+        <th>Raw File</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for assay in list_assays %}
+        <tr>
+          <!--<td>{{ assay.assayid }}</td>-->
+          <td>{{ assay.code }}</td>
+          <td>{{ assay.name }}</td>
+          <td>{{ assay.type }}</td>
+          <td>{{ assay.version }}</td>
+          <td>{{ assay.staff }}</td>
+          <td>
+            <a href="{{ assay.rawdata_file.url }}" class="btn btn-primary btn-sm" target="_blank">
+              Download FILE
+            </a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assay-update' assay.id %}">Update</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assay-delete' assay.id %}">Delete</a>
+
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

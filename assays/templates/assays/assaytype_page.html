@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    <h2>{{object.code}}</h2>
+    <p>
+      {{object.name}}
+    </p>
+    <a class="btn btn-secondary btn-lg mt-1 mb-1 ti-pencil" href="{% url 'assaytype-detail-update' object.id %}"></a>
+
+  {% endblock %}
+
+<br>
+<div class="row">
+  <div class="col-md-5">
+    <h5>Purpose:</h5>
+    <hr>
+    <div class="card card-body">
+    <p>
+      {{object.purpose}}
+    </p>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <h5>Experimental Design:</h5>
+    <hr>
+    <div class="card card-body">
+    <p>
+      {{object.experimental_design}}
+    </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
