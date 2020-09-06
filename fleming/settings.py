@@ -148,3 +148,8 @@ if DEBUG:
     os.path.join(os.path.dirname(BASE_DIR),"static", "static"),
 )
 
+
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
