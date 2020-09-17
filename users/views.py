@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
+from django.db import IntegrityError, transaction
 
 def register(request):
     if request.method == 'POST':
@@ -18,6 +19,7 @@ def register(request):
 
 
 @login_required
+#@transaction.atomic
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -27,8 +29,10 @@ def profile(request):
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
-            messages.success(request, 'Your account has been updated!')
+            messages.success(request, _('Your account has been updated!'))
             return redirect('profile')
+        else:
+            messages.error(request,_('Please correct the error below.'))    
 
     else:
         u_form = UserUpdateForm(instance=request.user)
@@ -40,3 +44,11 @@ def profile(request):
     }
 
     return render(request, 'users/profile.html', context)
+
+
+#class Profile(DetailView):
+#	template_name='users/profile.html'
+#	queryset = User.objects.all()
+
+#	def get_object(self):
+#		id_ = self.kwargs.get()

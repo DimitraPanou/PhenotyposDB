@@ -42,7 +42,8 @@ class Iinflc04(models.Model):
     assayid = models.ForeignKey('Assay', models.DO_NOTHING)  # Field name made lowercase.
     mid = models.ForeignKey('Mouse', models.DO_NOTHING, db_column='mid')
     timepoint = models.IntegerField(blank=True, null=True)
-    timepoint_type = models.CharField(max_length=16) 
+    #timepoint_type = models.CharField(max_length=16)
+    age = models.IntegerField(blank=True, null=True)
     measurement_date = models.DateField(blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
 
@@ -51,6 +52,14 @@ class Iinflc04(models.Model):
         db_table = 'IINFLC-04'
 
 class Mouse(models.Model):
+    GENDER = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    )
+    GENOTYPE = (
+        ('WT', 'Wildtype'),
+        ('TG', 'Transgenic'),
+    )
     mid = models.CharField(max_length=128, blank=False, null=False, unique=True)
     strain = models.CharField(max_length=128, blank=True, null=True)
     tail_num = models.IntegerField(blank=True, null=True)    

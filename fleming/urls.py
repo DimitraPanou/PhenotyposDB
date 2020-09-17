@@ -52,6 +52,9 @@ urlpatterns = [
 #
 	path('assays/types/<int:pk>/delete/', AtypeDeleteView.as_view(), name='assaytype-delete'),
 	#path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
+	####################################	
+	#User
+	####################################
 	path('register', register, name='register'),
 	path('profile', profile, name='profile'),
 	path('login', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
