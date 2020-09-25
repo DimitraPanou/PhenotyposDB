@@ -32,11 +32,12 @@ class AssaysListView(ListView):
 	template_name = 'assays/assays.html'
 	context_object_name = 'list_assays'
 
-class AssaysCreateView(CreateView):
+class AssaysCreateView(LoginRequiredMixin,CreateView):
 	model = Assay
 	template_name = 'assays/add_assay.html'
 	form_class = AssayForm
 	success_url = '/assays/'
+
 
 def add_assay(request, *args, **kargs):
     if request.method == 'POST':

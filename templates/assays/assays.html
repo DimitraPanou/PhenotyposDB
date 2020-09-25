@@ -19,6 +19,8 @@
         <th>Version</th>
         <th>Staff</th>
         <th>Raw File</th>
+        <th>Created by</th>
+
       </tr>
     </thead>
     <tbody>
@@ -38,6 +40,7 @@
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assay-delete' assay.id %}">Delete</a>
 
           </td>
+          <td>{{ assay.author }}</td>
         </tr>
       {% endfor %}
     </tbody>

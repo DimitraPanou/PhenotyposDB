@@ -7,10 +7,16 @@ from .models import Atype, Assay
 class AssayForm(forms.ModelForm):
     class Meta:
         model = Assay
+        exclude = ('author',)
         fields = ('code', 'name', 'version','staff','comments','measurement_day','rawdata_file','assayqc','type')
         widgets = {
         'measurement_day': forms.DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
     	}
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
 
 class AtypeForm(forms.ModelForm):
     class Meta:

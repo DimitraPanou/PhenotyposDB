@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 #Atype
@@ -34,13 +34,18 @@ class Assay(models.Model):
     rawdata_file = models.FileField(upload_to='assays/xlsx/')
     assayqc = models.CharField(db_column='assayQC', max_length=256, blank=True, null=True)  # Field name made lowercase.
     type = models.ForeignKey('Atype', models.DO_NOTHING, db_column='type')
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1)
+
+
+    def get_absolute_url(self):
+        return reverse('assay-detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return u'{0}\t\t{1}'.format(self.name, self.code)
 
 class Iinflc04(models.Model):
-    assayid = models.ForeignKey('Assay', models.DO_NOTHING)  # Field name made lowercase.
-    mid = models.ForeignKey('Mouse', models.DO_NOTHING, db_column='mid')
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE)  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
     timepoint = models.IntegerField(blank=True, null=True)
     #timepoint_type = models.CharField(max_length=16)
     age = models.IntegerField(blank=True, null=True)
