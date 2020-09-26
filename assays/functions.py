@@ -135,8 +135,7 @@ def handle_uploaded_file(fname):
     #with open('some/file/name.txt', 'wb+') as destination:
     #    for chunk in f.chunks():
     #        destination.write(chunk)
-	fname = '200601_Phenotypos_EAE_wdwTo90.xlsx'
-	fname = '../../../static/media/assays/xlsx/'+fname
+	fname = '../static'+fname
 	wb = openpyxl.load_workbook(fname)
 	info = dataofAssay("info",fname)
 	create_mouseHash(info)

@@ -77,4 +77,4 @@ class Mouse(models.Model):
     diet = models.TextField(blank=True, null=True)
     mouse_info = models.TextField(blank=True, null=True)
     other = models.TextField(blank=True, null=True)
-    health_report = models.CharField(max_length=256, blank=True, null=True)
+    #health_report = models.CharField(max_length=256, blank=True, null=True)
