@@ -56,6 +56,8 @@ def create_mouseHash(data):
 			elif ('report' in key.lower()):
 				#print('health_report: ',data[key][i]) 
 				m.health_report = data[key][i]
+		if(Mouse.objects.filter(mid=m.mid, genotype=m.genotype,dateofBirth=m.dateofBirth)):
+			return 1;
 		m.save()
 
 '''def data_iinflc04(data):
@@ -131,11 +133,13 @@ def dataofAssay(assay,filename):
 			d[r0].append(object)
 	return d;
 
-def handle_uploaded_file(fname):
+def handle_uploaded_file(assayobject):
     #with open('some/file/name.txt', 'wb+') as destination:
     #    for chunk in f.chunks():
     #        destination.write(chunk)
-	fname = '../static'+fname
+	fname = '../static'+assayobject.rawdata_file.url
 	wb = openpyxl.load_workbook(fname)
 	info = dataofAssay("info",fname)
+	data = dataofAssay(assayobject.type.code,fname)
+	print(len(data))
 	create_mouseHash(info)

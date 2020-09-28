@@ -48,7 +48,7 @@ def add_assay(request, *args, **kargs):
             #    name = request.FILES[filename].url
                 #print(name)
             print(test.rawdata_file.url)
-            handle_uploaded_file(test.rawdata_file.url)
+            handle_uploaded_file(test)
             return redirect('assays')
     else:
         form = AssayForm()
