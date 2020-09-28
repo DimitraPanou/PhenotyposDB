@@ -149,7 +149,7 @@ if DEBUG:
     os.path.join(os.path.dirname(BASE_DIR),"static", "static"),
 )
 
-
+DATE_INPUT_FORMATS =('%d-%m-%Y')
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'

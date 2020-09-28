@@ -3,6 +3,8 @@ import openpyxl
 from openpyxl import Workbook
 import collections
 
+from django.shortcuts import get_object_or_404
+
 tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
 				'BIOCHEM-06','BIOCHEM-07','BIOCHEM-08','CBA-01','CBA-02','ENDO-01','FC-04',
 				'FC-07','HEM-01','HPIBD-01','HPIBD-02','HPIBD-03','HPNI-01','IINFLC-01',
@@ -13,9 +15,9 @@ tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
 
 
 def create_mouseHash(data):
-	for i in range(len(data)):
+	for i in range(len(data["Mouse ID"])):
 		m = Mouse()
-		print("MOUSE")
+		#print("MOUSE")
 		for key in data:
 			if ('ID' in key):
 				#print('mouseID: ',data[key][i])
@@ -57,8 +59,42 @@ def create_mouseHash(data):
 				#print('health_report: ',data[key][i]) 
 				m.health_report = data[key][i]
 		if(Mouse.objects.filter(mid=m.mid, genotype=m.genotype,dateofBirth=m.dateofBirth)):
-			return 1;
+			continue;
+		print("Saving mouse {}".format(m.mid)) 	
 		m.save()
+
+def data_iinflc04(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		iinflc04 = Iinflc04()
+		iinflc04.assayid = assay
+		for key in data:
+			if(flag):
+				if ('ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						iinflc04.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					#print('genotype: ',data[key][i])
+					iinflc04.timepoint= int(data[key][i])
+				elif ('age' in key.lower()):
+					#print('strain: ',data[key][i])
+					iinflc04.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					print('tail_num: ',data[key][i])
+					iinflc04.measurement= data[key][i]				 
+				elif ('weight' in key.lower()):
+					#print('induced: ',data[key][i])
+					iinflc04.weight= data[key][i]
+				elif ('comment' in key.lower()):
+					#print('induced: ',data[key][i])
+					iinflc04.comment= data[key][i]				
+		iinflc04.save()
 
 '''def data_iinflc04(data):
 	# For all the rows 
@@ -128,7 +164,7 @@ def dataofAssay(assay,filename):
 		r0 = sheet.cell(row=1, column = c).value
 		if(r0 and r0 not in d):
 			d[r0] = []
-		for r in range(2,rows):
+		for r in range(2,rows+1):
 			object = sheet.cell(row=r, column = c).value
 			d[r0].append(object)
 	return d;
@@ -140,6 +176,10 @@ def handle_uploaded_file(assayobject):
 	fname = '../static'+assayobject.rawdata_file.url
 	wb = openpyxl.load_workbook(fname)
 	info = dataofAssay("info",fname)
+	#print(info)
 	data = dataofAssay(assayobject.type.code,fname)
-	print(len(data))
+	print(data)
+	#print("Data")
+	#print(len(data["Mouse ID"]))
 	create_mouseHash(info)
+	data_iinflc04(data,assayobject)
