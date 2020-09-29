@@ -51,10 +51,40 @@ class Iinflc04(models.Model):
     age = models.IntegerField(blank=True, null=True)
     measurement_date = models.DateField(blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'IINFLC-04'
+
+class Ni01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE)  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    clinical_score = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'NI-01'
+
+class Ni02Rot01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE)  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    individual_latency_fall1 = models.FloatField(blank=True, null=True)
+    individual_latency_fall2 = models.FloatField(blank=True, null=True)
+    mean_latency_fall = models.FloatField(blank=True, null=True)
+    speed_fall1 = models.FloatField(blank=True, null=True)
+    speed_fall2 = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'NI-02-ROT-01'
 
 class Mouse(models.Model):
     GENDER = (

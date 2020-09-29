@@ -4,12 +4,12 @@ from openpyxl import Workbook
 import collections
 
 from django.shortcuts import get_object_or_404
-
+from datetime import date
 tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
 				'BIOCHEM-06','BIOCHEM-07','BIOCHEM-08','CBA-01','CBA-02','ENDO-01','FC-04',
 				'FC-07','HEM-01','HPIBD-01','HPIBD-02','HPIBD-03','HPNI-01','IINFLC-01',
-				'IINFLC-02','IINFLC-03','IINFLC-04','NI-01','NI-02_GRS-01','NI-02_OFD-01',
-				'NI-02_ROT-01','PR-02',"info"
+				'IINFLC-02','IINFLC-03','IINFLC-04','NI-01','NI-02-GRS-01','NI-02-OFD-01',
+				'NI-02-ROT-01','PR-02',"info"
 				]
 
 
@@ -86,8 +86,9 @@ def data_iinflc04(data,assay):
 					#print('strain: ',data[key][i])
 					iinflc04.age= data[key][i]
 				elif ('measurement' in key.lower()):
-					print('tail_num: ',data[key][i])
-					iinflc04.measurement= data[key][i]				 
+					print(data[key][i])
+					d = data[key][i]
+					iinflc04.measurement_date= d				 
 				elif ('weight' in key.lower()):
 					#print('induced: ',data[key][i])
 					iinflc04.weight= data[key][i]
@@ -95,6 +96,83 @@ def data_iinflc04(data,assay):
 					#print('induced: ',data[key][i])
 					iinflc04.comment= data[key][i]				
 		iinflc04.save()
+
+
+def data_ni01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		ni01 = Ni01()
+		ni01.assayid = assay
+		for key in data:
+			if(flag):
+				if ('ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						ni01.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					#print('genotype: ',data[key][i])
+					ni01.timepoint= int(data[key][i])
+				elif ('age' in key.lower()):
+					#print('strain: ',data[key][i])
+					ni01.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					print(data[key][i])
+					d = data[key][i]
+					ni01.measurement_date= d				 
+				elif ('clinical' in key.lower()):
+					#print('induced: ',data[key][i])
+					ni01.clinical_score= data[key][i]
+				elif ('comment' in key.lower()):
+					#print('induced: ',data[key][i])
+					ni01.comment= data[key][i]				
+		ni01.save()
+
+def data_ni02rot01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ni02Rot01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					#print('genotype: ',data[key][i])
+					experiment.timepoint= int(data[key][i])
+				elif ('age' in key.lower()):
+					#print('strain: ',data[key][i])
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					print(data[key][i])
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('individual latency' in key.lower()):
+					if('1' in key.lower()):
+						experiment.individual_latency_fall1 = data[key][i]
+					else:
+						experiment.individual_latency_fall2 = data[key][i]
+				elif ('speed' in key.lower()):
+					if('1' in key.lower()):
+						experiment.speed_fall1 = data[key][i]
+					else:
+						experiment.speed_fall2 = data[key][i]
+				elif ('mean latency' in key.lower()):
+					experiment.mean_latency_fall= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]				
+		experiment.save()
 
 '''def data_iinflc04(data):
 	# For all the rows 
@@ -148,6 +226,7 @@ def dataofAssay(assay,filename):
 	print("OK")
 	#Optional condition
 	if(assay not in tableNames):
+		print(assay)
 		return -1;
 	#For info tab to find the mouselist
 	if(assay in "info"):
@@ -182,4 +261,9 @@ def handle_uploaded_file(assayobject):
 	#print("Data")
 	#print(len(data["Mouse ID"]))
 	create_mouseHash(info)
-	data_iinflc04(data,assayobject)
+	if(assayobject.type.code == "IINFLC-04"):
+		data_iinflc04(data,assayobject)
+	if(assayobject.type.code == "NI-01"):
+		data_ni01(data,assayobject)
+	if(assayobject.type.code == "NI-02-ROT-01"):
+		data_ni02rot01(data,assayobject)
