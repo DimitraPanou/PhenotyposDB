@@ -35,6 +35,9 @@ class Assay(models.Model):
     assayqc = models.CharField(db_column='assayQC', max_length=256, blank=True, null=True)  # Field name made lowercase.
     type = models.ForeignKey('Atype', models.DO_NOTHING, db_column='type')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1)
+    #scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="scientists",related_query_name="scientist",)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
     def get_absolute_url(self):

@@ -38,6 +38,10 @@ class AssaysCreateView(LoginRequiredMixin,CreateView):
 	form_class = AssayForm
 	success_url = '/assays/'
 
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		return super().form_valid(form)
+
 
 def add_assay(request, *args, **kargs):
     if request.method == 'POST':
