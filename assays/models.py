@@ -34,7 +34,8 @@ class Assay(models.Model):
     rawdata_file = models.FileField(upload_to='assays/xlsx/')
     assayqc = models.CharField(db_column='assayQC', max_length=256, blank=True, null=True)  # Field name made lowercase.
     type = models.ForeignKey('Atype', models.DO_NOTHING, db_column='type')
-    author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1, related_name='created_by_user')
+    updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING, related_name='updated_by_user',blank=True, null=True)
     #scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="scientists",related_query_name="scientist",)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

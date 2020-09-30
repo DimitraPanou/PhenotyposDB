@@ -59,11 +59,16 @@ def add_assay(request, *args, **kargs):
     return render(request, 'assays/add_assay.html', {
         'form': form
     })
-class AssaysUpdateView(UpdateView):
+
+class AssaysUpdateView(LoginRequiredMixin,UpdateView):
 	model = Assay
 	template_name = 'assays/update_assay.html'
 	form_class = AssayForm
 	success_url = '/assays/'
+
+	def form_valid(self, form):
+		form.instance.updated_by = self.request.user
+		return super().form_valid(form)	
 
 class AssaysDeleteView(DeleteView):
 	model = Assay
@@ -75,6 +80,15 @@ class AssaysDetailView(DetailView):
 	model = Assay
 	template_name = 'assays/detail_assay.html'
 
+
+class UserAssaysListView(LoginRequiredMixin,ListView):
+	model = Assay
+	template_name = 'assays/assays.html'
+	context_object_name = 'list_assays'
+
+	def get_queryset(self):
+		user = get_object_or_404(User,username=self.kwargs.get('username'))
+		return Assay.objects.filter(author=user).order_by('measurement_day')
 #################################
 # TYPES
 #################################

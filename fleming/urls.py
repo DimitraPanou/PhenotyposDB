@@ -32,6 +32,7 @@ urlpatterns = [
 	#Assays
 #
 	path('assays/',AssaysListView.as_view(),name='assays'),
+	path('assays/<str:username>',UserAssaysListView.as_view(),name='user-assays'),
 #
 	#path('assays/add/',add_assay,name='add_assay'),
 #
