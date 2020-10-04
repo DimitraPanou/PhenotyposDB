@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
     'import_export',
     #'crispy_forms',
     #'database'
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'fleming',
     'assays',
-    'users',
+#    'users',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -148,7 +149,7 @@ if DEBUG:
     os.path.join(os.path.dirname(BASE_DIR),"static", "static"),
 )
 
-
+DATE_INPUT_FORMATS =('%d-%m-%Y')
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'

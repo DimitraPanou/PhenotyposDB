@@ -32,10 +32,14 @@ urlpatterns = [
 	#Assays
 #
 	path('assays/',AssaysListView.as_view(),name='assays'),
+	path('assays/<str:username>',UserAssaysListView.as_view(),name='user-assays'),
 #
-	path('assays/add/',add_assay,name='add_assay'),
+	#path('assays/add/',add_assay,name='add_assay'),
 #
+	path('assays/add',AssaysCreateView.as_view(),name='add_assay'),
 	path('assays/update/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
+	path('assays/<int:pk>/', AssaysDetailView.as_view(), name='assay-detail'),
+
 	#path('assays/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
 #
 	path('assays/<int:pk>/delete/', AssaysDeleteView.as_view(), name='assay-delete'),
@@ -52,6 +56,9 @@ urlpatterns = [
 #
 	path('assays/types/<int:pk>/delete/', AtypeDeleteView.as_view(), name='assaytype-delete'),
 	#path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
+	####################################	
+	#User
+	####################################
 	path('register', register, name='register'),
 	path('profile', profile, name='profile'),
 	path('login', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),

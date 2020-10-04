@@ -1,0 +1,32 @@
+{% extends 'assays/detail_assay.html' %}
+
+  {% block assay_content %}
+
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <!--<<th>ID</th>-->
+        <th>Mouse ID</th>
+        <th>Timepoint</th>        
+        <th>Age</th>
+        <th>Measurement Date</th>
+        <th>Clinical Score</th>
+        <th>Comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for assay in measures %}
+        <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+          <!--<td>{{ assay.assayid }}</td>-->
+          <td>{{ assay.mid }}</td>
+          <td>{{ assay.timepoint }}</td>
+          <td>{{ assay.age }}</td>
+          <td>{{ assay.measurement_date }}</td>
+          <td>{{ assay.clinical_score }}</td>
+          <td>{{ assay.comments }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
