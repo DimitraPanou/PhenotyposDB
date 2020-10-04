@@ -13,14 +13,10 @@ class AssayForm(forms.ModelForm):
         'measurement_day': forms.DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
     	}
 
-#    def form_valid(self, form):
-#        form.instance.author = self.request.user
-#        return super().form_valid(form)
-
-
 class AtypeForm(forms.ModelForm):
     class Meta:
         model = Atype
+        exclude =('code', 'name', 'version','staff','comments','measurement_day','rawdata_file','assayqc','type')
         fields = ('code', 'name', 'facility','unit','staff','publication_date','version')
         widgets = {
         'publication_date': forms.DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),

@@ -267,3 +267,11 @@ def handle_uploaded_file(assayobject):
 		data_ni01(data,assayobject)
 	if(assayobject.type.code == "NI-02-ROT-01"):
 		data_ni02rot01(data,assayobject)
+
+
+def returnTemplateName(assayobject):
+	switcher ={
+		5:'assays/assaytypes/iinflc-04.html',
+		7:'assays/assaytypes/ni01.html'
+	}
+	return switcher.get(assayobject.id,"Ivalid")

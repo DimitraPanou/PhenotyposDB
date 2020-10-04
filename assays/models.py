@@ -11,7 +11,7 @@ class Atype(models.Model):
     staff = models.CharField(max_length=256, blank=True, null=True)
     publication_date = models.DateField(blank=True, null=True)
     version = models.IntegerField(blank=True, null=True)
-    assay_word = models.FileField(upload_to='assays/types/{0}/'.format(code))
+    assay_word = models.FileField(blank=True,upload_to='assays/types/{0}/'.format(code))
     purpose = models.TextField(blank=True, null=True)
     experimental_design = models.TextField(blank=True, null=True)
     equipment = models.TextField(blank=True, null=True)
@@ -20,9 +20,16 @@ class Atype(models.Model):
     troubleshooting = models.TextField(blank=True, null=True)
     appendix = models.TextField(blank=True, null=True)
     references = models.TextField(blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return u'{0}'.format(self.code)
+
+    def get_absolute_url(self):
+        return reverse('assaytype-detail', kwargs={'pk': self.id})
+
+    def get_edit_url(self):
+        return reverse('assaytype-detail-update', kwargs={'pk': self.id})
 
 class Assay(models.Model):
     code = models.CharField(max_length=25)
@@ -48,7 +55,7 @@ class Assay(models.Model):
         return u'{0}\t\t{1}'.format(self.name, self.code)
 
 class Iinflc04(models.Model):
-    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE)  # Field name made lowercase.
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='iinflc04s')  # Field name made lowercase.
     mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
     timepoint = models.IntegerField(blank=True, null=True)
     #timepoint_type = models.CharField(max_length=16)
@@ -112,3 +119,6 @@ class Mouse(models.Model):
     mouse_info = models.TextField(blank=True, null=True)
     other = models.TextField(blank=True, null=True)
     #health_report = models.CharField(max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return u'{0}'.format(self.mid)

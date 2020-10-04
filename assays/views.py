@@ -22,7 +22,7 @@ from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic import FormView
 
-from .functions import handle_uploaded_file
+from .functions import handle_uploaded_file, returnTemplateName
 ####################
 #    Assays        #
 ####################
@@ -78,7 +78,12 @@ class AssaysDeleteView(DeleteView):
 
 class AssaysDetailView(DetailView):
 	model = Assay
-	template_name = 'assays/detail_assay.html'
+	template_name = 'assays/assaytypes/iinflc-04.html'
+	#template_name = returnTemplateName(self.get_object())
+
+	def get_context_data(self, **kwargs):
+		kwargs['measures'] = self.get_object().iinflc04s.annotate()
+		return super().get_context_data(**kwargs)
 
 
 class UserAssaysListView(LoginRequiredMixin,ListView):
@@ -128,7 +133,18 @@ class AtypeDetailView(DetailView):
 	model = Atype
 	template_name = 'assays/assaytype_page.html'
 
+#Need to fix this
 class Atype2UpdateView(UpdateView):
 	model = Atype
 	template_name = 'assays/update_assaytype2.html'
 	form_class = AtypeExtraForm
+
+	def post(self,request,pk,*args,**kwargs):
+		obj = get_object_or_404(Atype, id=pk)
+		form = AtypeExtraForm(request,POST, instance=obj)
+		print(form)
+		if form.is_valid():
+			form.save()
+			return(reverse('assaytype-detail', kwargs={'pk': self.id}))
+
+

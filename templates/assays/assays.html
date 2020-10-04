@@ -25,7 +25,7 @@
     </thead>
     <tbody>
       {% for assay in list_assays %}
-        <tr>
+        <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
           <!--<td>{{ assay.assayid }}</td>-->
           <td>{{ assay.code }}</td>
           <td>{{ assay.name }}</td>
