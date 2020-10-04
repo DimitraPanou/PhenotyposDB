@@ -48,7 +48,7 @@ urlpatterns = [
 #
 	path('assays/types/<int:pk>/', AtypeDetailView.as_view(), name='assaytype-detail'),
 #
-	path('assays/types/<int:pk>/edit', Atype2UpdateView.as_view(), name='assaytype-detail-update'),
+	path('assays/types/edit/<int:pk>/', Atype2UpdateView.as_view(), name='assaytype-detail-update'),
 #
 	path('assays/types/add',add_atype,name='add_atype'),
 #

@@ -25,8 +25,8 @@ class Atype(models.Model):
     def __str__(self):
         return u'{0}'.format(self.code)
 
-    def get_absolute_url(self):
-        return reverse('assaytype-detail', kwargs={'pk': self.id})
+    #def get_absolute_url(self):
+    #    return reverse('assaytype-detail', kwargs={'pk': self.id})
 
     def get_edit_url(self):
         return reverse('assaytype-detail-update', kwargs={'pk': self.id})

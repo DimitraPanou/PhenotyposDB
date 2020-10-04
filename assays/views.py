@@ -139,12 +139,14 @@ class Atype2UpdateView(UpdateView):
 	template_name = 'assays/update_assaytype2.html'
 	form_class = AtypeExtraForm
 
+	def get_success_url(self):
+		return(reverse_lazy('assaytype-detail', kwargs={'pk': self.object.id}))
+
+'''
 	def post(self,request,pk,*args,**kwargs):
 		obj = get_object_or_404(Atype, id=pk)
 		form = AtypeExtraForm(request,POST, instance=obj)
 		print(form)
 		if form.is_valid():
 			form.save()
-			return(reverse('assaytype-detail', kwargs={'pk': self.id}))
-
-
+'''
