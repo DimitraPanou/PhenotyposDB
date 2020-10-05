@@ -174,6 +174,57 @@ def data_ni02rot01(data,assay):
 					experiment.comment= data[key][i]				
 		experiment.save()
 
+def data_ni02ofd01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ni02ofd01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					#print('genotype: ',data[key][i])
+					experiment.timepoint= int(data[key][i])
+				elif ('measurement' in key.lower()):
+					#print(data[key][i])
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('comment' in key.lower()):
+					#print('induced: ',data[key][i])
+					experiment.comment= data[key][i]
+				elif ('Age' in key):
+					print('strain: ',data[key][i])
+					experiment.age= data[key][i]
+				elif ('distance' in key.lower()):
+					if('arena' in key.lower()):
+						print('age',data[key][i])						
+						experiment.total_distance_wa = data[key][i]
+					elif('peripheral' in key.lower()): 
+						experiment.total_distance_pz = data[key][i]
+					elif('central' in key.lower()):
+						experiment.total_distance_cz = data[key][i]
+				elif ('time spent' in key.lower()):
+					if('peripheral' in key.lower()):
+						experiment.time_pz = data[key][i]
+					elif('central' in key.lower()):
+						experiment.time_cz = data[key][i]
+				elif ('speed' in key.lower()):
+					if('arena' in key.lower()):
+						experiment.avg_speed_wa = data[key][i]
+					elif('peripheral' in key.lower()): 
+						experiment.avg_speed_pz = data[key][i]
+					elif('central' in key.lower()):
+						experiment.avg_speed_cz = data[key][i]
+		experiment.save()
+
 '''def data_iinflc04(data):
 	# For all the rows 
 	for i in range(2):
@@ -257,7 +308,7 @@ def handle_uploaded_file(assayobject):
 	info = dataofAssay("info",fname)
 	#print(info)
 	data = dataofAssay(assayobject.type.code,fname)
-	print(data)
+	print(data.keys())
 	#print("Data")
 	#print(len(data["Mouse ID"]))
 	create_mouseHash(info)
@@ -267,11 +318,14 @@ def handle_uploaded_file(assayobject):
 		data_ni01(data,assayobject)
 	if(assayobject.type.code == "NI-02-ROT-01"):
 		data_ni02rot01(data,assayobject)
-
+	if(assayobject.type.code == "NI-02-OFD-01"):
+		data_ni02ofd01(data,assayobject)
 
 def returnTemplateName(assayobject):
 	switcher ={
 		5:'assays/assaytypes/iinflc-04.html',
-		7:'assays/assaytypes/ni01.html'
+		7:'assays/assaytypes/ni01.html',
+		8:'assays/assaytypes/ni02rot01.html',
+		9:'assays/assaytypes/ni02ofd01.html'
 	}
 	return switcher.get(assayobject.id,"Ivalid")

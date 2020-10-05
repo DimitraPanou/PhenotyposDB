@@ -34,9 +34,9 @@ urlpatterns = [
 	path('assays/',AssaysListView.as_view(),name='assays'),
 	path('assays/<str:username>',UserAssaysListView.as_view(),name='user-assays'),
 #
-	#path('assays/add/',add_assay,name='add_assay'),
+	path('assays/add/',add_assay,name='add_assay'),
 #
-	path('assays/add',AssaysCreateView.as_view(),name='add_assay'),
+#	path('assays/add/',AssaysCreateView.as_view(),name='add_assay'),
 	path('assays/update/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
 	path('assays/<int:pk>/', AssaysDetailView.as_view(), name='assay-detail'),
 

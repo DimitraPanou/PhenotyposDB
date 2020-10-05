@@ -23,6 +23,23 @@
         <th>Raw File</th>
       </tr>
     </thead>
+    <tbody>
+    <tr>
+      <td>{{ assay.code }}</td>
+      <td>{{ assay.name }}</td>
+      <td>{{ assay.type }}</td>
+      <td>{{ assay.version }}</td>
+      <td>{{ assay.staff }}</td>
+      <td>
+        <a href="{{ assay.rawdata_file.url }}" class="btn btn-primary btn-sm" target="_blank">
+          Download FILE
+        </a>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assay-update' assay.id %}">Update</a>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assay-delete' assay.id %}">Delete</a>
+      </td>
+      <td>{{ assay.author }}</td>
+    </tr>
+    <tbody>
   </table>
 
   {% block assay_content %}

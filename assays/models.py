@@ -69,7 +69,7 @@ class Iinflc04(models.Model):
         db_table = 'IINFLC-04'
 
 class Ni01(models.Model):
-    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE)  # Field name made lowercase.
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='ni01s')  # Field name made lowercase.
     mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
     timepoint = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
@@ -82,7 +82,7 @@ class Ni01(models.Model):
         db_table = 'NI-01'
 
 class Ni02Rot01(models.Model):
-    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE)  # Field name made lowercase.
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='ni02rot01s')  # Field name made lowercase.
     mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
     timepoint = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
@@ -96,6 +96,33 @@ class Ni02Rot01(models.Model):
     class Meta:
         managed = True
         db_table = 'NI-02-ROT-01'
+
+class Ni02ofd01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='ni02ofd01s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    total_distance_wa = models.FloatField(blank=True, null=True)
+    total_distance_cz = models.FloatField(blank=True, null=True)
+    total_distance_pz = models.FloatField(blank=True, null=True)
+    total_rears = models.FloatField(blank=True, null=True)
+    rears_cz = models.FloatField(blank=True, null=True)
+    rears_pz = models.FloatField(blank=True, null=True)
+    time_cz = models.FloatField(blank=True, null=True)
+    time_pz = models.FloatField(blank=True, null=True)
+    duration_immobility_wa = models.FloatField(blank=True, null=True)
+    duration_immobility_cz = models.FloatField(blank=True, null=True)
+    duration_immobility_pz = models.FloatField(blank=True, null=True)
+    avg_speed_wa = models.FloatField(blank=True, null=True)
+    avg_speed_cz = models.FloatField(blank=True, null=True)
+    avg_speed_pz = models.FloatField(blank=True, null=True)
+    num_entries_cz = models.FloatField(blank=True, null=True)
+    latency1_cz = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'NI-02-OFD-01'
 
 class Mouse(models.Model):
     GENDER = (
