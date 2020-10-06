@@ -54,6 +54,37 @@ class Assay(models.Model):
     def __str__(self):
         return u'{0}\t\t{1}'.format(self.name, self.code)
 
+class Iinflc02(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='iinflc02s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=256, blank=True, null=True)
+    cell_count_s_intestine = models.FloatField(blank=True, null=True)
+    cell_count_l_intestine = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'IINFLC-02'
+
+class Iinflc03(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='iinflc03s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sum_intensity = models.FloatField(blank=True, null=True)
+    net_intensity = models.FloatField(blank=True, null=True)
+    mean_intensity = models.FloatField(blank=True, null=True)
+    acquisition_settings = models.TextField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'IINFLC-03'
+
 class Iinflc04(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='iinflc04s')  # Field name made lowercase.
     mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
@@ -185,6 +216,173 @@ class Hem01(models.Model):
         managed = True
         db_table = 'HEM-01'
 
+class Hpibd02(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='hpibd02s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    inflammation_small = models.FloatField(blank=True, null=True)
+    epithelial_small = models.FloatField(blank=True, null=True)
+    inflammation_large = models.FloatField(blank=True, null=True)
+    epithelial_large = models.FloatField(blank=True, null=True)
+    vc_ratio = models.FloatField(blank=True, null=True)
+    colon_length = models.FloatField(blank=True, null=True)
+    epithelium_s_flattening = models.FloatField(blank=True, null=True)
+    apoptotic_s_field = models.FloatField(blank=True, null=True)
+    goblet_s_depletion = models.FloatField(blank=True, null=True)
+    lumen_s_exfoliation = models.FloatField(blank=True, null=True)
+    villus_s_short = models.FloatField(blank=True, null=True)
+    igd_small = models.FloatField(blank=True, null=True)
+    paneth_s_activation = models.FloatField(blank=True, null=True)
+    peyer_s_patch = models.FloatField(blank=True, null=True)
+    apoptotic_l_field = models.FloatField(blank=True, null=True)
+    goblet_l_depletion = models.FloatField(blank=True, null=True)
+    lumen_l_exfoliation = models.FloatField(blank=True, null=True)
+    crypt_l_damage = models.FloatField(blank=True, null=True)
+    endothelial_l_activation = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'HPIBD-02'
+
+
+class Biochem01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='biochem01s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    total_protein = models.FloatField(blank=True, null=True)
+    albumin = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'BIOCHEM-01'
+
+class Biochem02(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='biochem02s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sodium = models.FloatField(blank=True, null=True)
+    potassium = models.FloatField(blank=True, null=True)
+    chloride = models.FloatField(blank=True, null=True)
+    phosphorus = models.FloatField(blank=True, null=True)
+    calcium = models.FloatField(blank=True, null=True)
+    magnesium = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'BIOCHEM-02'
+
+class Biochem03(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='biochem03s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    alt = models.FloatField(blank=True, null=True)
+    ast = models.FloatField(blank=True, null=True)
+    alp = models.FloatField(blank=True, null=True)
+    total_bilirubin = models.FloatField(blank=True, null=True)
+    direct_bilirubin = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'BIOCHEM-03'
+
+class Biochem04(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='biochem04s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    urea = models.FloatField(blank=True, null=True)
+    uric_acid = models.FloatField(blank=True, null=True)
+    creatinine = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'BIOCHEM-04'
+
+class Biochem05(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='biochem05s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    amylase = models.FloatField(blank=True, null=True)
+    lipase = models.FloatField(blank=True, null=True)
+    glucose = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'BIOCHEM-05'
+
+class Biochem06(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='biochem06s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    cholesterol = models.FloatField(blank=True, null=True)
+    hdl_cholesterol = models.FloatField(blank=True, null=True)
+    ldl_cholesterol = models.FloatField(blank=True, null=True)
+    triglycerides = models.FloatField(blank=True, null=True)
+    nefa = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'BIOCHEM-06'
+
+
+class Biochem07(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='biochem07s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    iron = models.FloatField(blank=True, null=True)
+    uibc = models.FloatField(blank=True, null=True)
+    ferritin = models.FloatField(blank=True, null=True)
+    transferrin = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'BIOCHEM-07'
+
+
+class Biochem08(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='biochem08s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    ldl = models.FloatField(blank=True, null=True)
+    creatinine_kinase = models.FloatField(blank=True, null=True)
+    potassium = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'BIOCHEM-08'
 class Mouse(models.Model):
     GENDER = (
         ('Male', 'Male'),
