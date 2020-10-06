@@ -265,11 +265,9 @@ def data_ni02ofd01(data,assay):
 				elif ('comment' in key.lower()):
 					experiment.comment= data[key][i]
 				elif ('Age' in key):
-					print('strain: ',data[key][i])
 					experiment.age= data[key][i]
 				elif ('distance' in key.lower()):
 					if('arena' in key.lower()):
-						print('age',data[key][i])						
 						experiment.total_distance_wa = data[key][i]
 					elif('peripheral' in key.lower()): 
 						experiment.total_distance_pz = data[key][i]
@@ -761,7 +759,6 @@ def data_biochem08(data,assay):
 		if(flag):				
 			experiment.save()
 
-
 def data_hpibd02(data,assay):
 	for i in range(len(data["Mouse ID"])):
 		flag =1
@@ -898,6 +895,31 @@ def handle_uploaded_file(assayobject):
 	print(data)
 	#print(len(data["Mouse ID"]))
 	create_mouseHash(info)
+
+	switcher ={
+		6: data_iinflc02(data,assayobject),
+		4: data_iinflc03(data,assayobject),
+		5: data_iinflc04(data,assayobject),
+		7: data_ni01(data,assayobject),		
+		8: data_ni02rot01(data,assayobject),		
+		9: data_ni02ofd01(data,assayobject),		
+		10: data_ni02grs01(data,assayobject),		
+		11: data_hem01(data,assayobject),		
+		12: data_hpibd02(data,assayobject),		
+		13: data_biochem01(data,assayobject),		
+		14: data_biochem02(data,assayobject),		
+		15: data_biochem03(data,assayobject),		
+		16: data_biochem04(data,assayobject),		
+		17: data_biochem05(data,assayobject),		
+		18: data_biochem06(data,assayobject),		
+		19: data_biochem07(data,assayobject),		
+		20: data_biochem08(data,assayobject)		
+
+	}
+	switcher.get(assayobject.type.id,"Ivalid")
+
+
+'''
 	if(assayobject.type.code == "IINFLC-04"):
 		data_iinflc04(data,assayobject)
 	if(assayobject.type.code == "NI-01"):
@@ -932,7 +954,7 @@ def handle_uploaded_file(assayobject):
 		data_biochem07(data,assayobject)
 	if(assayobject.type.code == "BIOCHEM-08"):
 		data_biochem08(data,assayobject)
-
+'''
 def returnTemplateName(assayobject):
 	switcher ={
 		5:'assays/assaytypes/iinflc-04.html',
