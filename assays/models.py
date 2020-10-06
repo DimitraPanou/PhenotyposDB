@@ -43,7 +43,7 @@ class Assay(models.Model):
     type = models.ForeignKey('Atype', models.DO_NOTHING, db_column='type')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1, related_name='created_by_user')
     updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING, related_name='updated_by_user',blank=True, null=True)
-    #scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="scientists",related_query_name="scientist",)
+    scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="scientists",related_query_name="scientist",blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -92,6 +92,7 @@ class Ni02Rot01(models.Model):
     mean_latency_fall = models.FloatField(blank=True, null=True)
     speed_fall1 = models.FloatField(blank=True, null=True)
     speed_fall2 = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = True
@@ -119,10 +120,70 @@ class Ni02ofd01(models.Model):
     avg_speed_pz = models.FloatField(blank=True, null=True)
     num_entries_cz = models.FloatField(blank=True, null=True)
     latency1_cz = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'NI-02-OFD-01'
+
+class Ni02grs01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='ni02grs01s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    forelimb_r1 = models.FloatField(blank=True, null=True)
+    forelimb_r2 = models.FloatField(blank=True, null=True)
+    forelimb_r3 = models.FloatField(blank=True, null=True)
+    hindlimb_r1 = models.FloatField(blank=True, null=True)
+    hindlimb_r2 = models.FloatField(blank=True, null=True)
+    hindlimb_r3 = models.FloatField(blank=True, null=True)
+    forelimb = models.FloatField(blank=True, null=True)
+    hindlimb = models.FloatField(blank=True, null=True)
+    weight = models.FloatField(blank=True, null=True)
+    forelimb_mean_ratio = models.FloatField(blank=True, null=True)
+    hindlimb_mean_ratio = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'NI-02-GRS-01'
+
+class Hem01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='hem01s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_id = models.CharField(max_length=128, blank=True, null=True)
+    wbc_count = models.FloatField(blank=True, null=True)
+    mononuclear_num = models.FloatField(blank=True, null=True)
+    lymphocytes_num = models.FloatField(blank=True, null=True)
+    lymphocytes_per = models.FloatField(blank=True, null=True)
+    monocytes_num = models.FloatField(blank=True, null=True)
+    monocytes2_num = models.FloatField(blank=True, null=True)
+    neutrophils_num = models.FloatField(blank=True, null=True)
+    neutrophils_per = models.FloatField(blank=True, null=True)
+    eosinophils_num = models.FloatField(blank=True, null=True)
+    eosinophils_per = models.FloatField(blank=True, null=True)
+    basophils_num = models.FloatField(blank=True, null=True)
+    basophils_per = models.FloatField(blank=True, null=True)
+    rbc_count = models.FloatField(blank=True, null=True)
+    ht = models.FloatField(blank=True, null=True)
+    hb = models.FloatField(blank=True, null=True)
+    plt_count = models.FloatField(blank=True, null=True)
+    platelet_dist_range = models.FloatField(blank=True, null=True)
+    platelet_count = models.FloatField(blank=True, null=True)
+    avg_vol_platelets = models.FloatField(blank=True, null=True)
+    mcv = models.FloatField(blank=True, null=True)
+    rdv = models.FloatField(blank=True, null=True)
+    mchc = models.FloatField(blank=True, null=True)
+    mcv2 = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'HEM-01'
 
 class Mouse(models.Model):
     GENDER = (

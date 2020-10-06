@@ -8,7 +8,7 @@ class AssayForm(forms.ModelForm):
     class Meta:
         model = Assay
         exclude = ('author',)
-        fields = ('code', 'name', 'version','staff','comments','measurement_day','rawdata_file','assayqc','type')
+        fields = ('code', 'name','type','version','staff','measurement_day','scientist','assayqc','rawdata_file','comments')
         widgets = {
         'measurement_day': forms.DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
     	}

@@ -20,43 +20,30 @@ def create_mouseHash(data):
 		#print("MOUSE")
 		for key in data:
 			if ('ID' in key):
-				#print('mouseID: ',data[key][i])
 				m.mid = data[key][i]			
 			elif ('genotype' in key.lower()):
-				#print('genotype: ',data[key][i])
 				m.genotype = data[key][i]
 			elif ('strain' in key.lower()):
-				#print('strain: ',data[key][i])
 				m.strain = data[key][i]
 			elif ('tail' in key.lower()):
-				#print('tail_num: ',data[key][i])
 				m.tail_num = data[key][i]				 
 			elif ('induced' in key.lower()):
-				#print('induced: ',data[key][i])
 				m.induced = data[key][i]
 			elif ('treated' in key.lower() or 'treatement' in key.lower()):
-				#print('treated: ',data[key][i])
 				m.treated = data[key][i]
 			elif ('gender' in key.lower() or 'sex' in key.lower()):
-				#print('gender: ',data[key][i])
 				m.gender = data[key][i] 
 			elif ('Age' in key):
-				#print('age: ',data[key][i])
 				m.age = data[key][i] 
 			elif ('birth' in key.lower()):
-				#print('date of birth: ',data[key][i])
 				m.dateofBirth = data[key][i] 				
 			elif ('diet' in key.lower()):
-				#print('diet: ',data[key][i])
 				m.diet = data[key][i] 
 			elif ('cage' in key.lower()):
-				#print('other cage: ',data[key][i]) 
 				m.mouse_info = data[key][i]
 			elif ('environmental' in key.lower()):
-				#print('other env: ',data[key][i]) 
 				m.other = data[key][i]
 			elif ('report' in key.lower()):
-				#print('health_report: ',data[key][i]) 
 				m.health_report = data[key][i]
 		if(Mouse.objects.filter(mid=m.mid, genotype=m.genotype,dateofBirth=m.dateofBirth)):
 			continue;
@@ -80,20 +67,15 @@ def data_iinflc04(data,assay):
 						flag = 0
 						break;			
 				elif ('timepoint' in key.lower()):
-					#print('genotype: ',data[key][i])
 					iinflc04.timepoint= int(data[key][i])
 				elif ('age' in key.lower()):
-					#print('strain: ',data[key][i])
 					iinflc04.age= data[key][i]
 				elif ('measurement' in key.lower()):
-					print(data[key][i])
 					d = data[key][i]
 					iinflc04.measurement_date= d				 
 				elif ('weight' in key.lower()):
-					#print('induced: ',data[key][i])
 					iinflc04.weight= data[key][i]
 				elif ('comment' in key.lower()):
-					#print('induced: ',data[key][i])
 					iinflc04.comment= data[key][i]				
 		iinflc04.save()
 
@@ -115,20 +97,15 @@ def data_ni01(data,assay):
 						flag = 0
 						break;			
 				elif ('timepoint' in key.lower()):
-					#print('genotype: ',data[key][i])
 					ni01.timepoint= int(data[key][i])
 				elif ('age' in key.lower()):
-					#print('strain: ',data[key][i])
 					ni01.age= data[key][i]
 				elif ('measurement' in key.lower()):
-					print(data[key][i])
 					d = data[key][i]
 					ni01.measurement_date= d				 
 				elif ('clinical' in key.lower()):
-					#print('induced: ',data[key][i])
 					ni01.clinical_score= data[key][i]
 				elif ('comment' in key.lower()):
-					#print('induced: ',data[key][i])
 					ni01.comment= data[key][i]				
 		ni01.save()
 
@@ -149,13 +126,10 @@ def data_ni02rot01(data,assay):
 						flag = 0
 						break;			
 				elif ('timepoint' in key.lower()):
-					#print('genotype: ',data[key][i])
 					experiment.timepoint= int(data[key][i])
 				elif ('age' in key.lower()):
-					#print('strain: ',data[key][i])
 					experiment.age= data[key][i]
 				elif ('measurement' in key.lower()):
-					print(data[key][i])
 					d = data[key][i]
 					experiment.measurement_date= d				 
 				elif ('individual latency' in key.lower()):
@@ -191,14 +165,11 @@ def data_ni02ofd01(data,assay):
 						flag = 0
 						break;			
 				elif ('timepoint' in key.lower()):
-					#print('genotype: ',data[key][i])
 					experiment.timepoint= int(data[key][i])
 				elif ('measurement' in key.lower()):
-					#print(data[key][i])
 					d = data[key][i]
 					experiment.measurement_date= d				 
 				elif ('comment' in key.lower()):
-					#print('induced: ',data[key][i])
 					experiment.comment= data[key][i]
 				elif ('Age' in key):
 					print('strain: ',data[key][i])
@@ -225,32 +196,137 @@ def data_ni02ofd01(data,assay):
 						experiment.avg_speed_cz = data[key][i]
 		experiment.save()
 
-'''def data_iinflc04(data):
-	# For all the rows 
-	for i in range(2):
-		#newAssay = Iinflc04(assayid=a.id)
+def data_ni02grs01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ni02grs01()
+		experiment.assayid = assay
 		for key in data:
-			#If mouse find its id from mouse database
-			if ('ID' in key):
-				print('mouseID: ',data[key][i])
-				#newAssay.mid = Mouse.objects.get(mid=data[key][i]).id
-			elif ('age' in key.lower()):
-				print('age: ',data[key][i])
-				#newAssay.age = data[key][i] 			
-			elif ('timepoint' in key.lower()):
-				print('timepoint: ',data[key][i])
-				#newAssay.timepoint = data[key][i] 
-			elif ('timepoint type' in key.lower()):
-				print('timepoint_type: ',data[key][i]) 
-				#newAssay.timepoint_type = data[key][i]
-			elif ('measurement' in key.lower()):
-				print('measurement_date: ',data[key][i]) 
-				#newAssay.measurement_date = data[key][i]
-			elif ('weight' in key.lower()):
-				print('weight: ',data[key][i]) 
-				#newAssay.weight = data[key][i]
-		#newAssay.save()
-'''
+			if(flag):
+				if ('ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					experiment.timepoint= int(data[key][i])
+				elif ('measurement date' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('body weight (g)' in key.lower()):
+					experiment.weight= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+				elif ('forelimb grip' in key.lower()):
+					#print('forelimb grip: ',data[key][i])
+					if('measurement 1' in key.lower()):
+						experiment.forelimb_r1 = data[key][i]
+					elif('measurement 2' in key.lower()):
+						experiment.forelimb_r2 = data[key][i]
+					elif('measurement 3' in key.lower()):
+						experiment.forelimb_r3 = data[key][i]
+					elif('measurement mean' in key.lower()):
+						#print('pass 4: ',data[key][i])						
+						experiment.forelimb = data[key][i]
+					elif('ratio' in key.lower()):
+						experiment.forelimb_mean_ratio = data[key][i]
+				elif ('hindlimb' in key.lower()):
+					if('measurement 1' in key.lower()):
+						experiment.hindlimb_r1 = data[key][i]
+					elif('measurement 2' in key.lower()): 
+						experiment.hindlimb_r2 = data[key][i]
+					elif('measurement 3' in key.lower()):
+						experiment.hindlimb_r3 = data[key][i]
+					elif('measurement mean' in key.lower()):
+						experiment.hindlimb = data[key][i]
+					elif('ratio' in key.lower()):
+						#print('pass 5: ',data[key][i])
+						experiment.hindlimb_mean_ratio = data[key][i]		
+		experiment.save()
+
+def data_hem01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Hem01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' == key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					experiment.timepoint= int(data[key][i])
+				elif ('measurement date' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+				elif ('sample id' in key.lower()):
+					experiment.sample_id= data[key][i]
+				elif ('wbc count' in key.lower()):
+					experiment.wbc_count= data[key][i]		
+				elif ('# mononuclear cells' in key.lower()):
+					experiment.mononuclear_num= data[key][i]
+				elif ('# lymphocytes' in key.lower()):
+					experiment.lymphocytes_num= data[key][i]
+				elif ('% lymphocytes' in key.lower()):
+					experiment.lymphocytes_per= data[key][i]
+				elif ('# monocytes' in key.lower()):
+					if('2' in key.lower()):
+						experiment.monocytes2_num= data[key][i]
+					else:
+						experiment.monocytes_num= data[key][i]
+				elif ('# neutrophils' in key.lower()):
+					experiment.neutrophils_num= data[key][i]
+				elif ('% neutrophils' in key.lower()):
+					experiment.neutrophils_per= data[key][i]
+				elif ('# eosinophils' in key.lower()):
+					experiment.eosinophils_num= data[key][i]
+				elif ('% eosinophils' in key.lower()):
+					experiment.eosinophils_per= data[key][i]
+				elif ('# basophils' in key.lower()):
+					experiment.basophils_num= data[key][i]
+				elif ('% basophils' in key.lower()):
+					experiment.basophils_per= data[key][i]
+				elif ('rbc count' in key.lower()):
+					experiment.rbc_count= data[key][i]
+				elif ('hematocrit' in key.lower()):
+					experiment.ht= data[key][i]
+				elif ('hemoblobin' in key.lower()):
+					experiment.hb= data[key][i]
+				elif ('plt platelet' in key.lower()):
+					experiment.plt_count= data[key][i]
+				elif ('platelet dist' in key.lower()):
+					experiment.platelet_dist_range= data[key][i]
+				elif ('platelet count' in key.lower()):
+					experiment.platelet_count= data[key][i]
+				elif ('average volume' in key.lower()):
+					experiment.avg_vol_platelets= data[key][i]
+				elif ('MCV' == key):
+					experiment.mcv= data[key][i]
+				elif ('RDV' == key):
+					experiment.rdv= data[key][i]
+				elif ('MCHC' == key):
+					experiment.mchc= data[key][i]	
+				elif ('MCV2' == key):
+					experiment.mcv2= data[key][i]					
+		experiment.save()
+
+
 #Returns number of rows & number of columns with data in excel tab  
 def find_edges(sheet):
     row = sheet.max_row
@@ -309,7 +385,8 @@ def handle_uploaded_file(assayobject):
 	#print(info)
 	data = dataofAssay(assayobject.type.code,fname)
 	print(data.keys())
-	#print("Data")
+	print("Data")
+	print(data)
 	#print(len(data["Mouse ID"]))
 	create_mouseHash(info)
 	if(assayobject.type.code == "IINFLC-04"):
@@ -320,6 +397,10 @@ def handle_uploaded_file(assayobject):
 		data_ni02rot01(data,assayobject)
 	if(assayobject.type.code == "NI-02-OFD-01"):
 		data_ni02ofd01(data,assayobject)
+	if(assayobject.type.code == "NI-02-GRS-01"):
+		data_ni02grs01(data,assayobject)
+	if(assayobject.type.code == "HEM-01"):
+		data_hem01(data,assayobject)
 
 def returnTemplateName(assayobject):
 	switcher ={
