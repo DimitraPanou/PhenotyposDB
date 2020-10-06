@@ -8,7 +8,7 @@ class AssayForm(forms.ModelForm):
     class Meta:
         model = Assay
         exclude = ('author',)
-        fields = ('code', 'name', 'version','staff','comments','measurement_day','rawdata_file','assayqc','type')
+        fields = ('code', 'name','type','version','staff','measurement_day','scientist','assayqc','rawdata_file','comments')
         widgets = {
         'measurement_day': forms.DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
     	}
@@ -16,7 +16,6 @@ class AssayForm(forms.ModelForm):
 class AtypeForm(forms.ModelForm):
     class Meta:
         model = Atype
-        exclude =('code', 'name', 'version','staff','comments','measurement_day','rawdata_file','assayqc','type')
         fields = ('code', 'name', 'facility','unit','staff','publication_date','version')
         widgets = {
         'publication_date': forms.DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),

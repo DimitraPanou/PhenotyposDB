@@ -32,21 +32,22 @@ class AssaysListView(ListView):
 	template_name = 'assays/assays.html'
 	context_object_name = 'list_assays'
 
-class AssaysCreateView(LoginRequiredMixin,CreateView):
-	model = Assay
-	template_name = 'assays/add_assay.html'
-	form_class = AssayForm
-	success_url = '/assays/'
+#class AssaysCreateView(LoginRequiredMixin,CreateView):
+#	model = Assay
+#	template_name = 'assays/add_assay.html'
+#	form_class = AssayForm
+#	success_url = '/assays/'
 
-	def form_valid(self, form):
-		form.instance.author = self.request.user
-		return super().form_valid(form)
+#	def form_valid(self, form):
+#		form.instance.author = self.request.user
+#		return super().form_valid(form)
 
 
 def add_assay(request, *args, **kargs):
     if request.method == 'POST':
         form = AssayForm(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.author = request.user
             test = form.save()
             #for filename, file in request.FILES.items():
             #    name = request.FILES[filename].url
@@ -78,11 +79,22 @@ class AssaysDeleteView(DeleteView):
 
 class AssaysDetailView(DetailView):
 	model = Assay
-	template_name = 'assays/assaytypes/iinflc-04.html'
-	#template_name = returnTemplateName(self.get_object())
+	#template_name = 'assays/assaytypes/iinflc-04.html'
+	#template_name = returnTemplateName(self.object)
+
+	def get_template_names(self):
+		print(self.object.type)
+		#return ['assays/assaytypes/ni01.html','assays/assaytypes/iinflc-04.html']
+		return returnTemplateName(self.object.type)
 
 	def get_context_data(self, **kwargs):
-		kwargs['measures'] = self.get_object().iinflc04s.annotate()
+		switcher ={
+			5: self.get_object().iinflc04s.annotate(),
+			7: self.get_object().ni01s.annotate(),
+			8: self.get_object().ni02rot01s.annotate(),
+			9: self.get_object().ni02ofd01s.annotate()
+		}
+		kwargs['measures'] = switcher.get(self.object.type.id,"Ivalid")
 		return super().get_context_data(**kwargs)
 
 
@@ -103,6 +115,17 @@ class AtypeListView(ListView):
 	template_name = 'assays/assaytypes.html'
 	context_object_name = 'list_assays'
 
+'''
+class AtypeCreateView(LoginRequiredMixin,CreateView):
+	model = Atype
+	template_name = 'assays/add_assay.html'
+	form_class = AtypeForm
+	success_url = '/assays/'
+
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		return super().form_valid(form)
+'''
 def add_atype(request, *args, **kargs):
     a=Assay()	
     if request.method == 'POST':
@@ -139,12 +162,14 @@ class Atype2UpdateView(UpdateView):
 	template_name = 'assays/update_assaytype2.html'
 	form_class = AtypeExtraForm
 
+	def get_success_url(self):
+		return(reverse_lazy('assaytype-detail', kwargs={'pk': self.object.id}))
+
+'''
 	def post(self,request,pk,*args,**kwargs):
 		obj = get_object_or_404(Atype, id=pk)
 		form = AtypeExtraForm(request,POST, instance=obj)
 		print(form)
 		if form.is_valid():
 			form.save()
-			return(reverse('assaytype-detail', kwargs={'pk': self.id}))
-
-
+'''

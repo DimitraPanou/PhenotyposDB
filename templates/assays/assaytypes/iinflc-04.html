@@ -7,6 +7,7 @@
       <tr>
         <!--<<th>ID</th>-->
         <th>Mouse ID</th>
+        <th>Mouse Genotype</th>        
         <th>Timepoint</th>        
         <th>Measurement Date</th>
         <th>Weight</th>
@@ -19,6 +20,7 @@
         <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
           <!--<td>{{ assay.assayid }}</td>-->
           <td>{{ assay.mid }}</td>
+          <td>{{ assay.mid.genotype }}</td>          
           <td>{{ assay.timepoint }}</td>
           <td>{{ assay.measurement_date }}</td>
           <td>{{ assay.weight }}</td>
