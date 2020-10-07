@@ -38,7 +38,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <a href="{% url 'home' %}" class="nav-link">Home</a>
       </li>
     <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Assays</a>
+            <a id="dropdownSubMenu1" href="{% url 'assays' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Assays</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
               <li><a href="{% url 'assays' %}" class="dropdown-item">All Assays</a></li>
               <li><a href="{% url 'add_assay' %}" class="dropdown-item">Add Assay</a></li>
@@ -94,6 +94,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
+      {% if user.is_authenticated%}
+        <!-- User -->
+      <li class="nav-item dropdown user-menu">
+        <a href="{% url 'profile' %}" class="nav-link dropdown-toggle" data-toggle="dropdown">
+          <img src="{{ user.profile.image.url }}" class="user-image img-circle elevation-2" alt="User Image">
+          <span class="d-none d-md-inline"> {{ user.username }}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <!-- User image -->
+          <li class="user-header bg-primary">
+            <img src="{{ user.profile.image.url }}" class="user-image img-circle elevation-2" alt="User Image">
+              <p>
+                {{ user.username }} - Lab Member
+                <small>{{ user.email }}</small>
+              </p>
+          </li>
+
+        <!-- Menu Footer -->
+          <li class="user-footer">
+            <a href="{% url 'profile' %}" class="btn-btn-default btn-flat">Profile</a>
+            <a href="{% url 'logout' %}" class="btn-btn-default btn-flat float-right">Sign out</a>
+          </li>
+      </ul>
+    </li>
+      {% else %}
+      <li class="nav-item">
+          <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+          <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+      {% endif %}
+      </li>      
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
             class="fas fa-th-large"></i></a>
@@ -105,24 +135,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+    <a href="{% url 'assays' %}" class="brand-link">
+      <img src="{% static 'dist/img/phenLogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">PhenotyposDB</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
+      {% if user.is_authenticated %}
+
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ user.profile.image.url }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="{% url 'profile' %}" class="d-block">{{ user.username }}</a>
         </div>
       </div>
-
+      {% endif %}
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -190,6 +222,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
+        {% block content %}
+            
+        {% endblock %}
         <div class="row">
           <div class="col-lg-6">
             <div class="card">
@@ -260,6 +295,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="p-3">
       <h5>Title</h5>
       <p>Sidebar content</p>
+
     </div>
   </aside>
   <!-- /.control-sidebar -->
@@ -286,6 +322,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
 <script src="https://kit.fontawesome.com/520cb31bdb.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/script.js' %}" crossorigin="anonymous"></script>
 
 </body>
 </html>
