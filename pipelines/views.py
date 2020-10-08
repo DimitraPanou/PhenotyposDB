@@ -63,6 +63,20 @@ class PipelineDeleteView(DeleteView):
 	template_name = 'pipelines/delete_pipeline.html'
 	success_url = reverse_lazy('pipelines')
 
+
+class UserPipelineListView(LoginRequiredMixin,ListView):
+	model = Pipeline
+	template_name = 'pipelines/user-pipelines.html'
+	context_object_name = 'list_pipelines'
+
+	def get_queryset(self):
+		user = get_object_or_404(User,username=self.kwargs.get('username'))
+		return Pipeline.objects.filter(pi=user).order_by('created_at')
+
+	def get_context_data(self, **kwargs):
+		kwargs['flag_pipeline'] = 1
+		return super().get_context_data(**kwargs)
+
 #Authenticate scientist here
 
 #class PipelineDetailView(DetailView):

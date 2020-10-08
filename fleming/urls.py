@@ -70,6 +70,7 @@ urlpatterns = [
 	path('pipelines/update/<int:pk>/', PipelineUpdateView.as_view(), name='pipeline-update'),
 	#path('pipelines/<int:pk>/', PipelineDetailView.as_view(), name='pipeline-detail'),
 	path('pipelines/<int:pk>/delete/', PipelineDeleteView.as_view(), name='pipeline-delete'),
+	path('pipelines/<str:username>',UserPipelineListView.as_view(),name='user-pipelines'),	
 	path('pipelines/types/',PipelineTypeListView.as_view(),name='pipelinetypes'),
 	#path('pipelines/types/<int:pk>/', PipelineTypeDetailView.as_view(), name='pipelinetype-detail'),
 	path('pipelines/types/add',add_pipelinetype,name='add_pipelinetype'),
