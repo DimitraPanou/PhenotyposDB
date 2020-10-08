@@ -106,6 +106,24 @@ class UserAssaysListView(LoginRequiredMixin,ListView):
 	def get_queryset(self):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
 		return Assay.objects.filter(author=user).order_by('measurement_day')
+
+	def get_context_data(self, **kwargs):
+		kwargs['flag'] = 1
+		return super().get_context_data(**kwargs)
+
+
+class GroupAssaysListView(LoginRequiredMixin,ListView):
+	model = Assay
+	template_name = 'assays/assays.html'
+	context_object_name = 'list_assays'
+
+	def get_queryset(self):
+		user = get_object_or_404(User,username=self.kwargs.get('username'))
+		return Assay.objects.filter(scientist=user).order_by('measurement_day')
+
+	def get_context_data(self, **kwargs):
+		kwargs['flag2'] = 1
+		return super().get_context_data(**kwargs)
 #################################
 # TYPES
 #################################

@@ -105,7 +105,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <!-- User image -->
-          <li class="user-header bg-primary">
+          <li class="user-header bg-info">
             <img src="{{ user.profile.image.url }}" class="user-image img-circle elevation-2" alt="User Image">
               <p>
                 {{ user.username }} - Lab Member
@@ -135,7 +135,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-info elevation-4">
     <!-- Brand Logo -->
     <a href="{% url 'assays' %}" class="brand-link">
       <img src="{% static 'dist/img/phenLogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
@@ -157,46 +157,53 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
       </div>
       {% endif %}
+{% block sidebar_content %}
+
+    <!-- /.sidebar -->
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Starter Pages
+                Dashboard
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
+       <li class="nav-header">ASSAYS</li>
               <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Active Page</p>
+                <a href="{% url 'user-assays' user.username %}" class="nav-link">
+                  <i class="far fa-list-alt nav-icon"></i>
+                  <p>My Assays</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inactive Page</p>
+                <a href="{% url 'user-assays' user.username %}" class="nav-link">
+                  <i class="fas fa-th nav-icon"></i>
+                  <p>Group</p>
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Simple Link
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
+            <ul class="nav nav-treeview">
+       <li class="nav-header">PIPELINES</li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="fas fa-circle nav-icon"></i>
+                  <p>My Pipelines</p>
+                </a>
+              </li>
+            </ul>
+
           </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
+
+{% endblock %}
     </div>
     <!-- /.sidebar -->
   </aside>

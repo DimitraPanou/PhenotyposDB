@@ -22,7 +22,7 @@ class Pipeline(models.Model):
     pip_end = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=32, blank=True, null=True)
     pipelineqc = models.CharField(db_column='pipelineQC', max_length=256, blank=True, null=True)  # Field name made lowercase.
-    pi = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='pi',default=1, related_name='pi')
+    pi = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='pi',default=1, related_name='pipelines')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     type = models.ForeignKey(PipelineType, models.DO_NOTHING, db_column='type')

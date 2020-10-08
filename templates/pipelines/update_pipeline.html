@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
 
 {% block content %}
 <h1>Update: {{object.id }} - {{ object.model }}</h1>
 
-<form action='.' method='POST'>{% csrf_token %}
-    {{ form.as_p }}
+<form action='.' method='POST'>
+	{% csrf_token %}
+    {{ form|crispy }}
     <input type='submit' value='Save' />
 </form>
 

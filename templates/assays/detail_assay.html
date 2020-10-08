@@ -31,7 +31,7 @@
       <td>{{ assay.version }}</td>
       <td>{{ assay.staff }}</td>
       <td>
-        <a href="{{ assay.rawdata_file.url }}" class="btn btn-primary btn-sm" target="_blank">
+        <a href="{{ assay.rawdata_file.url }}" class="btn btn-info btn-sm" target="_blank">
           Download FILE
         </a>
         <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assay-update' assay.id %}">Update</a>

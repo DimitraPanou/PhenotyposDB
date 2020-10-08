@@ -49,7 +49,10 @@ class PipelineUpdateView(LoginRequiredMixin,UpdateView):
 	model = Pipeline
 	template_name = 'pipelines/update_pipeline.html'
 	form_class = PipelineForm
-	success_url = '/pipelines/'
+	success_url = reverse_lazy('pipelines')
+
+	def get_queryset(self):
+		return self.request.user.pipelines.all()
 
 	def form_valid(self, form):
 	#	form.instance.updated_by = self.request.user
