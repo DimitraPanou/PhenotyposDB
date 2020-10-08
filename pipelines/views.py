@@ -22,6 +22,9 @@ from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic import FormView
 
+from assays.models import Assay
+from assays.forms import AssayForm
+from assays.functions import handle_uploaded_file
 ####################
 #    Pipelines     #
 ####################
@@ -77,24 +80,17 @@ class UserPipelineListView(LoginRequiredMixin,ListView):
 		kwargs['flag_pipeline'] = 1
 		return super().get_context_data(**kwargs)
 
+
 #Authenticate scientist here
 
-#class PipelineDetailView(DetailView):
-#	model = Pipeline
+class PipelineDetailView(DetailView):
+	model = Pipeline
+	template_name = 'pipelines/detail_pipeline.html'
 
-'''
 	def get_context_data(self, **kwargs):
-		kwargs['pipelines_assays'] = self.get_object().iinflc04s.annotate()		
-		switcher ={
-			5: self.get_object().iinflc04s.annotate(),
-			7: self.get_object().ni01s.annotate(),
-			8: self.get_object().ni02rot01s.annotate(),
-			9: self.get_object().ni02ofd01s.annotate()
-		}
-		kwargs['measures'] = switcher.get(self.object.type.id,"Ivalid")
+		kwargs['assays'] = self.get_object().assays.annotate()		
 		return super().get_context_data(**kwargs)
 
-'''
 '''
 class UserAssaysListView(LoginRequiredMixin,ListView):
 	model = Assay
@@ -138,3 +134,17 @@ class PipelineTypeDeleteView(DeleteView):
 	model = PipelineType
 	template_name = 'pipelines/delete_pipelinetype.html'
 	success_url = '/pipelines/types/'
+
+def add_assay_to_pipeline(request, pk):
+	pipeline = get_object_or_404(Pipeline, pk=pk, pi=request.user)
+	if request.method == 'POST':
+		form = AssayForm(request.POST, request.FILES)
+		if form.is_valid():
+			form.instance.pipeline = pipeline
+			form.instance.author = request.user			
+			test = form.save()
+			handle_uploaded_file(test)			
+			return redirect('pipelines')
+	else:
+		form = AssayForm()
+	return render(request,'pipelines/add_assay.html',{'pipeline':pipeline, 'form':form})

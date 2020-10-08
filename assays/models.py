@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+from pipelines.models import Pipeline
 # Create your models here.
 
 #Atype
@@ -42,6 +44,7 @@ class Assay(models.Model):
     assayqc = models.CharField(db_column='assayQC', max_length=256, blank=True, null=True)  # Field name made lowercase.
     type = models.ForeignKey('Atype', models.DO_NOTHING, db_column='type')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1, related_name='created_by_user')
+    pipeline = models.ForeignKey(Pipeline, on_delete=models.DO_NOTHING, related_name='assays',blank=True, null=True)
     updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING, related_name='updated_by_user',blank=True, null=True)
     scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="scientists",related_query_name="scientist",blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
