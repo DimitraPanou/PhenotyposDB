@@ -41,16 +41,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <a id="dropdownSubMenu1" href="{% url 'assays' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Assays</a>
               <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                 <li><a href="{% url 'assays' %}" class="dropdown-item">All Assays</a></li>
+                {% if user.is_authenticated %}
                 <li><a href="{% url 'add_assay' %}" class="dropdown-item">Add Assay</a></li>
                 <li><a href="{% url 'atypes' %}" class="dropdown-item">All Types </a></li>
                 <li><a href="{% url 'add_atype' %}" class="dropdown-item">Add Type</a></li>
+                {% endif %}
               </ul>  
       </li>
       <li class="nav-item dropdown">
               <a id="dropdownSubMenu2" href="{% url 'pipelines' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Pipelines</a>
               <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
                 <li><a href="{% url 'pipelines' %}" class="dropdown-item">All Pipelines</a></li>
+                {% if user.is_authenticated %}
                 <li><a href="{% url 'add-pipeline' %}" class="dropdown-item">Add Pipeline</a></li>
+                {% endif %}                
               </ul>   
       </li>
     </ul>
@@ -121,11 +125,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </ul>
     </li>
       {% else %}
-      <li class="nav-item">
-          <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-          <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'login' %}" class="nav-link">Login</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'register' %}" class="nav-link">Register</a>
+      </li>    
       {% endif %}
-      </li>      
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
             class="fas fa-th-large"></i></a>
@@ -157,8 +163,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
       </div>
       {% endif %}
-{% block sidebar_content %}
 
+  {% block sidebar_content %}
+    {% if user.is_authenticated %}
     <!-- /.sidebar -->
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -182,7 +189,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'user-assays' user.username %}" class="nav-link">
+                <a href="{% url 'group-assays' user.username %}" class="nav-link">
                   <i class="fas fa-th nav-icon"></i>
                   <p>Group</p>
                 </a>
@@ -202,7 +209,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
-
+{% endif %}
 {% endblock %}
     </div>
     <!-- /.sidebar -->
@@ -234,63 +241,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         {% block content %}
             
         {% endblock %}
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
-                </p>
-
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div>
-
-            <div class="card card-primary card-outline">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
-                </p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div><!-- /.card -->
-          </div>
-          <!-- /.col-md-6 -->
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="m-0">Featured</h5>
-              </div>
-              <div class="card-body">
-                <h6 class="card-title">Special title treatment</h6>
-
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h5 class="m-0">Featured</h5>
-              </div>
-              <div class="card-body">
-                <h6 class="card-title">Special title treatment</h6>
-
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-md-6 -->
-        </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>

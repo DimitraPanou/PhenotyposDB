@@ -100,7 +100,7 @@ class AssaysDetailView(DetailView):
 
 class UserAssaysListView(LoginRequiredMixin,ListView):
 	model = Assay
-	template_name = 'assays/assays.html'
+	template_name = 'assays/user-assays.html'
 	context_object_name = 'list_assays'
 
 	def get_queryset(self):
@@ -114,7 +114,7 @@ class UserAssaysListView(LoginRequiredMixin,ListView):
 
 class GroupAssaysListView(LoginRequiredMixin,ListView):
 	model = Assay
-	template_name = 'assays/assays.html'
+	template_name = 'assays/user-assays.html'
 	context_object_name = 'list_assays'
 
 	def get_queryset(self):
