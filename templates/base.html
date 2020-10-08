@@ -37,20 +37,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{% url 'home' %}" class="nav-link">Home</a>
       </li>
-    <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="{% url 'assays' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Assays</a>
-            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="{% url 'assays' %}" class="dropdown-item">All Assays</a></li>
-              <li><a href="{% url 'add_assay' %}" class="dropdown-item">Add Assay</a></li>
-        <li><a href="{% url 'atypes' %}" class="dropdown-item">All Types </a></li>
-              <li><a href="{% url 'add_atype' %}" class="dropdown-item">Add Type</a></li>
-            </ul>
-            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-              <li><a href="#" class="dropdown-item">All Pipelines</a></li>
-              <li><a href="#" class="dropdown-item">Add Pipeline</a></li>
-            </ul>     
-
-          </li>
+      <li class="nav-item dropdown">
+              <a id="dropdownSubMenu1" href="{% url 'assays' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Assays</a>
+              <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                <li><a href="{% url 'assays' %}" class="dropdown-item">All Assays</a></li>
+                <li><a href="{% url 'add_assay' %}" class="dropdown-item">Add Assay</a></li>
+                <li><a href="{% url 'atypes' %}" class="dropdown-item">All Types </a></li>
+                <li><a href="{% url 'add_atype' %}" class="dropdown-item">Add Type</a></li>
+              </ul>  
+      </li>
+      <li class="nav-item dropdown">
+              <a id="dropdownSubMenu2" href="{% url 'pipelines' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Pipelines</a>
+              <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                <li><a href="{% url 'pipelines' %}" class="dropdown-item">All Pipelines</a></li>
+                <li><a href="{% url 'add-pipeline' %}" class="dropdown-item">Add Pipeline</a></li>
+              </ul>   
+      </li>
     </ul>
 
     <!-- SEARCH FORM -->

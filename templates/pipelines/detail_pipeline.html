@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    <h2>{{object.type.code}}</h2>
+    <p>
+      {{object.name}}
+    </p>
+    <a class="btn btn-secondary btn-lg mt-1 mb-1 ti-pencil" href="{% url 'pipeline-update' object.id %}"></a>
+
+  {% endblock %}
+
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>PI</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{{ pipeline.id }}</td>      
+      <td>{{ pipeline.name }}</td>
+      <td>{{ pipeline.pi }}</td>
+    </tr>
+    <tbody>
+  </table>
+
+  {% block assay_content %}
+
+  {% endblock %}
+
+{% endblock %}

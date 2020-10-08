@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'fleming',
     'assays',
+    'pipelines',
 #    'users',
 ]
 
