@@ -1,34 +1,43 @@
 {% extends 'assays/detail_assay.html' %}
 
   {% block assay_content %}
-
-  <table class="table mb-0">
-    <thead>
-      <tr>
-        <!--<<th>ID</th>-->
-        <th>Mouse ID</th>
-        <th>Mouse Genotype</th>        
-        <th>Timepoint</th>        
-        <th>Measurement Date</th>
-        <th>Weight</th>
-        <th>Age</th>
-        <th>Comment</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for assay in measures %}
-        <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
-          <!--<td>{{ assay.assayid }}</td>-->
-          <td>{{ assay.mid }}</td>
-          <td>{{ assay.mid.genotype }}</td>          
-          <td>{{ assay.timepoint }}</td>
-          <td>{{ assay.measurement_date }}</td>
-          <td>{{ assay.weight }}</td>
-          <td>{{ assay.age }}</td>
-          <td>{{ assay.comment }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
+ <!-- /.card -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Measurements</h3>
+        </div>
+        <!-- /.card-header -->
+          <div class="card-body">
+            <table id="example2" class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Mouse ID</th>
+                  <th>Mouse Genotype</th>        
+                  <th>Timepoint</th>        
+                  <th>Measurement Date</th>
+                  <th>Weight</th>
+                  <th>Age</th>
+                  <th>Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for assay in measures %}
+                  <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+                    <!--<td>{{ assay.assayid }}</td>-->
+                    <td>{{ assay.mid }}</td>
+                    <td>{{ assay.mid.genotype }}</td>          
+                    <td>{{ assay.timepoint }}</td>
+                    <td>{{ assay.measurement_date }}</td>
+                    <td>{{ assay.weight }}</td>
+                    <td>{{ assay.age }}</td>
+                    <td>{{ assay.comment }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+    </div>
+  <!-- /.card-body -->
+  </div>
 {% endblock %}

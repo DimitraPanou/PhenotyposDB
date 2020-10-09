@@ -1,0 +1,185 @@
+
+{% extends 'base.html' %}
+
+{% block sidebar_content %}
+      <!-- /.sidebar -->
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                 with font-awesome or any other icon font library -->
+            <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+         <li class="nav-header">ASSAYS</li>
+                <li class="nav-item">
+                  <a href="{% url 'user-assays' user.username %}" class="nav-link">
+                    <i class="far fa-list-alt nav-icon"></i>
+                    <p>My Assays</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'group-assays' user.username %}" class="nav-link">
+                    <i class="fas fa-th nav-icon"></i>
+                    <p>Group</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+         <li class="nav-header">PIPELINES</li>
+                <li class="nav-item">
+                  <a href="{% url 'user-pipelines' user.username %}" class="nav-link">
+                    <i class="fas fa-circle nav-icon"></i>
+                    <p>My Pipelines</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+                <li class="nav-item active">
+                  <a href="{% url 'chart'%}" class="nav-link active">
+                    <i class="fas fa-chart-pie nav-icon"></i>
+                    <p>Charts</p>
+                  </a>
+                </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+{% endblock %}
+
+{% block content %}
+        <div class="row">
+          <div class="col-12">
+            <!-- interactive chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Interactive Area Chart
+                </h3>
+
+                <div class="card-tools">
+                  Real time
+                  <div class="btn-group" id="realtime" data-toggle="btn-toggle">
+                    <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="interactive" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Line chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Line Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="line-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+
+            <!-- Area chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Area Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="area-chart" style="height: 338px;" class="full-width-chart"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+
+          </div>
+          <!-- /.col -->
+
+          <div class="col-md-6">
+            <!-- Bar chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Bar Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="bar-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+
+            <!-- Donut chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Donut Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="donut-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+
+{% endblock %}

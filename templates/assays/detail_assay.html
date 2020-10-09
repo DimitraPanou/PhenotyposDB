@@ -11,38 +11,61 @@
 
   {% endblock %}
 
-  <table class="table mb-0">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Version</th>
-        <th>Staff</th>
-        <th>Raw File</th>
-      </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>{{ assay.code }}</td>
-      <td>{{ assay.name }}</td>
-      <td>{{ assay.type }}</td>
-      <td>{{ assay.version }}</td>
-      <td>{{ assay.staff }}</td>
-      <td>
-        <a href="{{ assay.rawdata_file.url }}" class="btn btn-info btn-sm" target="_blank">
-          Download FILE
-        </a>
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assay-update' assay.id %}">Update</a>
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assay-delete' assay.id %}">Delete</a>
-      </td>
-      <td>{{ assay.author }}</td>
-    </tr>
-    <tbody>
-  </table>
+            <!-- About Me Box -->
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Info {{ assay.type }} - {{ assay.id }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <strong><i class="fas fa-book mr-1"></i> Description </strong>
+
+                <p class="text-muted">
+                  {{ assay.type.name }}
+                </p>
+
+                <hr>
+
+                <strong><i class="fas fa-pencil-alt mr-1"></i> Purpose</strong>
+
+                <p class="text-muted">{{ assay.type.name }}</p>
+
+                <hr>
+
+                <strong><i class="fas fa-users mr-1"></i> PI </strong>
+
+                <p class="text-muted">
+                  <span class="tag tag-danger">{{ assay.author }},</span>
+                  <span class="tag tag-success">{{ assay.scientist }}</span>
+                </p>
+
+                <hr>
+
+                <strong><i class="fas fa-calendar mr-1"></i> Dates</strong>
+
+                <p class="text-muted">Date Created: {{ assay.created_at }}</p>
+                <p class="text-muted">Date Modified: {{ assay.updated_at }}</p>                
+                <hr>
+                <strong><i class="far fa-file-alt mr-1"></i> Comments</strong>
+
+                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+
+              <h5 class="mt-5 text-muted">Project files</h5>
+              <ul class="list-unstyled">
+                <li>
+                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> {{assay.rawdata_file.name}}</a>
+                </li>
+                <li>
+                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
+                </li>
+              </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+
 
   {% block assay_content %}
+
 
   {% endblock %}
 

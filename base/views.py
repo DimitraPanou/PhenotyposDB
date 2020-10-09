@@ -19,6 +19,12 @@ def home_view(request, *args, **kargs):
 	#return HttpResponse("<h1>Home</h1>")
 	return render(request, "home.html")
 
+
+def chart_view(request, *args, **kargs):
+	#return HttpResponse("<h1>Home</h1>")
+	return render(request, "chart.html")
+
+
 def upload(request):
 	context = {}
 	if request.method == 'POST':

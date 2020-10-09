@@ -30,6 +30,7 @@ from pipelines.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home_view, name='home'),
+    path('chart',chart_view, name='chart'),
     #Assays
     #path('assays/', include('assays.urls', namespace="assays")),
     ###########
