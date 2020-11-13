@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    <h2>Pipeline Types</h2>
+    <p>
+      <a href="{% url 'add_pipelinetype' %}" class="btn btn-primary">New</a>
+    </p>
+  {% endblock %}
+
+  <table class='table table-bordered table-condensed table-striped table-hover'>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for type in list_pipelines %}
+        <tr>
+          <td>{{ type.id }}</td>
+          <td>{{ type.name }}</td>
+          <td>{{ type.code }}</td>
+          <td>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1 ti-pencil" href="{% url 'pipelinetype-update' type.id %}"></a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1 ti-close" href="{% url 'pipelinetype-delete' type.id %}"></a>
+          </td>
+
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+

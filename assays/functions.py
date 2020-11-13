@@ -896,30 +896,6 @@ def handle_uploaded_file(assayobject):
 	#print(len(data["Mouse ID"]))
 	create_mouseHash(info)
 
-	switcher ={
-		6: data_iinflc02(data,assayobject),
-		4: data_iinflc03(data,assayobject),
-		5: data_iinflc04(data,assayobject),
-		7: data_ni01(data,assayobject),		
-		8: data_ni02rot01(data,assayobject),		
-		9: data_ni02ofd01(data,assayobject),		
-		10: data_ni02grs01(data,assayobject),		
-		11: data_hem01(data,assayobject),		
-		12: data_hpibd02(data,assayobject),		
-		13: data_biochem01(data,assayobject),		
-		14: data_biochem02(data,assayobject),		
-		15: data_biochem03(data,assayobject),		
-		16: data_biochem04(data,assayobject),		
-		17: data_biochem05(data,assayobject),		
-		18: data_biochem06(data,assayobject),		
-		19: data_biochem07(data,assayobject),		
-		20: data_biochem08(data,assayobject)		
-
-	}
-	switcher.get(assayobject.type.id,"Ivalid")
-
-
-'''
 	if(assayobject.type.code == "IINFLC-04"):
 		data_iinflc04(data,assayobject)
 	if(assayobject.type.code == "NI-01"):
@@ -954,12 +930,50 @@ def handle_uploaded_file(assayobject):
 		data_biochem07(data,assayobject)
 	if(assayobject.type.code == "BIOCHEM-08"):
 		data_biochem08(data,assayobject)
-'''
+
 def returnTemplateName(assayobject):
 	switcher ={
+		4:'assays/assaytypes/iinflc-03.html',
 		5:'assays/assaytypes/iinflc-04.html',
+		6:'assays/assaytypes/iinflc-02.html',
 		7:'assays/assaytypes/ni01.html',
 		8:'assays/assaytypes/ni02rot01.html',
-		9:'assays/assaytypes/ni02ofd01.html'
+		9:'assays/assaytypes/ni02ofd01.html',
+		10:'assays/assaytypes/ni02grs01.html',
+		11:'assays/assaytypes/hem01.html',
+		12:'assays/assaytypes/hpibd-02.html',
+		13:'assays/assaytypes/biochem01.html',
+		14:'assays/assaytypes/biochem02.html',		
+		15:'assays/assaytypes/biochem03.html',		
+		16:'assays/assaytypes/biochem04.html',
+		17:'assays/assaytypes/biochem05.html',		
+		18:'assays/assaytypes/biochem06.html',
+		19:'assays/assaytypes/biochem07.html',
+		20:'assays/assaytypes/biochem08.html'		
 	}
 	return switcher.get(assayobject.id,"Ivalid")
+
+'''
+	switcher ={
+		6: data_iinflc02(data,assayobject),
+		4: data_iinflc03(data,assayobject),
+		5: data_iinflc04(data,assayobject),
+		7: data_ni01(data,assayobject),		
+		8: data_ni02rot01(data,assayobject),		
+		9: data_ni02ofd01(data,assayobject),		
+		10: data_ni02grs01(data,assayobject),		
+		11: data_hem01(data,assayobject),		
+		12: data_hpibd02(data,assayobject),		
+		13: data_biochem01(data,assayobject),		
+		14: data_biochem02(data,assayobject),		
+		15: data_biochem03(data,assayobject),		
+		16: data_biochem04(data,assayobject),		
+		17: data_biochem05(data,assayobject),		
+		18: data_biochem06(data,assayobject),		
+		19: data_biochem07(data,assayobject),		
+		20: data_biochem08(data,assayobject)		
+
+	}
+	switcher.get(assayobject.type.id,"Ivalid")
+
+'''

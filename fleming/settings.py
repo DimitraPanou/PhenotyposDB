@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
+    'jquery',
     'import_export',
     #'crispy_forms',
     #'database'
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'fleming',
     'assays',
+    'pipelines',
 #    'users',
 ]
 

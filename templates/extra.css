@@ -1,0 +1,23 @@
+.col[data-v-77cb29bc] {
+    margin-bottom: 40px;
+    flex-basis: calc(25% - 40px);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+img[data-v-77cb29bc] {
+    mix-blend-mode: luminosity;
+    max-width: 170px;
+    width: auto;
+    height: auto;
+    max-height: 100px;
+}
+
+col a[data-v-77cb29bc] {
+    text-align: center;
+    outline: none !important;
+        outline-color: currentcolor;
+    outline-color: transparent !important;
+    padding: 30px 40px;
+}

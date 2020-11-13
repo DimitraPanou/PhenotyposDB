@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+from pipelines.models import Pipeline
 # Create your models here.
 
 #Atype
@@ -42,6 +44,7 @@ class Assay(models.Model):
     assayqc = models.CharField(db_column='assayQC', max_length=256, blank=True, null=True)  # Field name made lowercase.
     type = models.ForeignKey('Atype', models.DO_NOTHING, db_column='type')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1, related_name='created_by_user')
+    pipeline = models.ForeignKey(Pipeline, on_delete=models.DO_NOTHING, related_name='assays',blank=True, null=True)
     updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING, related_name='updated_by_user',blank=True, null=True)
     scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="scientists",related_query_name="scientist",blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -383,6 +386,49 @@ class Biochem08(models.Model):
     class Meta:
         managed = True
         db_table = 'BIOCHEM-08'
+
+
+class Fc04(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='fc04s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    live_aquis = models.CharField(max_length=64, blank=True, null=True)
+    total_cell_count = models.FloatField(blank=True, null=True)
+    all_cells_per = models.FloatField(blank=True, null=True)
+    live_cells_per = models.FloatField(blank=True, null=True)
+    early_apoptotic_per = models.FloatField(blank=True, null=True)
+    late_apoptotic_per = models.FloatField(blank=True, null=True)
+    necrotic_per = models.FloatField(blank=True, null=True)
+    all_cells_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    live_cells_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    early_apoptotic_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    late_apoptotic_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    necrotic_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    total_leukocytes_per = models.FloatField(blank=True, null=True)
+    apoptotic_leukocytes_per = models.FloatField(blank=True, null=True)
+    necrotic_leukocytes_per = models.FloatField(blank=True, null=True)
+    live_leukocytes_per = models.FloatField(blank=True, null=True)
+    total_epithelial_per = models.FloatField(blank=True, null=True)
+    apoptotic_epithelial_per = models.FloatField(blank=True, null=True)
+    necrotic_epithelial_per = models.FloatField(blank=True, null=True)
+    live_epithelial_per = models.FloatField(blank=True, null=True)
+    total_leukocytes_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    apoptotic_leukocytes_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    necrotic_leukocytes_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    live_leukocytes_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    total_epithelial_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    apoptotic_epithelial_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    necrotic_epithelial_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    live_epithelial_num = models.DecimalField(max_digits=25, decimal_places=10, blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'FC-04'
+
 class Mouse(models.Model):
     GENDER = (
         ('Male', 'Male'),

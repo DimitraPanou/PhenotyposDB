@@ -24,16 +24,22 @@ from django.urls import path, include
 from base.views import *
 from assays.views import *
 from users.views import *
+
+from pipelines.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home_view, name='home'),
+    path('chart',chart_view, name='chart'),
     #Assays
     #path('assays/', include('assays.urls', namespace="assays")),
-	#Assays
-#
+    ###########
+	#  Assays #
+	###########
 	path('assays/',AssaysListView.as_view(),name='assays'),
 	path('assays/<str:username>',UserAssaysListView.as_view(),name='user-assays'),
-#
+	path('assays/<str:username>/access',GroupAssaysListView.as_view(),name='group-assays'),
+
 	path('assays/add/',add_assay,name='add_assay'),
 #
 #	path('assays/add/',AssaysCreateView.as_view(),name='add_assay'),
@@ -56,6 +62,24 @@ urlpatterns = [
 #
 	path('assays/types/<int:pk>/delete/', AtypeDeleteView.as_view(), name='assaytype-delete'),
 	#path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
+
+##########################################
+##             pipelines                ##
+#########################################
+	path('pipelines/',PipelineListView.as_view(),name='pipelines'),
+	path('pipelines/add/',add_pipeline,name='add-pipeline'),
+	path('pipelines/update/<int:pk>/', PipelineUpdateView.as_view(), name='pipeline-update'),
+	path('pipelines/<int:pk>/', PipelineDetailView.as_view(), name='pipeline-detail'),
+	path('pipelines/<int:pk>/delete/', PipelineDeleteView.as_view(), name='pipeline-delete'),
+	path('pipelines/<str:username>',UserPipelineListView.as_view(),name='user-pipelines'),	
+	path('pipelines/types/',PipelineTypeListView.as_view(),name='pipelinetypes'),
+	path('pipelines/<int:pk>/add/new', add_assay_to_pipeline, name='add_assay_to_pipeline'),
+
+	#path('pipelines/types/<int:pk>/', PipelineTypeDetailView.as_view(), name='pipelinetype-detail'),
+	path('pipelines/types/add',add_pipelinetype,name='add_pipelinetype'),
+	path('pipelines/types/update/<int:pk>/', PipelineTypeUpdateView.as_view(), name='pipelinetype-update'),
+	path('pipelines/types/<int:pk>/delete/', PipelineTypeDeleteView.as_view(), name='pipelinetype-delete'),
+
 	####################################	
 	#User
 	####################################

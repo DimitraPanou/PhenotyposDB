@@ -1,50 +1,72 @@
+
 {% extends 'assays/detail_assay.html' %}
 
   {% block assay_content %}
-
-  <table class="table mb-0">
-    <thead>
-      <tr>
-        <!--<<th>ID</th>-->
-        <th>Mouse ID</th>
-        <th>Mouse Genotype</th>        
-        <th>Timepoint</th>        
-        <th>Measurement Date</th>
-        <th>
-          <span>Individual latency to fall (s)</span><span> trial 1</span>>
-        </th>
-        <th>
-          <span>Individual latency to fall (s)</span><span> trial 2</span>>
-        </th>
-        <th>Mean latency to fall (s)</th>
-        <th>
-          <span>Speed at fall (rpm)</span><span> trial 1</span>>
-        </th>
-        <th>
-          <span>Speed at fall (rpm)</span><span> trial 2</span>>
-        </th>
-        <th>Age</th>
-        <th>Comment</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for assay in measures %}
-        <tr>
-          <!--<td>{{ assay.assayid }}</td>-->
-          <td>{{ assay.mid }}</td>
-          <td>{{ assay.mid.genotype }}</td>          
-          <td>{{ assay.timepoint }}</td>
-          <td>{{ assay.measurement_date }}</td>
-          <td>{{ assay.individual_latency_fall1 }}</td>
-          <td>{{ assay.individual_latency_fall2 }}</td>
-          <td>{{ assay.mean_latency_fall }}</td>
-          <td>{{ assay.speed_fall1 }}</td>
-          <td>{{ assay.speed_fall2 }}</td>
-          <td>{{ assay.age }}</td>
-          <td>{{ assay.comment }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
+ <!-- /.card -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Measurements</h3>
+        </div>
+        <!-- /.card-header -->
+          <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+              <!--
+              <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <div class="dataTables_length" id="example1_length">
+                    <label> Show <select name="example1_length" aria-controls="example1" class="custom-select custom-select-md form-control form-control-md"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries </label>
+                  </div>
+                </div>
+              </div>
+            -->
+              <div class="row">
+              <div class="col-sm-12">
+              <table id="example1" class="table table-bordered table-hover dataTable" aria-describedby="example1_info">
+                <thead class="thead-light">
+                <tr>
+                  <!--<<th>ID</th>-->
+                  <th>Mouse ID</th>
+                  <th>Mouse Genotype</th>        
+                  <th>Timepoint</th>        
+                  <th>Measurement Date</th>
+                  <th>
+                    <span>Individual latency to fall (s)</span><span> trial 1</span>>
+                  </th>
+                  <th>
+                    <span>Individual latency to fall (s)</span><span> trial 2</span>>
+                  </th>
+                  <th>Mean latency to fall (s)</th>
+                  <th>
+                    <span>Speed at fall (rpm)</span><span> trial 1</span>>
+                  </th>
+                  <th>
+                    <span>Speed at fall (rpm)</span><span> trial 2</span>>
+                  </th>
+                  <th>Age</th>
+                  <th>Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for assay in measures %}
+                  <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+                    <td>{{ assay.mid }}</td>
+                    <td>{{ assay.mid.genotype }}</td>          
+                    <td>{{ assay.timepoint }}</td>
+                    <td>{{ assay.measurement_date }}</td>
+                    <td>{{ assay.individual_latency_fall1 }}</td>
+                    <td>{{ assay.individual_latency_fall2 }}</td>
+                    <td>{{ assay.mean_latency_fall }}</td>
+                    <td>{{ assay.speed_fall1 }}</td>
+                    <td>{{ assay.speed_fall2 }}</td>
+                    <td>{{ assay.age }}</td>
+                    <td>{{ assay.comment }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+    </div>
+  <!-- /.card-body -->
+  </div>
 {% endblock %}

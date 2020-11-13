@@ -1,46 +1,68 @@
+
 {% extends 'assays/detail_assay.html' %}
 
   {% block assay_content %}
-
-  <table class="table mb-0">
-    <thead>
-      <tr>
-        <!--<<th>ID</th>-->
-        <th>Mouse ID</th>
-        <th>Mouse Genotype</th>        
-        <th>Timepoint</th>        
-        <th>Measurement Date</th>
-        <th>Total distance travelled in the whole arena (m)</th>
-        <th>Time spent in the peripheral zone (s) </th>
-        <th>Distance travelled in the peripheral zone (m)</th>
-        <th>Average speed in the peripheral zone (m/s)</th>
-        <th>Time spent in the central  zone (s) </th>
-        <th>Distance travelled in the central zone (m)</th>
-        <th>Average speed in the central zone (m/s)</th>
-        <th>Age</th>
-        <th>Comment</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for assay in measures %}
-        <tr>
-          <!--<td>{{ assay.assayid }}</td>-->
-          <td>{{ assay.mid }}</td>
-          <td>{{ assay.mid.genotype }}</td>          
-          <td>{{ assay.timepoint }}</td>
-          <td>{{ assay.measurement_date }}</td>
-          <td>{{ assay.total_distance_wa }}</td>
-          <td>{{ assay.time_pz }}</td>
-          <td>{{ assay.total_distance_pz }}</td>
-          <td>{{ assay.avg_speed_pz }}</td>
-          <td>{{ assay.time_cz }}</td>
-          <td>{{ assay.total_distance_cz }}</td>
-          <td>{{ assay.avg_speed_cz }}</td>
-          <td>{{ assay.age }}</td>
-          <td>{{ assay.comment }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
+ <!-- /.card -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Measurements</h3>
+        </div>
+        <!-- /.card-header -->
+          <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+              <!--
+              <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <div class="dataTables_length" id="example1_length">
+                    <label> Show <select name="example1_length" aria-controls="example1" class="custom-select custom-select-md form-control form-control-md"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries </label>
+                  </div>
+                </div>
+              </div>
+            -->
+              <div class="row">
+              <div class="col-sm-12">
+              <table id="example1" class="table table-bordered table-hover dataTable" aria-describedby="example1_info">
+                <thead class="thead-light">
+                <tr>
+                  <th>Mouse ID</th>
+                  <th>Mouse Genotype</th>        
+                  <th>Timepoint</th>        
+                  <th>Measurement Date</th>
+                  <th>Total distance travelled in the whole arena (m)</th>
+                  <th>Time spent in the peripheral zone (s) </th>
+                  <th>Distance travelled in the peripheral zone (m)</th>
+                  <th>Average speed in the peripheral zone (m/s)</th>
+                  <th>Time spent in the central  zone (s) </th>
+                  <th>Distance travelled in the central zone (m)</th>
+                  <th>Average speed in the central zone (m/s)</th>
+                  <th>Age</th>
+                  <th>Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for assay in measures %}
+                  <tr>
+                    <!--<td>{{ assay.assayid }}</td>-->
+                    <td>{{ assay.mid }}</td>
+                    <td>{{ assay.mid.genotype }}</td>          
+                    <td>{{ assay.timepoint }}</td>
+                    <td>{{ assay.measurement_date }}</td>
+                    <td>{{ assay.total_distance_wa }}</td>
+                    <td>{{ assay.time_pz }}</td>
+                    <td>{{ assay.total_distance_pz }}</td>
+                    <td>{{ assay.avg_speed_pz }}</td>
+                    <td>{{ assay.time_cz }}</td>
+                    <td>{{ assay.total_distance_cz }}</td>
+                    <td>{{ assay.avg_speed_cz }}</td>
+                    <td>{{ assay.age }}</td>
+                    <td>{{ assay.comment }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+    </div>
+  <!-- /.card-body -->
+  </div>
 {% endblock %}

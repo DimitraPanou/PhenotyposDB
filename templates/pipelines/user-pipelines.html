@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+
+{% block sidebar_content %}
+
+  {% if flag_pipeline %}
+      <!-- /.sidebar -->
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                 with font-awesome or any other icon font library -->
+            <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+         <li class="nav-header">ASSAYS</li>
+                <li class="nav-item">
+                  <a href="{% url 'user-assays' user.username %}" class="nav-link">
+                    <i class="far fa-list-alt nav-icon"></i>
+                    <p>My Assays</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'group-assays' user.username %}" class="nav-link">
+                    <i class="fas fa-th nav-icon"></i>
+                    <p>Group</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+         <li class="nav-header">PIPELINES</li>
+                <li class="nav-item active">
+                  <a href="{% url 'user-pipelines' user.username %}" class="nav-link active">
+                    <i class="fas fa-circle nav-icon"></i>
+                    <p>My Pipelines</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+                <li class="nav-item">
+                  <a href="{% url 'chart'%}" class="nav-link">
+                    <i class="fas fa-chart-pie nav-icon"></i>
+                    <p>Charts</p>
+                  </a>
+                </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+        <div class="card-body table-responsive p-0">
+          <table class="table table-striped projects">     
+              <thead>
+                  <tr>
+                      <th style="width: 8%">
+                          Model
+                      </th>
+                      <th style="width: 8%">
+                          Name
+                      </th>
+                      <th style="width: 8%" class="text-center">
+                          Protocol No
+                      </th>
+                      <th style="width: 10%">
+                          PI
+                      </th>
+                      <th style="width: 8%">
+                          Status
+                      </th>
+                      <th style="width: 8%">
+                          Created at
+                      </th>
+                        <th style="width: 18%">
+                        </th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for pipeline in list_pipelines %}
+                    <tr>
+                      <td>{{ pipeline.model }}</td>
+                      <td>{{ pipeline.name }}</td>
+                      <td>{{ pipeline.protocol }}</td>
+                      <td>
+                          <ul class="list-inline">
+                              <li class="list-inline-item">
+                                  <img alt="Avatar" class="table-avatar" src="{{ pipeline.pi.profile.image.url }}">
+                              </li>
+                          </ul>
+                      </td>
+                      <td>{{ pipeline.status }}</td>
+                      <td>{{ pipeline.created_at }}</td>
+                      {% if pipeline.pi == user %}
+                        <td class="project-actions text-right">
+                            <a class="btn btn-info btn-sm" href="{% url 'pipeline-update' pipeline.id %}">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                            </a>
+                            <a class="btn btn-danger btn-sm" href="{% url 'pipeline-delete' pipeline.id %}">
+                                <i class="fas fa-trash">
+                                </i>
+                            </a>
+                        </td>
+                      {% else %}
+                        <td class="project-actions text-right"></td>                        
+                      {% endif %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+{% endblock %}

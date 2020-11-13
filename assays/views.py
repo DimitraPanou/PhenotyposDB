@@ -89,10 +89,24 @@ class AssaysDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		switcher ={
+			4: self.get_object().iinflc03s.annotate(),
 			5: self.get_object().iinflc04s.annotate(),
+			6: self.get_object().iinflc02s.annotate(),
 			7: self.get_object().ni01s.annotate(),
 			8: self.get_object().ni02rot01s.annotate(),
-			9: self.get_object().ni02ofd01s.annotate()
+			9: self.get_object().ni02ofd01s.annotate(),
+			10: self.get_object().ni02grs01s.annotate(),
+			11: self.get_object().hem01s.annotate(),
+			12: self.get_object().hpibd02s.annotate(),
+			13: self.get_object().biochem01s.annotate(),
+			14: self.get_object().biochem02s.annotate(),
+			15: self.get_object().biochem03s.annotate(),
+			16: self.get_object().biochem04s.annotate(),
+			17: self.get_object().biochem05s.annotate(),
+			18: self.get_object().biochem06s.annotate(),
+			19: self.get_object().biochem07s.annotate(),
+			20: self.get_object().biochem08s.annotate(),
+
 		}
 		kwargs['measures'] = switcher.get(self.object.type.id,"Ivalid")
 		return super().get_context_data(**kwargs)
@@ -100,12 +114,30 @@ class AssaysDetailView(DetailView):
 
 class UserAssaysListView(LoginRequiredMixin,ListView):
 	model = Assay
-	template_name = 'assays/assays.html'
+	template_name = 'assays/user-assays.html'
 	context_object_name = 'list_assays'
 
 	def get_queryset(self):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
 		return Assay.objects.filter(author=user).order_by('measurement_day')
+
+	def get_context_data(self, **kwargs):
+		kwargs['flag'] = 1
+		return super().get_context_data(**kwargs)
+
+
+class GroupAssaysListView(LoginRequiredMixin,ListView):
+	model = Assay
+	template_name = 'assays/user-assays.html'
+	context_object_name = 'list_assays'
+
+	def get_queryset(self):
+		user = get_object_or_404(User,username=self.kwargs.get('username'))
+		return Assay.objects.filter(scientist=user).order_by('measurement_day')
+
+	def get_context_data(self, **kwargs):
+		kwargs['flag2'] = 1
+		return super().get_context_data(**kwargs)
 #################################
 # TYPES
 #################################

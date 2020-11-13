@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <div class="card-body table-responsive p-0">
+          <table class="table table-striped projects">     
+              <thead>
+                  <tr>
+                      <th style="width: 8%">
+                          Model
+                      </th>
+                      <th style="width: 8%">
+                          Name
+                      </th>
+                      <th style="width: 8%" class="text-center">
+                          Protocol No
+                      </th>
+                      <th style="width: 10%">
+                          PI
+                      </th>
+                      <th style="width: 8%">
+                          Status
+                      </th>
+                      <th style="width: 8%">
+                          Created at
+                      </th>
+                        <th style="width: 18%">
+                        </th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for pipeline in list_pipelines %}
+                    <tr>
+                      <td>{{ pipeline.model }}</td>
+                      <td>{{ pipeline.name }}</td>
+                      <td>{{ pipeline.protocol }}</td>
+                      <td>
+                          <ul class="list-inline">
+                              <li class="list-inline-item">
+                                  <img alt="Avatar" class="table-avatar" src="{{ pipeline.pi.profile.image.url }}">
+                              </li>
+                          </ul>
+                      </td>
+                      <td>{{ pipeline.status }}</td>
+                      <td>{{ pipeline.created_at }}</td>
+                      {% if pipeline.pi == user %}
+                        <td class="project-actions text-right">
+                            <a class="btn btn-info btn-sm" href="{% url 'pipeline-detail' pipeline.id %}">
+                                <i class="fas fa-eye">
+                                </i>
+                            </a>
+                            <a class="btn btn-info btn-sm" href="{% url 'pipeline-update' pipeline.id %}">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                            </a>
+                            <a class="btn btn-danger btn-sm" href="{% url 'pipeline-delete' pipeline.id %}">
+                                <i class="fas fa-trash">
+                                </i>
+                            </a>
+                        </td>
+                      {% else %}
+                        <td class="project-actions text-right"></td>                        
+                      {% endif %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+{% endblock %}
