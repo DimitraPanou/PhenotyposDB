@@ -1,4 +1,3 @@
-
 {% extends 'assays/detail_assay.html' %}
 
   {% block assay_content %}
@@ -30,32 +29,30 @@
                   <th>Mouse Genotype</th>        
                   <th>Timepoint</th>        
                   <th>Measurement Date</th>
-                  <th>Total distance travelled in the whole arena (m)</th>
-                  <th>Time spent in the peripheral zone (s) </th>
-                  <th>Distance travelled in the peripheral zone (m)</th>
-                  <th>Average speed in the peripheral zone (m/s)</th>
-                  <th>Time spent in the central  zone (s) </th>
-                  <th>Distance travelled in the central zone (m)</th>
-                  <th>Average speed in the central zone (m/s)</th>
+                  <th>Sample Source</th>
+                  <th>ALT (U/liter)</th>
+                  <th>AST (U/liter)</th>
+                  <th>ALP (U/liter)</th>
+                  <th>Total Bilirubin (μmol/liter)</th>
+                  <th>Direct Bilirubin(μmol/liter)</th>
                   <th>Age</th>
                   <th>Comment</th>
                 </tr>
               </thead>
               <tbody>
                 {% for assay in measures %}
-                  <tr>
+                  <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                     <!--<td>{{ assay.assayid }}</td>-->
                     <td>{{ assay.mid }}</td>
                     <td>{{ assay.mid.genotype }}</td>          
                     <td>{{ assay.timepoint }}</td>
                     <td>{{ assay.measurement_date }}</td>
-                    <td>{{ assay.total_distance_wa }}</td>
-                    <td>{{ assay.time_pz }}</td>
-                    <td>{{ assay.total_distance_pz }}</td>
-                    <td>{{ assay.avg_speed_pz }}</td>
-                    <td>{{ assay.time_cz }}</td>
-                    <td>{{ assay.total_distance_cz }}</td>
-                    <td>{{ assay.avg_speed_cz }}</td>
+                    <td>{{ assay.sample_source }}</td>
+                    <td>{{ assay.alt }}</td>
+                    <td>{{ assay.ast }}</td>
+                    <td>{{ assay.alp }}</td>
+                    <td>{{ assay.total_bilirubin }}</td>
+                    <td>{{ assay.direct_bilirubin }}</td>
                     <td>{{ assay.age }}</td>
                     <td>{{ assay.comment }}</td>
                   </tr>

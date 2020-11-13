@@ -1,0 +1,94 @@
+{% extends 'assays/detail_assay.html' %}
+
+  {% block assay_content %}
+ <!-- /.card -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Measurements</h3>
+        </div>
+        <!-- /.card-header -->
+          <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+              <!--
+              <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <div class="dataTables_length" id="example1_length">
+                    <label> Show <select name="example1_length" aria-controls="example1" class="custom-select custom-select-md form-control form-control-md"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries </label>
+                  </div>
+                </div>
+              </div>
+            -->
+              <div class="row">
+              <div class="col-sm-12">
+              <table id="example1" class="table table-bordered table-hover dataTable" aria-describedby="example1_info">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Mouse ID</th>
+                    <th>Mouse Genotype</th>        
+                    <th>Timepoint</th>        
+                    <th>Measurement Date</th>
+                    <th>Inflammation score small intestine</th>
+                    <th>Epithelial damage small intestine</th>
+                    <th>Inflammation score large intestine</th>
+                    <th>Epithelial damage large intestine</th>
+                    <th>Villus/Crypt ratio</th>        
+                    <th>Colon Length</th>        
+                    <th>Epithelium flattening small intestine</th>        
+                    <th>Apoptotic bodies/field small intestine</th>        
+                    <th>Goblet cell depletion small intestine</th>        
+                    <th>Lumen exfoliation small intestine</th>        
+                    <th>Villus shortening small intestine</th>        
+                    <th>Intestinal gland damage small intestine</th>        
+                    <th>Paneth activation small intestine</th>        
+                    <th>Peyer patch small intestine</th>        
+                    <th>Apoptotic bodies/field large intestine</th>        
+                    <th>Goblet cell depletion large intestine</th>        
+                    <th>Lumen exfoliation large intestine</th>        
+                    <th>Crypt damage  large intestine</th>                  
+                    <th>Endothelial cell activation large intestine</th>                  
+                    <th>Age (days)</th>
+                    <th>Comments</th>                  
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for assay in measures %}
+                    <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+                      <!--<td>{{ assay.assayid }}</td>-->
+                      <td>{{ assay.mid }}</td>
+                      <td>{{ assay.mid.genotype }}</td>          
+                      <td>{{ assay.timepoint }}</td>
+                      <td>{{ assay.measurement_date }}</td>
+                      <td>{{ assay.inflammation_small }}</td>
+                      <td>{{ assay.epithelial_small }}</td>
+                      <td>{{ assay.inflammation_large }}</td>
+                      <td>{{ assay.epithelial_large }}</td>
+                      <td>{{ assay.vc_ratio }}</td>
+                      <td>{{ assay.colon_length }}</td>
+                      <td>{{ assay.epithelium_s_flattening }}</td>
+                      <td>{{ assay.apoptotic_s_field }}</td>
+                      <td>{{ assay.goblet_s_depletion }}</td>
+                      <td>{{ assay.lumen_s_exfoliation }}</td>
+                      <td>{{ assay.villus_s_short }}</td>
+                      <td>{{ assay.igd_small }}</td>
+                      <td>{{ assay.paneth_s_activation }}</td>
+                      <td>{{ assay.peyer_s_patch }}</td>
+                      <td>{{ assay.apoptotic_l_field }}</td>
+                      <td>{{ assay.goblet_l_depletion }}</td>
+                      <td>{{ assay.lumen_l_exfoliation }}</td>
+                      <td>{{ assay.crypt_l_damage }}</td>
+                      <td>{{ assay.endothelial_l_activation }}</td>
+                      <td>{{ assay.age }}</td>
+                      <td>{{ assay.comment }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+    </div>
+  </div>
+</div>
+  <!-- /.card-body -->
+  </div>
+{% endblock %}
+
