@@ -137,6 +137,7 @@ USE_L10N = True
 USE_TZ = True
 
 
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -151,7 +152,7 @@ if DEBUG:
     os.path.join(os.path.dirname(BASE_DIR),"static", "static"),
 )
 
-DATE_INPUT_FORMATS =('%d-%m-%Y')
+#DATE_INPUT_FORMATS =('%d-%m-%Y')
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
