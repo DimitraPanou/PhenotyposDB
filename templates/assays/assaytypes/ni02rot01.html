@@ -2,6 +2,12 @@
 {% extends 'assays/detail_assay.html' %}
 
   {% block assay_content %}
+
+  {% load django_tables2 %}
+  {% load bootstrap4 %}
+
+  {% render_table table %}
+
  <!-- /.card -->
   <div class="row">
     <div class="col-12">

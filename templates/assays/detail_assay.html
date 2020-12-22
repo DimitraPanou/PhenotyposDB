@@ -1,72 +1,102 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
-
-  {% block content_header %}
+  {% if user.is_authenticated %}
+    {% block content_header %}
     <h2>{{object.type.code}}</h2>
     <p>
       {{object.name}}
     </p>
     <a class="btn btn-secondary btn-lg mt-1 mb-1 ti-pencil" href="{% url 'assay-update' object.id %}"></a>
-
-  {% endblock %}
-
-            <!-- About Me Box -->
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Info {{ assay.type }} - {{ assay.id }}</h3>
-              </div>
-              <!-- /.card-header -->
+    {% endblock %}
+  <div class="row">
+          <div class="col-12">
+            <!-- Custom Tabs -->
+            <div class="card">
+              <div class="card-header d-flex p-0">
+                <h3 class="card-title p-3">Tabs</h3>
+                <ul class="nav nav-pills ml-auto p-2">
+                  <li class="nav-item"><a class="nav-link nav-link-info active" href="#tab_1" data-toggle="tab">Info</a></li>
+                  <li class="nav-item"><a class="nav-link nav-link-info" href="#tab_2" data-toggle="tab">Measurements</a></li>
+                  <li class="nav-item"><a class="nav-link nav-link-warning" href="#tab_3" data-toggle="tab">Tab 3</a></li>
+                </ul>
+              </div><!-- /.card-header -->
               <div class="card-body">
-                <strong><i class="fas fa-book mr-1"></i> Description </strong>
+                <div class="tab-content">
+                  <div class="tab-pane" id="tab_1">
+                                <!-- About Me Box -->
+                    <div class="card card-info">
+                      <div class="card-header">
+                        <h3 class="card-title">Info {{ assay.type }} - {{ assay.id }}</h3>
+                      </div>
+                              <!-- /.card-header -->
+                      <div class="card-body">
+                        <strong><i class="fas fa-book mr-1"></i> Description </strong>
+                        <p class="text-muted">
+                          {{ assay.type.name }}
+                        </p>
+                        <hr>
+                        <strong><i class="fas fa-pencil-alt mr-1"></i> Purpose</strong>
+                        <p class="text-muted">{{ assay.type.name }}</p>
+                        <hr>
+                        <strong><i class="fas fa-users mr-1"></i> PI </strong>
+                        <p class="text-muted">
+                          <span class="tag tag-danger">{{ assay.author }},</span>
+                          <span class="tag tag-success">{{ assay.scientist }}</span>
+                        </p>
+                        <hr>
 
-                <p class="text-muted">
-                  {{ assay.type.name }}
-                </p>
+                        <strong><i class="fas fa-calendar mr-1"></i> Dates</strong>
+                        <p class="text-muted">Date Created: {{ assay.created_at }}</p>
+                        <p class="text-muted">Date Modified: {{ assay.updated_at }}</p>                
+                        <hr>
+                        <strong><i class="far fa-file-alt mr-1"></i> Comments</strong>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                        <h5 class="mt-5 text-muted">Project files</h5>
+                        <ul class="list-unstyled">
+                          <li>
+                            <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> {{assay.rawdata_file.name}}</a>
+                          </li>
+                          <li>
+                            <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
+                          </li>
+                        </ul>
+                      </div>
+                              <!-- /.card-body -->
+                    </div>
+                  </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="tab_2">
+                    {% block assay_content %}
+                   
+                    {% endblock %}
+                  </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane active" id="tab_3">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    It has survived not only five centuries, but also the leap into electronic typesetting,
+                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                    sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum.
+                  </div>
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
 
-                <hr>
-
-                <strong><i class="fas fa-pencil-alt mr-1"></i> Purpose</strong>
-
-                <p class="text-muted">{{ assay.type.name }}</p>
-
-                <hr>
-
-                <strong><i class="fas fa-users mr-1"></i> PI </strong>
-
-                <p class="text-muted">
-                  <span class="tag tag-danger">{{ assay.author }},</span>
-                  <span class="tag tag-success">{{ assay.scientist }}</span>
-                </p>
-
-                <hr>
-
-                <strong><i class="fas fa-calendar mr-1"></i> Dates</strong>
-
-                <p class="text-muted">Date Created: {{ assay.created_at }}</p>
-                <p class="text-muted">Date Modified: {{ assay.updated_at }}</p>                
-                <hr>
-                <strong><i class="far fa-file-alt mr-1"></i> Comments</strong>
-
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-
-              <h5 class="mt-5 text-muted">Project files</h5>
-              <ul class="list-unstyled">
-                <li>
-                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> {{assay.rawdata_file.name}}</a>
-                </li>
-                <li>
-                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
-                </li>
-              </ul>
-              </div>
-              <!-- /.card-body -->
             </div>
-
-
-  {% block assay_content %}
-
-
-  {% endblock %}
+            <!-- ./card -->
+          </div>
+          <!-- /.col -->
+        </div>
+  {% endif %}  
 
 {% endblock %}
+
+
+
+
+
