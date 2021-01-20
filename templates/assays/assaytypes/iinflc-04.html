@@ -4,12 +4,7 @@
  <!-- /.card -->
     <div class="row">
       <div class="col-12">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Measurements</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
+
             <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
               <div class="row">
                 <div class="col-sm-12">
@@ -27,7 +22,16 @@
               </thead>
               <tbody>
                 {% for assay in measures %}
-                  <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+                  <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}" data-toggle="popover" title="<h5><b>Mouse {{assay.mid}}</h5>" data-content="
+                    <p><b>Gender</b>: {{assay.mid.gender}}</p>
+                    <p><b>Genotype</b>: {{assay.mid.genotype}}</p> 
+                    <p><b>Date of Birth</b>: {{assay.mid.date}}</p> 
+                    <p><b>Age</b>: {{assay.mid.age}} </p> 
+                    <p><b>Induced</b>: {{assay.mid.induced}}</p>     
+                    <p><b>Treated</b>: {{assay.mid.treated}}</p> 
+                    <p><b>Diet</b>: {{assay.mid.diet}}</p> 
+                    <p><b>Other Mouse Information</b>: {{assay.mid.mouse_info}}</p>
+                    <p><b>Other environmental data</b>: {{assay.mid.other}}</p>">
                     <!--<td>{{ assay.assayid }}</td>-->
                     <td>{{ assay.mid }}</td>
                     <td>{{ assay.mid.genotype }}</td>          
@@ -46,6 +50,4 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
 {% endblock %}

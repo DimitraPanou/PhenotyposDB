@@ -15,7 +15,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
- 
+  <link rel="stylesheet" href="{% static 'dist/css/dropify.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
 
@@ -67,10 +69,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed layout-footer-fixed">
 <div class="wrapper">
 
-  
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -196,65 +197,63 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Sidebar -->
     <div class="sidebar">
       {% if user.is_authenticated %}
-
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="{{ user.profile.image.url }}" class="img-circle elevation-2" alt="User Image">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="{{ user.profile.image.url }}" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="{% url 'profile' %}" class="d-block">{{ user.username }}</a>
+          </div>
         </div>
-        <div class="info">
-          <a href="{% url 'profile' %}" class="d-block">{{ user.username }}</a>
-        </div>
-      </div>
       {% endif %}
+      {% block sidebar_content %}
+        {% if user.is_authenticated %}
+        <!-- /.sidebar -->
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+              <!-- Add icons to the links using the .nav-icon class
+                   with font-awesome or any other icon font library -->
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+           <li class="nav-header">ASSAYS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'user-assays' user.username %}" class="nav-link">
+                      <i class="far fa-list-alt nav-icon"></i>
+                      <p>My Assays</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'group-assays' user.username %}" class="nav-link">
+                      <i class="fas fa-th nav-icon"></i>
+                      <p>Group</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+           <li class="nav-header">PIPELINES</li>
+                  <li class="nav-item">
+                    <a href="{% url 'user-pipelines' user.username %}" class="nav-link">
+                      <i class="fas fa-circle nav-icon"></i>
+                      <p>My Pipelines</p>
+                    </a>
+                  </li>
+                </ul>
 
-  {% block sidebar_content %}
-    {% if user.is_authenticated %}
-    <!-- /.sidebar -->
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-       <li class="nav-header">ASSAYS</li>
-              <li class="nav-item">
-                <a href="{% url 'user-assays' user.username %}" class="nav-link">
-                  <i class="far fa-list-alt nav-icon"></i>
-                  <p>My Assays</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'group-assays' user.username %}" class="nav-link">
-                  <i class="fas fa-th nav-icon"></i>
-                  <p>Group</p>
-                </a>
               </li>
             </ul>
-            <ul class="nav nav-treeview">
-       <li class="nav-header">PIPELINES</li>
-              <li class="nav-item">
-                <a href="{% url 'user-pipelines' user.username %}" class="nav-link">
-                  <i class="fas fa-circle nav-icon"></i>
-                  <p>My Pipelines</p>
-                </a>
-              </li>
-            </ul>
-
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-{% endif %}
-{% endblock %}
+          </nav>
+          <!-- /.sidebar-menu -->
+        {% endif %}
+      {% endblock %}
     </div>
     <!-- /.sidebar -->
   </aside>
@@ -315,13 +314,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </div>
 <!-- ./wrapper -->
 
-
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
 <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
 <!-- Bootstrap 4 -->
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- overlayScrollbars -->
+<script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
 <!-- jQuery UI -->
 <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
 
@@ -381,6 +382,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
   })
 </script>
 
+<!-- jQuery Mapael -->
+<script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/maps/usa_states.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.2.0/jspdf.umd.min.js"></script>
 <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
@@ -394,9 +402,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<script src="{% static 'dist/js/pages/dashboard2.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{% static 'dist/js/demo.js' %}"></script>
+<script src="{% static 'dist/js/adminlte.js' %}"></script>
+<script src="{% static 'dist/js/dropify.min.js' %}"></script>
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+        <script>
+            $(document).ready(function(){
+                // Basic
+                $('.dropify').dropify();
 
+                // Translated
+                $('.dropify-fr').dropify({
+                    messages: {
+                        default: 'Glissez-déposez un fichier ici ou cliquez',
+                        replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                        remove:  'Supprimer',
+                        error:   'Désolé, le fichier trop volumineux'
+                    }
+                });
+
+                // Used events
+                var drEvent = $('#input-file-events').dropify();
+
+                drEvent.on('dropify.beforeClear', function(event, element){
+                    return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+                });
+
+                drEvent.on('dropify.afterClear', function(event, element){
+                    alert('File deleted');
+                });
+
+                drEvent.on('dropify.errors', function(event, element){
+                    console.log('Has Errors');
+                });
+
+                var drDestroy = $('#input-file-to-destroy').dropify();
+                drDestroy = drDestroy.data('dropify')
+                $('#toggleDropify').on('click', function(e){
+                    e.preventDefault();
+                    if (drDestroy.isDropified()) {
+                        drDestroy.destroy();
+                    } else {
+                        drDestroy.init();
+                    }
+                })
+            });
+        </script>
 <!-- Page script -->
 <script>
   $(function () {

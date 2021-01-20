@@ -1,7 +1,17 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<div class="card card-default">
+            <div class="card-header">
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+    <div class="card-body">
     <div class="content-section">
+      <div class='row'>
       <div class="media">
         <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
         <div class="media-body">
@@ -9,16 +19,33 @@
           <p class="text-secondary">{{ user.email }}</p>
         </div>
       </div>
+    <div class='row'>
+
       <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <fieldset class="form-group">
               <legend class="border-bottom mb-4">Profile Info</legend>
-              {{ u_form|crispy }}
-              {{ p_form|crispy }}
+                      {{ u_form|crispy }}
+                      {% for field in p_form %}
+                        <div class='col-md-12'>
+                          <label for="id_image">Profile Image</label>
+                          <input type="file" id="input-file-now" class="dropify" name="image"/> 
+                          <!--<input type="file" id="input-file-now" class="dropify" name="image" data-default-file="{{ user.profile.image.url }}"/> -->
+                          <br />
+                        </div>
+                      {% endfor %}
+                      {% csrf_token %}
           </fieldset>
           <div class="form-group">
               <button class="btn btn-outline-info" type="submit">Update</button>
           </div>
       </form>
     </div>
+</div>
+</div>
+</div>
 {% endblock content %}
+
+
+
+
