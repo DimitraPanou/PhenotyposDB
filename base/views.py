@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import (
     ListView,
@@ -15,6 +16,7 @@ from .models import Book
 
 # Create your views here.
 
+@login_required(login_url ='login')
 def home_view(request, *args, **kargs):
 	#return HttpResponse("<h1>Home</h1>")
 	return render(request, "home.html")

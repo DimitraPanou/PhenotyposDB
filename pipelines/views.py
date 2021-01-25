@@ -22,6 +22,7 @@ from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic import FormView
 
+from users.decorators import admin_only, allowed_users
 from assays.models import Assay
 from assays.forms import AssayForm
 from assays.functions import handle_uploaded_file
@@ -29,12 +30,17 @@ from assays.functions import handle_uploaded_file
 #    Pipelines     #
 ####################
 
-class PipelineListView(ListView):
+class PipelineListView(LoginRequiredMixin,ListView):
+	
 	model = Pipeline
 	template_name = 'pipelines/pipelines.html'
 	context_object_name = 'list_pipelines'
 
+	def dispatch(self, *args, **kwargs):
+		return super(PipelineListView, self).dispatch(*args, **kwargs)
+
 #Authenticate scientist here
+@allowed_users(allowed_roles=['admin','scientific_staff'])
 def add_pipeline(request, *args, **kargs):
     if request.method == 'POST':
         form = PipelineForm(request.POST, request.FILES)
@@ -61,7 +67,7 @@ class PipelineUpdateView(LoginRequiredMixin,UpdateView):
 	#	form.instance.updated_by = self.request.user
 		return super().form_valid(form)	
 
-class PipelineDeleteView(DeleteView):
+class PipelineDeleteView(LoginRequiredMixin,DeleteView):
 	model = Pipeline
 	template_name = 'pipelines/delete_pipeline.html'
 	success_url = reverse_lazy('pipelines')
@@ -83,7 +89,7 @@ class UserPipelineListView(LoginRequiredMixin,ListView):
 
 #Authenticate scientist here
 
-class PipelineDetailView(DetailView):
+class PipelineDetailView(LoginRequiredMixin,DetailView):
 	model = Pipeline
 	template_name = 'pipelines/detail_pipeline.html'
 
@@ -105,12 +111,13 @@ class UserAssaysListView(LoginRequiredMixin,ListView):
 # TYPES
 #################################
 
-class PipelineTypeListView(ListView):
+class PipelineTypeListView(LoginRequiredMixin,ListView):
 	model = PipelineType
 	template_name = 'pipelines/pipelinetypes.html'
 	context_object_name = 'list_pipelines'
 
 
+@allowed_users(allowed_roles=['admin','scientific_staff'])
 def add_pipelinetype(request, *args, **kargs):
     if request.method == 'POST':
         form = PipelineForm(request.POST, request.FILES)
@@ -124,17 +131,19 @@ def add_pipelinetype(request, *args, **kargs):
         'a': a
     })
 
-class PipelineTypeUpdateView(UpdateView):
+class PipelineTypeUpdateView(LoginRequiredMixin,UpdateView):
 	model = PipelineType
 	template_name = 'pipelines/update_pipelinetype.html'
 	form_class = PipelineTypeForm
 	success_url = '/pipelines/types/'
 
-class PipelineTypeDeleteView(DeleteView):
+class PipelineTypeDeleteView(LoginRequiredMixin,DeleteView):
 	model = PipelineType
 	template_name = 'pipelines/delete_pipelinetype.html'
 	success_url = '/pipelines/types/'
 
+
+@allowed_users(allowed_roles=['admin','scientific_staff'])
 def add_assay_to_pipeline(request, pk):
 	pipeline = get_object_or_404(Pipeline, pk=pk, pi=request.user)
 	if request.method == 'POST':

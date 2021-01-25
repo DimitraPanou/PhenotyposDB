@@ -5,6 +5,9 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 from django.db import IntegrityError, transaction
 
+from .decorators import unauthenticated_user
+
+@unauthenticated_user
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -18,7 +21,7 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
-@login_required
+@unauthenticated_user
 #@transaction.atomic
 def profile(request):
     if request.method == 'POST':
@@ -46,6 +49,19 @@ def profile(request):
     return render(request, 'users/profile.html', context)
 
 
+@unauthenticated_user
+#@transaction.atomic
+def test(request):
+
+    u_form = UserUpdateForm(instance=request.user)
+    p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+
+    return render(request, 'users/test.html', context)
 #class Profile(DetailView):
 #	template_name='users/profile.html'
 #	queryset = User.objects.all()
