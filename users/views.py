@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-
+from .models import Profile
 from django.db import IntegrityError, transaction
 
 from .decorators import unauthenticated_user
@@ -21,8 +21,8 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
-@unauthenticated_user
-#@transaction.atomic
+@login_required
+@transaction.atomic
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -48,14 +48,22 @@ def profile(request):
 
     return render(request, 'users/profile.html', context)
 
+def users_all(request):
+    users = Profile.objects.all()
+    #for 
+    #groups = User.objects.groups.all()
+    return render(request, 'users/users_all.html', {
+        'users': users
+    })
 
-@unauthenticated_user
+@login_required
 #@transaction.atomic
 def test(request):
 
     u_form = UserUpdateForm(instance=request.user)
     p_form = ProfileUpdateForm(instance=request.user.profile)
-
+    print(u_form)
+    print(p_form)
     context = {
         'u_form': u_form,
         'p_form': p_form

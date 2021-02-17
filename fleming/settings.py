@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'jquery',
     'import_export',
-    #'crispy_forms',
-    #'database'
     'base',
     'crispy_forms',
     'fleming',
@@ -93,7 +91,7 @@ DATABASES = {
 #    }
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'mouse_db',
+    'NAME': 'assaydb',
     'USER': 'DK_LAB',
     'PASSWORD': 'DKontogiann1s',
     'HOST': 'localhost',

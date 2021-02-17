@@ -4,11 +4,17 @@ from django.contrib.auth.models import User
 from pipelines.models import Pipeline
 # Create your models here.
 
+class Facility(models.Model):
+    name = models.CharField(max_length=256, blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
+    def __str__(self):
+        return u'{0}'.format(self.name)
 #Atype
 class Atype(models.Model):
     code = models.CharField(max_length=16)
     name = models.CharField(max_length=256, blank=True, null=True)
     facility = models.CharField(max_length=16, blank=True, null=True)
+    facilitylong = models.ForeignKey('Facility', models.DO_NOTHING, db_column ="facilitylong")
     unit = models.CharField(max_length=32, blank=True, null=True)
     staff = models.CharField(max_length=256, blank=True, null=True)
     publication_date = models.DateField(blank=True, null=True)
@@ -23,7 +29,7 @@ class Atype(models.Model):
     appendix = models.TextField(blank=True, null=True)
     references = models.TextField(blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     def __str__(self):
         return u'{0}'.format(self.code)
 
@@ -428,6 +434,21 @@ class Fc04(models.Model):
     class Meta:
         managed = True
         db_table = 'FC-04'
+
+class Hpni01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='hpni01s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    avg_score_gray = models.FloatField(blank=True, null=True)
+    avg_score_white = models.FloatField(blank=True, null=True)
+    total_score = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'HPNI-01'
 
 class Mouse(models.Model):
     GENDER = (

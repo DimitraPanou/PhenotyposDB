@@ -602,6 +602,16 @@
             </div>
             </div>
            <div id="editor"></div>
-           <button id="cmd">generate PDF</button>
+            <h3>Hello, this is a H3 tag</h3>
+           <div>
+          <p>
+            <pre>var doc = new jsPDF();
+doc.text(20, 20, 'Hello world!');
+doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
+doc.addPage();
+doc.text(20, 20, 'Do you like that?');
 
-{% endblock %}
+doc.save('Test.pdf');</pre>
+            <a href="javascript:demoMetadata()" class="button">Run Code</a></p>
+        </div>
+{% endblock %}+

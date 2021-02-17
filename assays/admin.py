@@ -22,7 +22,7 @@ admin.site.register(Ni02Rot01)
 admin.site.register(Ni02grs01)
 admin.site.register(Ni02ofd01)
 admin.site.register(Ni01)
-
+admin.site.register(Facility)
 #admin.site.register(Atype)
 #admin.site.register(Assay)
 admin.site.register(Mouse)

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<div class="col-md-10">
 <div class="card card-default">
             <div class="card-header">
             <div class="card-tools">
@@ -12,33 +13,64 @@
     <div class="card-body">
     <div class="content-section">
     <div class='row'>
-      <div class="col-md-3 border-right">
+      <div class="col-md-2 border-right">
         <div class="media">
-          <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
           <div class="media-body">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
             <h2 class="account-heading">{{ user.username }}</h2>
-            <p class="email">{{ user.email }}</p>
+            <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">            
+            <p class="text-black-50">{{ user.email }}</p>
+          </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6 border-right">
+      <div class="col-md-8">
       <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <fieldset class="form-group">
-              <legend class="border-bottom mb-4">Profile Info</legend>
+              <legend class="border-bottom mb-4">Account Settings</legend>
                       {{ u_form|crispy }}
-                      {% for field in p_form %}
+
+              <legend class="border-bottom mb-4">Profile Info</legend>
+              {{ p_form.first_name|as_crispy_field }}
+              {{ p_form.last_name|as_crispy_field}}
+              <div class= "form-row">
+                <div class="form-group col-md-6">
+                  {{ p_form.phone_number|as_crispy_field}}
+                </div>
+                <div class="form-group col-md-6">
+                  {{ p_form.internal_phone|as_crispy_field}}
+                </div>
+              </div>
+              <div class= "form-row">
+                <div class="form-group col-md-10">
+                  {{ p_form.address_1|as_crispy_field}}
+                </div>
+                <div class="form-group col-md-2">
+                  {{ p_form.address_2|as_crispy_field}} 
+                </div>
+              </div>             
+              <div class= "form-row">
+                <div class="form-group col-md-5">
+                  {{ p_form.city|as_crispy_field}}
+                </div>
+                <div class="form-group col-md-5">
+                  {{ p_form.state|as_crispy_field}}
+                </div>
+                <div class="form-group col-md-2">
+                  {{ p_form.postal_code|as_crispy_field}}
+                </div>
+              </div>
                         <div class='col-md-12'>
                           <label for="id_image">Profile Image</label>
                           <input type="file" id="input-file-now" class="dropify" name="image"/> 
                           <!--<input type="file" id="input-file-now" class="dropify" name="image" data-default-file="{{ user.profile.image.url }}"/> -->
                           <br />
                         </div>
-                      {% endfor %}
                       {% csrf_token %}
           </fieldset>
           <div class="form-group">
-              <button class="btn btn-outline-info" type="submit">Update</button>
+              <button class="btn btn-outline-info" type="submit">Save Profile</button>
           </div>
       </form>
     </div>
@@ -47,6 +79,8 @@
 <a href="{% url 'test' %}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
 </div>
 </div>
+</div>
+
 {% endblock content %}
 
 

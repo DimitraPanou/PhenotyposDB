@@ -833,6 +833,45 @@ def data_hpibd02(data,assay):
 		if(flag):
 			experiment.save()
 
+######################################################
+def data_hpni01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Hpni01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					#print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('average' in key.lower()):
+					if('gray' in key.lower()):
+						experiment.avg_score_gray= data[key][i]
+					else:
+						experiment.avg_score_white= data[key][i]
+				elif ('total score' in key.lower()):
+					experiment.total_score = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
 #Returns number of rows & number of columns with data in excel tab  
 def find_edges(sheet):
     row = sheet.max_row
@@ -930,6 +969,11 @@ def handle_uploaded_file(assayobject):
 		data_biochem07(data,assayobject)
 	if(assayobject.type.code == "BIOCHEM-08"):
 		data_biochem08(data,assayobject)
+	if(assayobject.type.code == "HPNI-01"):
+		data_hpni01(data,assayobject)
+
+
+
 
 def returnTemplateName(assayobject):
 	switcher ={
@@ -949,7 +993,8 @@ def returnTemplateName(assayobject):
 		17:'assays/assaytypes/biochem05.html',		
 		18:'assays/assaytypes/biochem06.html',
 		19:'assays/assaytypes/biochem07.html',
-		20:'assays/assaytypes/biochem08.html'		
+		20:'assays/assaytypes/biochem08.html'
+		#21:'assays/assaytypes/hpni01.html'		
 	}
 	return switcher.get(assayobject.id,"Ivalid")
 
