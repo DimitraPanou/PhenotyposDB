@@ -435,6 +435,53 @@ class Fc04(models.Model):
         managed = True
         db_table = 'FC-04'
 
+
+class Fc08(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='fc08s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_id = models.CharField(max_length=128, blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    facs_lysing = models.CharField(max_length=32, blank=True, null=True)
+    live_aquis = models.CharField(max_length=16, blank=True, null=True)
+    total_cell_count = models.FloatField(blank=True, null=True)
+    neu_per = models.FloatField(blank=True, null=True)
+    eos_per = models.FloatField(blank=True, null=True)
+    mon_per = models.FloatField(blank=True, null=True)
+    ly6chimono_per = models.FloatField(blank=True, null=True)
+    ly6cintermono_per = models.FloatField(blank=True, null=True)
+    ly6clowmono_per = models.FloatField(blank=True, null=True)
+    dcs_per = models.FloatField(blank=True, null=True)
+    nk_cells_per = models.FloatField(blank=True, null=True)
+    b_cells_per = models.FloatField(blank=True, null=True)
+    t_cells_per = models.FloatField(blank=True, null=True)
+    neu_num = models.FloatField(blank=True, null=True)
+    eos_num = models.FloatField(blank=True, null=True)
+    mon_num = models.FloatField(blank=True, null=True)
+    ly6chimono_num = models.FloatField(blank=True, null=True)
+    ly6cintermono_num = models.FloatField(blank=True, null=True)
+    ly6clowmono_num = models.FloatField(blank=True, null=True)
+    dcs_num = models.FloatField(blank=True, null=True)
+    nk_cells_num = models.FloatField(blank=True, null=True)
+    b_cells_num = models.FloatField(blank=True, null=True)
+    t_cells_num = models.FloatField(blank=True, null=True)
+    total_cell_count_2 = models.FloatField(blank=True, null=True)
+    b_cells_per_2 = models.FloatField(blank=True, null=True)
+    nk_cells_per_2 = models.FloatField(blank=True, null=True)
+    cd4_per = models.FloatField(blank=True, null=True)
+    cd4_cd25_per =models.FloatField(blank=True, null=True)
+    #cd4_naive_per =models.FloatField(blank=True, null=True)
+    #cd4_eff_per =models.FloatField(blank=True, null=True)
+    #cd8_per =models.FloatField(blank=True, null=True)
+
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'FC-08'
+
 class Hpni01(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='hpni01s')  # Field name made lowercase.
     mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
@@ -449,6 +496,26 @@ class Hpni01(models.Model):
     class Meta:
         managed = True
         db_table = 'HPNI-01'
+
+############################################
+#              ARMAKA
+#############################################
+
+class Ar02(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='ar02s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    parameter1 = models.FloatField(blank=True, null=True)
+    parameter2 = models.FloatField(blank=True, null=True)
+    parameter3 = models.FloatField(blank=True, null=True)
+    parameter4 = models.TextField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'AR-02'
 
 class Mouse(models.Model):
     GENDER = (

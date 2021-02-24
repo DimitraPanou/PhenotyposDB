@@ -7,9 +7,9 @@ from django.shortcuts import get_object_or_404
 from datetime import date
 tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
 				'BIOCHEM-06','BIOCHEM-07','BIOCHEM-08','CBA-01','CBA-02','ENDO-01','FC-04',
-				'FC-07','HEM-01','HPIBD-01','HPIBD-02','HPIBD-03','HPNI-01','IINFLC-01',
+				'FC-07','FC-08','HEM-01','HPIBD-01','HPIBD-02','HPIBD-03','HPNI-01','IINFLC-01',
 				'IINFLC-02','IINFLC-03','IINFLC-04','NI-01','NI-02-GRS-01','NI-02-OFD-01',
-				'NI-02-ROT-01','PR-02',"info"
+				'NI-02-ROT-01','PR-02','AR-02',"info"
 				]
 
 
@@ -835,6 +835,7 @@ def data_hpibd02(data,assay):
 
 ######################################################
 def data_hpni01(data,assay):
+	print('inside hpni')
 	for i in range(len(data["Mouse ID"])):
 		flag =1
 		experiment = Hpni01()
@@ -864,10 +865,146 @@ def data_hpni01(data,assay):
 				elif ('average' in key.lower()):
 					if('gray' in key.lower()):
 						experiment.avg_score_gray= data[key][i]
-					else:
+					elif('white'):
 						experiment.avg_score_white= data[key][i]
 				elif ('total score' in key.lower()):
 					experiment.total_score = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+				print(experiment)
+		if(flag):				
+			experiment.save()
+
+def data_fc08(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Fc08()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					#print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d
+				elif ('sample id' in key.lower()):
+					experiment.sample_id= data[key][i]
+				elif ('source' in key.lower()):
+					experiment.sample_source= data[key][i]
+				elif ('facs' in key.lower()):
+					experiment.facs_lysing= data[key][i]					 
+				elif ('aquis' in key.lower()):
+					experiment.live_aquis= data[key][i]					 
+				elif ('total cell' in key.lower()):
+					if('2' in key.lower()):
+						experiment.total_cell_count_2 = data[key][i]
+					else:
+						experiment.total_cell_count = data[key][i]
+				elif ('% neu' in key.lower()):
+					experiment.neu_per = data[key][i]					 
+				elif ('% eos' in key.lower()):
+					experiment.eos_per = data[key][i]					 
+				elif ('% mon' in key.lower()):
+					experiment.mon_per = data[key][i]					 
+				elif ('% ly6chimono' in key.lower()):
+					experiment.ly6chimono_per = data[key][i]					 
+				elif ('% ly6cintermono' in key.lower()):
+					experiment.ly6cintermono_per = data[key][i]					 
+				elif ('% ly6clowmono' in key.lower()):
+					experiment.ly6clowmono_per = data[key][i]					 
+				elif ('% dcs' in key.lower()):
+					experiment.dcs_per = data[key][i]					 
+				elif ('# neu' in key.lower()):
+					experiment.neu_per = data[key][i]					 
+				elif ('# eos' in key.lower()):
+					experiment.eos_per = data[key][i]					 
+				elif ('# mon' in key.lower()):
+					ly6chimono_perexperiment.mon_per = data[key][i]					 
+				elif ('# ly6chimono' in key.lower()):
+					experiment.ly6chimono_per = data[key][i]					 
+				elif ('# ly6cintermono' in key.lower()):
+					experiment.ly6cintermono_per = data[key][i]					 
+				elif ('# ly6clowmono' in key.lower()):
+					experiment.ly6clowmono_per = data[key][i]					 
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+				print(experiment)
+		if(flag):				
+			experiment.save()
+'''
+    nk_cells_per = models.FloatField(blank=True, null=True)
+    b_cells_per = models.FloatField(blank=True, null=True)
+    t_cells_per = models.FloatField(blank=True, null=True)
+    neu_num = models.FloatField(blank=True, null=True)
+    eos_num = models.FloatField(blank=True, null=True)
+    mon_num = models.FloatField(blank=True, null=True)
+    ly6chimono_num = models.FloatField(blank=True, null=True)
+    ly6cintermono_num = models.FloatField(blank=True, null=True)
+    ly6clowmono_num = models.FloatField(blank=True, null=True)
+    dcs_num = models.FloatField(blank=True, null=True)
+    nk_cells_num = models.FloatField(blank=True, null=True)
+    b_cells_num = models.FloatField(blank=True, null=True)
+    t_cells_num = models.FloatField(blank=True, null=True)
+    total_cell_count_2 = models.FloatField(blank=True, null=True)
+    b_cells_per_2 = models.FloatField(blank=True, null=True)
+    nk_cells_per_2 = models.FloatField(blank=True, null=True)
+    cd4_per = models.FloatField(blank=True, null=True)
+    cd4_cd25_per =models.FloatField(blank=True, null=True)
+
+
+'''
+
+def data_ar02(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ar02()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('parameter' in key.lower()):
+					if ('1' in key.lower()):
+						experiment.parameter1 = data[key][i]
+					elif ('2' in key.lower()):
+						experiment.parameter2 = data[key][i]
+					elif ('3' in key.lower()):
+						experiment.parameter3 = data[key][i]
+					elif ('4' in key.lower()):
+						experiment.parameter4 = data[key][i]					
 				elif ('comment' in key.lower()):
 					experiment.comment= data[key][i]
 		if(flag):				
@@ -929,12 +1066,14 @@ def handle_uploaded_file(assayobject):
 	info = dataofAssay("info",fname)
 	#print(info)
 	data = dataofAssay(assayobject.type.code,fname)
+	if(data==-1):
+		return -1
 	print(data.keys())
 	print("Data")
 	print(data)
 	#print(len(data["Mouse ID"]))
 	create_mouseHash(info)
-
+	print('\n\n\n\n\n')
 	if(assayobject.type.code == "IINFLC-04"):
 		data_iinflc04(data,assayobject)
 	if(assayobject.type.code == "NI-01"):
@@ -971,7 +1110,10 @@ def handle_uploaded_file(assayobject):
 		data_biochem08(data,assayobject)
 	if(assayobject.type.code == "HPNI-01"):
 		data_hpni01(data,assayobject)
-
+	if(assayobject.type.code == "FC-08"):
+		data_fc08(data,assayobject)
+	if(assayobject.type.code == "AR-02"):
+		data_ar02(data,assayobject)
 
 
 
@@ -993,8 +1135,11 @@ def returnTemplateName(assayobject):
 		17:'assays/assaytypes/biochem05.html',		
 		18:'assays/assaytypes/biochem06.html',
 		19:'assays/assaytypes/biochem07.html',
-		20:'assays/assaytypes/biochem08.html'
-		#21:'assays/assaytypes/hpni01.html'		
+		20:'assays/assaytypes/biochem08.html',
+		22:'assays/assaytypes/hpni01.html',		
+		23:'assays/assaytypes/fc08.html',
+		24:'assays/assaytypes/ar02.html'
+
 	}
 	return switcher.get(assayobject.id,"Ivalid")
 

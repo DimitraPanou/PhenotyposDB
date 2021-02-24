@@ -22,7 +22,9 @@
               </thead>
               <tbody>
                 {% for assay in measures %}
-                  <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}" data-toggle="popover" title="<h5><b>Mouse {{assay.mid}}</h5>" data-content="
+                <tr>
+                    <!--<td>{{ assay.assayid }}</td>-->
+                    <td><a href="#" class="btn" data-toggle="popover" title="<h5><b>Mouse {{assay.mid}}</h5>" data-content="
                     <p><b>Gender</b>: {{assay.mid.gender}}</p>
                     <p><b>Genotype</b>: {{assay.mid.genotype}}</p> 
                     <p><b>Date of Birth</b>: {{assay.mid.date}}</p> 
@@ -31,16 +33,13 @@
                     <p><b>Treated</b>: {{assay.mid.treated}}</p> 
                     <p><b>Diet</b>: {{assay.mid.diet}}</p> 
                     <p><b>Other Mouse Information</b>: {{assay.mid.mouse_info}}</p>
-                    <p><b>Other environmental data</b>: {{assay.mid.other}}</p>">
-                    <!--<td>{{ assay.assayid }}</td>-->
-                    <td>{{ assay.mid }}</td>
+                    <p><b>Other environmental data</b>: {{assay.mid.other}}</p>"> {{ assay.mid }} </a></td>
                     <td>{{ assay.mid.genotype }}</td>          
                     <td>{{ assay.timepoint }}</td>
                     <td>{{ assay.measurement_date }}</td>
                     <td>{{ assay.weight }}</td>
                     <td>{{ assay.age }}</td>
                     <td>{{ assay.comment }}</td>
-                  </tr>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -51,3 +50,4 @@
           </div>
         </div>
 {% endblock %}
+

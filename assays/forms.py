@@ -10,15 +10,15 @@ class AssayForm(forms.ModelForm):
         exclude = ('author',)
         fields = ('code', 'name','type','version','staff','measurement_day','scientist','assayqc','rawdata_file','comments')
         widgets = {
-        'measurement_day': forms.DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+        'measurement_day': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date','useCurrent': True}),
     	}
 
 class AtypeForm(forms.ModelForm):
     class Meta:
         model = Atype
-        fields = ('code', 'name', 'facility','unit','staff','publication_date','version')
+        fields = ('code', 'name', 'facility','facilitylong','unit','staff','publication_date','version')
         widgets = {
-        'publication_date': forms.DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+        'publication_date': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
     	}
 
     def __init__(self, *args, **kwargs):
@@ -31,6 +31,7 @@ class AtypeForm(forms.ModelForm):
                 css_class='form-row'
             ),
             'facility',
+            'facilitylong',
             'unit',
             Row(
                 Column('staff', css_class='form-group col-md-6 mb-0'),

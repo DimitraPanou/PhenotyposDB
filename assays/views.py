@@ -11,8 +11,12 @@ from django.views.generic import (
     DeleteView,
     TemplateView
 )
+from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
+from users.decorators import allowed_users
 
 from django.urls import reverse_lazy
 #from .forms import AssayForm
@@ -43,6 +47,7 @@ class AssaysListView(ListView):
 #		return super().form_valid(form)
 
 
+@allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
 def add_assay(request, *args, **kargs):
     if request.method == 'POST':
         form = AssayForm(request.POST, request.FILES)
@@ -53,7 +58,9 @@ def add_assay(request, *args, **kargs):
             #    name = request.FILES[filename].url
                 #print(name)
             print(test.rawdata_file.url)
-            handle_uploaded_file(test)
+            if(handle_uploaded_file(test)==-1):
+                    html = "<html><body>Problem with the file.</body></html>"
+                    return HttpResponse(html)
             return redirect('assays')
     else:
         form = AssayForm()
@@ -106,6 +113,9 @@ class AssaysDetailView(DetailView):
 			18: self.get_object().biochem06s.annotate(),
 			19: self.get_object().biochem07s.annotate(),
 			20: self.get_object().biochem08s.annotate(),
+			22: self.get_object().hpni01s.annotate(),
+			23: self.get_object().fc08s.annotate(),
+			24: self.get_object().ar02s.annotate(),
 
 		}
 		kwargs['measures'] = switcher.get(self.object.type.id,"Ivalid")
