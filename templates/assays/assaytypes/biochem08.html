@@ -32,16 +32,16 @@
                 {% for assay in measures %}
                   <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                     <!--<td>{{ assay.assayid }}</td>-->
-                    <td>{{ assay.mid }}</td>
-                    <td>{{ assay.mid.genotype }}</td>          
-                    <td>{{ assay.timepoint }}</td>
-                    <td>{{ assay.measurement_date }}</td>
-                    <td>{{ assay.sample_source }}</td>
-                    <td>{{ assay.ldl }}</td>
-                    <td>{{ assay.creatinine_kinase }}</td>
-                    <td>{{ assay.potassium }}</td>
-                    <td>{{ assay.age }}</td>
-                    <td>{{ assay.comment }}</td>
+                    <td>{{ assay.mid|default_if_none:"" }}</td>
+                    <td>{{ assay.mid.genotype|default_if_none:"" }}</td>          
+                    <td>{{ assay.timepoint|default_if_none:"" }}</td>
+                    <td>{{ assay.measurement_date|default_if_none:"" }}</td>
+                    <td>{{ assay.sample_source|default_if_none:"" }}</td>
+                    <td>{{ assay.ldl|default_if_none:"" }}</td>
+                    <td>{{ assay.creatinine_kinase|default_if_none:"" }}</td>
+                    <td>{{ assay.potassium|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
+                    <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>
                 {% endfor %}

@@ -40,19 +40,15 @@
                   <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                     <!--<td>{{ assay.assayid }}</td>-->
                       <td>{{ assay.mid }}</td>
-                      <td>{{ assay.mid.genotype }}</td>          
-                      <td>{{ assay.timepoint }}</td>
-                      <td>{{ assay.measurement_date }}</td>
-                      <td>{{ assay.individual_latency_fall1 }}</td>
-                      <td>{{ assay.individual_latency_fall2 }}</td>
-                      <td>{{ assay.mean_latency_fall }}</td>
-                      <td>{{ assay.speed_fall1 }}</td>
-                      <td>{{ assay.speed_fall2}}</td>
-                      <td>{{ assay.age }}</td>
-                      <td>{{ assay.mid.gender }}</td>
-                      <td>{{ assay.mid.induced }}</td>
-                      <td>{{ assay.mid.treated }}</td>
-
+                      <td>{{ assay.mid.genotype|default_if_none:"" }}</td>          
+                      <td>{{ assay.timepoint|default_if_none:"" }}</td>
+                      <td>{{ assay.measurement_date|default_if_none:"" }}</td>
+                      <td>{{ assay.individual_latency_fall1|default_if_none:"" }}</td>
+                      <td>{{ assay.individual_latency_fall2|default_if_none:"" }}</td>
+                      <td>{{ assay.mean_latency_fall|default_if_none:"" }}</td>
+                      <td>{{ assay.speed_fall1|default_if_none:"" }}</td>
+                      <td>{{ assay.speed_fall2|default_if_none:"" }}</td>
+                      <td>{{ assay.age|default_if_none:"" }}</td>
                       <td>{{ assay.comment }}</td>
                   </tr>
                   </tr>

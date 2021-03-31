@@ -26,6 +26,7 @@ from users.decorators import admin_only, allowed_users
 from assays.models import Assay
 from assays.forms import AssayForm
 from assays.functions import handle_uploaded_file
+
 ####################
 #    Pipelines     #
 ####################

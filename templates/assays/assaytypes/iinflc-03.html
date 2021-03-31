@@ -32,14 +32,14 @@
                   <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                     <!--<td>{{ assay.assayid }}</td>-->
                     <td>{{ assay.mid }}</td>
-                    <td>{{ assay.timepoint }}</td>
-                    <td>{{ assay.age }}</td>
-                    <td>{{ assay.measurement_date }}</td>
-                    <td>{{ assay.sum_intensity }}</td>
-                    <td>{{ assay.net_intensity }}</td>
-                    <td>{{ assay.mean_intensity }}</td>
-                    <td>{{ assay.acquisition_settings }}</td>
-                    <td>{{ assay.comments }}</td>
+                    <td>{{ assay.timepoint|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
+                    <td>{{ assay.measurement_date|default_if_none:"" }}</td>
+                    <td>{{ assay.sum_intensity|default_if_none:"" }}</td>
+                    <td>{{ assay.net_intensity|default_if_none:"" }}</td>
+                    <td>{{ assay.mean_intensity|default_if_none:"" }}</td>
+                    <td>{{ assay.acquisition_settings|default_if_none:"" }}</td>
+                    <td>{{ assay.comments|default_if_none:"" }}</td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -51,4 +51,6 @@
         </div>
       </div>
     </div>
+
+
 {% endblock %}

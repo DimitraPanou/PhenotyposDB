@@ -1,6 +1,5 @@
 
 {% extends 'base.html' %}
-
 {% block content %}
   {% if user.is_authenticated %}
     {% block content_header %}
@@ -8,6 +7,116 @@
     <p>
       {{object.name}}
     </p>
+
+      <header class="coin-details-header" style=""><!--
+  <script type="application/ld+json">{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": "Cardano",
+  "alternateName": "ADA",
+  "description": "Cardano is a decentralised public blockchain and cryptocurrency project and is fully open source. Cardano is developing a smart contract platform which seeks to deliver more advanced features than any protocol previously developed.",
+  "image": "https://coincheckup.com/images/coins/cardano.png",
+  "url": "https://coincheckup.com/coins/cardano",
+  "offers": [
+    {
+      "@type": "Offer",
+      "price": 1.389489162,
+      "priceCurrency": "USD"
+    }
+  ],
+  "review": {
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": 3.72,
+      "bestRating": "5",
+      "worstRating": "0"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "CoinCheckup.com",
+      "logo": "https://coincheckup.com/images/logo-lg.png",
+      "url": "https://coincheckup.com",
+      "description": "Live cryptocurrency prices and charts, listed by market cap. Get crypto prices, predictions, news, and historical data for Bitcoin and thousands of altcoins."
+    }
+  }
+}</script> -->
+
+
+<div class="coin-info">
+    <div class="coin-logo-name">
+        <div class="coin-logo">
+            <img id="squareicon" class="user-image img-circle elevation-2" width="70" height="70">
+
+        </div>
+        <div class="coin-name">
+            {{object.type.code}}
+            <small>{{object.name}}</small>
+        </div>
+    </div>
+</div>
+
+<div class="key-financials">
+    <table>
+        <thead>
+            <tr>
+                <th>Cardano Price</th>
+                <th ng-show="details.coin.price_change_1D_percent" class="">Change 24H</th>
+                <!----><th ng-if="(!_.isNull(details.coin.price_change_7D_percent))">Change 7D</th><!---->
+                <!----><th ng-if="details.coin.last_market_cap_usd">Market Cap</th><!---->
+                <!----><th ng-if="details.coin.volume_24_usd">Volume 24H</th><!---->
+                <!----><th ng-if="details.coin.supply">Circ. <!----><span ng-if="details.market.max_supply">/ Max</span><!----> Supply</th><!---->
+                <!----><th ng-if="::details.total_score"><span class="underscore-tooltip" uib-tooltip="CoinCheckup collects objective data and algorithmically scores coins on a daily basis." aria-hidden="true" tooltip-append-to-body="true">Algo. Score</span></th><!---->
+                <!----><th ng-if="coinQuickLinks.length" class="hidden-xs">Cardano Links</th><!---->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><i ng-class="{ 'change-up fal fa-long-arrow-up': details.coin.price_change_1D_percent >= 0, 'change-down fal fa-long-arrow-down': details.coin.price_change_1D_percent < 0 }" class="change-up fal fa-long-arrow-up"></i><span id="header-price">$1.43</span></td>
+                <td ng-show="details.coin.price_change_1D_percent" class=""><span ng-class="{ 'change-up': details.coin.price_change_1D_percent >= 0, 'change-down': details.coin.price_change_1D_percent < 0 }" class="change-up">17.55%</span></td>
+                <!----><td ng-if="(!_.isNull(details.coin.price_change_7D_percent))"><span ng-class="{ 'change-up': details.coin.price_change_7D_percent >= 0, 'change-down': details.coin.price_change_7D_percent < 0 }" class="change-up">22.65%</span></td><!---->
+                <!----><td ng-if="details.coin.last_market_cap_usd">$44.96 B <small ng-show="details.market.rank > 0" class="">(#3)</small></td><!---->
+                <!----><td ng-if="details.coin.volume_24_usd">$23.73 B</td><!---->
+                <!----><td ng-if="details.coin.supply">
+                    31.46 B
+                    <!----><span ng-if="details.market.max_supply">/ 45.00 B</span><!----></td><!---->
+                <!----><td ng-if="::details.total_score">
+                    <a ui-sref="{ 'view' : 'analysis', 'subview' : null }" uib-tooltip="Click to see the full analysis" tooltip-append-to-body="true" href="/coins/cardano/analysis">
+                        3.7/5
+                    </a>
+                    <small>(#97)</small>
+                </td><!---->
+                <!----><td ng-if="coinQuickLinks.length" class="hidden-xs">
+                    <div class="links">
+                        <!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Website" uib-tooltip="Website" href="https://www.cardano.org/en/home/" target="_blank">
+                            <i class="fa-fw fal fa-globe" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Twitter" uib-tooltip="Twitter" href="https://twitter.com/Cardano" target="_blank">
+                            <i class="fa-fw fab fa-twitter-square" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Telegram" uib-tooltip="Telegram" href="https://t.me/CardanoAnnouncements" target="_blank">
+                            <i class="fa-fw fab fa-telegram" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="GitHub" uib-tooltip="GitHub" href="https://github.com/input-output-hk/cardano-sl/" target="_blank">
+                            <i class="fa-fw fab fa-github" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Reddit" uib-tooltip="Reddit" href="https://www.reddit.com/r/cardano/" target="_blank">
+                            <i class="fa-fw fab fa-reddit" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Blog" uib-tooltip="Blog" href="https://cardanofoundation.org/blog/" target="_blank">
+                            <i class="fa-fw fal fa-rss" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Block explorer" uib-tooltip="Block explorer" href="https://cardanoexplorer.com/" target="_blank">
+                            <i class="fa-fw fas fa-cubes" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Facebook" uib-tooltip="Facebook" href="https://www.facebook.com/CardanoFoundation/" target="_blank">
+                            <i class="fa-fw fab fa-facebook-square" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="YouTube" uib-tooltip="YouTube" href="https://www.youtube.com/channel/UCBJ0p9aCW-W82TwNM-z3V2w" target="_blank">
+                            <i class="fa-fw fab fa-youtube" aria-hidden="true"></i>
+                         </a><!---->
+                    </div>
+                </td><!---->
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</header>
+
+<div class="page-content">         
+
     <a class="btn btn-secondary btn-lg mt-1 mb-1 ti-pencil" href="{% url 'assay-update' object.id %}"></a>
     {% endblock %}
   <div class="row">
@@ -32,6 +141,11 @@
                       </div>
                               <!-- /.card-header -->
                       <div class="card-body">
+                        {% for m in mouselist %}
+                        <p class="text-muted">
+                          {{ m.id }}, {{ m.genotype }}, {{ m.induced }}
+                        </p>                        
+                        {% endfor %}
                         <strong><i class="fas fa-book mr-1"></i> Description </strong>
                         <p class="text-muted">
                           {{ assay.type.name }}
@@ -93,11 +207,21 @@
           </div>
           <!-- /.col -->
         </div>
+  </div>
+</div>
+
   {% endif %}  
 
 {% endblock %}
 
-
-
+<script>
+  usern = '1';
+  squareicon({
+      id: usern, 
+      hasher: SparkMD5.hash
+  }, (err, data) => {
+    document.getElementById("squareicon").src = data;
+  });   
+</script>
 
 

@@ -29,11 +29,11 @@
                   <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                     <!--<td>{{ assay.assayid }}</td>-->
                     <td>{{ assay.mid }}</td>
-                    <td>{{ assay.timepoint }}</td>
-                    <td>{{ assay.age }}</td>
-                    <td>{{ assay.measurement_date }}</td>
-                    <td>{{ assay.clinical_score }}</td>
-                    <td>{{ assay.comments }}</td>
+                    <td>{{ assay.timepoint|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
+                    <td>{{ assay.measurement_date|default_if_none:"" }}</td>
+                    <td>{{ assay.clinical_score|default_if_none:"" }}</td>
+                    <td>{{ assay.comments|default_if_none:"" }}</td>
                   </tr>
                   </tr>
                 {% endfor %}

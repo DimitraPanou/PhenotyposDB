@@ -1,5 +1,5 @@
 # Create your views here.
-
+import json
 from django.shortcuts import render, redirect,get_object_or_404
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
@@ -21,12 +21,15 @@ from users.decorators import allowed_users
 from django.urls import reverse_lazy
 #from .forms import AssayForm
 from .forms import AssayForm, AtypeForm, AtypeExtraForm
-from .models import Assay, Atype
+from .models import Assay, Atype, Mouse
 from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic import FormView
 
 from .functions import handle_uploaded_file, returnTemplateName
+
+from django.db.models import Count
+
 ####################
 #    Assays        #
 ####################
@@ -118,7 +121,19 @@ class AssaysDetailView(DetailView):
 			24: self.get_object().ar02s.annotate(),
 
 		}
-		kwargs['measures'] = switcher.get(self.object.type.id,"Ivalid")
+		# mouselist = i4.values('mid').distinct().order_by('mid')
+		# objects = Mouse.objects.filter(id__in=mouselist)
+		measures = switcher.get(self.object.type.id,"Ivalid")
+		kwargs['measures'] = measures
+		mouselist = measures.values('mid').distinct().order_by('mid')
+		mouse_num = measures.values('mid').annotate(dcount=Count('mid')).count()	
+		females = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Female')
+		males = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Male')
+		kwargs['mouselist'] = Mouse.objects.filter(id__in=mouselist)
+		kwargs['total'] = mouse_num
+		kwargs['assayjson']= json.dumps(self.object.id)
+		kwargs['females'] = females.count()
+		kwargs['males'] = males.count()
 		return super().get_context_data(**kwargs)
 
 

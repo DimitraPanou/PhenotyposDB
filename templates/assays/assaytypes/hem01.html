@@ -52,34 +52,34 @@
                   <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                     <!--<td>{{ assay.assayid }}</td>-->
                       <td>{{ assay.mid }}</td>
-                      <td>{{ assay.mid.genotype }}</td>          
-                      <td>{{ assay.timepoint }}</td>
-                      <td>{{ assay.measurement_date }}</td>
-                      <td>{{ assay.sample_id }}</td>
-                      <td>{{ assay.wbc_count }}</td>
-                      <td>{{ assay.mononuclear_num }}</td>
-                      <td>{{ assay.lymphocytes_num }}</td>
-                      <td>{{ assay.lymphocytes_per }}</td>
-                      <td>{{ assay.monocytes_num }}</td>
-                      <td>{{ assay.monocytes2_num }}</td>
-                      <td>{{ assay.neutrophils_num }}</td>
-                      <td>{{ assay.neutrophils_per }}</td>
-                      <td>{{ assay.eosinophils_num }}</td>
-                      <td>{{ assay.eosinophils_per }}</td>
-                      <td>{{ assay.basophils_num }}</td>
-                      <td>{{ assay.basophils_per }}</td>
-                      <td>{{ assay.rbc_count }}</td>
-                      <td>{{ assay.ht }}</td>
-                      <td>{{ assay.hb }}</td>
-                      <td>{{ assay.plt_count }}</td>
-                      <td>{{ assay.platelet_dist_range }}</td>
-                      <td>{{ assay.platelet_count }}</td>
-                      <td>{{ assay.avg_vol_platelets }}</td>
-                      <td>{{ assay.mcv }}</td>
-                      <td>{{ assay.rdv }}</td>
-                      <td>{{ assay.mchc }}</td>
-                      <td>{{ assay.mcv2 }}</td>
-                      <td>{{ assay.comment }}</td>
+                      <td>{{ assay.mid.genotype|default_if_none:"" }}</td>          
+                      <td>{{ assay.timepoint|default_if_none:"" }}</td>
+                      <td>{{ assay.measurement_date|default_if_none:"" }}</td>
+                      <td>{{ assay.sample_id|default_if_none:"" }}</td>
+                      <td>{{ assay.wbc_count|default_if_none:"" }}</td>
+                      <td>{{ assay.mononuclear_num|default_if_none:"" }}</td>
+                      <td>{{ assay.lymphocytes_num|default_if_none:"" }}</td>
+                      <td>{{ assay.lymphocytes_per|default_if_none:"" }}</td>
+                      <td>{{ assay.monocytes_num|default_if_none:"" }}</td>
+                      <td>{{ assay.monocytes2_num|default_if_none:"" }}</td>
+                      <td>{{ assay.neutrophils_num|default_if_none:"" }}</td>
+                      <td>{{ assay.neutrophils_per|default_if_none:"" }}</td>
+                      <td>{{ assay.eosinophils_num|default_if_none:"" }}</td>
+                      <td>{{ assay.eosinophils_per|default_if_none:"" }}</td>
+                      <td>{{ assay.basophils_num|default_if_none:"" }}</td>
+                      <td>{{ assay.basophils_per|default_if_none:"" }}</td>
+                      <td>{{ assay.rbc_count|default_if_none:"" }}</td>
+                      <td>{{ assay.ht|default_if_none:"" }}</td>
+                      <td>{{ assay.hb|default_if_none:"" }}</td>
+                      <td>{{ assay.plt_count|default_if_none:"" }}</td>
+                      <td>{{ assay.platelet_dist_range|default_if_none:"" }}</td>
+                      <td>{{ assay.platelet_count|default_if_none:"" }}</td>
+                      <td>{{ assay.avg_vol_platelets|default_if_none:"" }}</td>
+                      <td>{{ assay.mcv|default_if_none:"" }}</td>
+                      <td>{{ assay.rdv|default_if_none:"" }}</td>
+                      <td>{{ assay.mchc|default_if_none:"" }}</td>
+                      <td>{{ assay.mcv2|default_if_none:"" }}</td>
+                      <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>
                 {% endfor %}
