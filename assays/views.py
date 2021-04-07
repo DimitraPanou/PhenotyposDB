@@ -20,7 +20,7 @@ from users.decorators import allowed_users
 
 from django.urls import reverse_lazy
 #from .forms import AssayForm
-from .forms import AssayForm, AtypeForm, AtypeExtraForm
+from .forms import AssayForm, AtypeForm, AtypeExtraForm, ImageForm
 from .models import Assay, Atype, Mouse
 from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
@@ -70,6 +70,22 @@ def add_assay(request, *args, **kargs):
     return render(request, 'assays/add_assay.html', {
         'form': form
     })
+
+@allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
+def uploadImage(request, *args, **kargs):
+	assay = get_object_or_404(Assay, pk=pk, pi=request.user)
+	if request.method == 'POST':
+		form = ImageForm(request.POST, request.FILES)
+		if form.is_valid():
+			form.instance.assayid = assay
+			test = form.save()
+			if(handle_uploaded_file(test)==-1):
+				html = "<html><body>Problem with the file.</body></html>"
+				return HttpResponse(html)
+			return redirect('assays')
+		else:
+			form = ImageForm()
+	return render(request, 'assays/detail_assay2.html', {'object':assay, 'imageform':form})
 
 class AssaysUpdateView(LoginRequiredMixin,UpdateView):
 	model = Assay
@@ -123,6 +139,7 @@ class AssaysDetailView(DetailView):
 		}
 		# mouselist = i4.values('mid').distinct().order_by('mid')
 		# objects = Mouse.objects.filter(id__in=mouselist)
+		#images = self.get_object().associated_images.annotate()
 		measures = switcher.get(self.object.type.id,"Ivalid")
 		kwargs['measures'] = measures
 		mouselist = measures.values('mid').distinct().order_by('mid')
@@ -144,8 +161,9 @@ class UserAssaysListView(LoginRequiredMixin,ListView):
 
 	def get_queryset(self):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
-		return Assay.objects.filter(author=user).order_by('measurement_day')
-
+		a= Assay.objects.filter(author=user).order_by('measurement_day')
+		b= Assay.objects.filter(scientist=user).order_by('measurement_day')		
+		return a|b
 	def get_context_data(self, **kwargs):
 		kwargs['flag'] = 1
 		return super().get_context_data(**kwargs)

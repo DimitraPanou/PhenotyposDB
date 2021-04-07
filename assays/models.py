@@ -40,6 +40,15 @@ class Atype(models.Model):
         return reverse('assaytype-detail-update', kwargs={'pk': self.id})
 
 class Assay(models.Model):
+    MOUSEAGE = (
+        ('days', 'days'),
+        ('weeks', 'weeks'),
+    )
+    TIMESTEPS = (
+        ('hours', 'hours'),        
+        ('days', 'days'),
+        ('weeks', 'weeks'),
+    )    
     code = models.CharField(max_length=25)
     name = models.CharField(max_length=128, blank=True, null=True)
     version = models.IntegerField(blank=True, null=True)
@@ -52,9 +61,20 @@ class Assay(models.Model):
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1, related_name='created_by_user')
     pipeline = models.ForeignKey(Pipeline, on_delete=models.DO_NOTHING, related_name='assays',blank=True, null=True)
     updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING, related_name='updated_by_user',blank=True, null=True)
-    scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="scientists",related_query_name="scientist",blank=True, null=True)
+    scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='scientist', related_name='scientists',related_query_name='scientist',blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    mouse_age = models.CharField(
+        max_length=7,
+        choices=MOUSEAGE,
+        default='days',
+    )
+    duration = models.IntegerField(blank=True, null=True)    
+    timesteps_in = models.CharField(
+        max_length=7,
+        choices=TIMESTEPS,
+        default='days',
+    )
 
 
     def get_absolute_url(self):
@@ -62,6 +82,19 @@ class Assay(models.Model):
 
     def __str__(self):
         return u'{0}\t\t{1}'.format(self.name, self.code)
+
+class AssociatedImage(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='associated_images')  # Field name made lowercase.
+    title = models.CharField(max_length=50, blank=True, null=True)
+    image = models.ImageField(upload_to='assays/img/')
+    caption = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'AssociatedImages'
+
+    def __str__(self):
+        return u'{0}'.format(self.title)
 
 class Iinflc02(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='iinflc02s')  # Field name made lowercase.

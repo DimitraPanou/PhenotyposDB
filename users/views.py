@@ -76,3 +76,6 @@ def test(request):
 
 #	def get_object(self):
 #		id_ = self.kwargs.get()
+
+#ALTER USER postgres PASSWORD 'dim123!@#';
+#CREATE ROLE DK_LAB LOGIN SUPERUSER PASSWORD 'DKontogiann1s';

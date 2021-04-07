@@ -19,10 +19,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{% static 'dist/css/dropify.min.css' %}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+    <!-- Ekko Lightbox -->
+  <link rel="stylesheet" href="{% static 'plugins/ekko-lightbox/ekko-lightbox.css' %}">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
 
   <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'css/highcharts.css' %}">
   <!--[if lt IE 8]><!-->
   <link rel="stylesheet" href="{% static 'ie7/ie7.css' %}">
   <!-- Extra style -->
@@ -65,7 +69,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
   <link rel="stylesheet" href="{% static 'css/extra.css' %}">
-
 <!--
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
 -->
@@ -438,13 +441,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<!-- Ekko Lightbox -->
+<script src="{% static 'plugins/ekko-lightbox/ekko-lightbox.min.js' %}"></script>
+<script>
+  $(function () {
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox({
+        alwaysShowClose: true
+      });
+    });
+
+    $('.filter-container').filterizr({gutterPixels: 3});
+    $('.btn[data-filter]').on('click', function() {
+      $('.btn[data-filter]').removeClass('active');
+      $(this).addClass('active');
+    });
+  })
+</script>
+
 <script type="text/javascript">
-  var usern = JSON.parse("{{assayjson}}");
+  var aid= document.getElementsByClassName("squareicon user-image img-circle elevation-2")[0].id;
+  console.log(aid);
   squareicon({
-      id: usern, 
+      id: aid, 
       hasher: SparkMD5.hash
   }, (err, data) => {
-    document.getElementById("squareicon").src = data;
+    document.getElementById(aid).src = data;
   });   
 </script>
 

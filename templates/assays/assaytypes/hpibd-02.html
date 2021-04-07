@@ -1,12 +1,21 @@
 {% extends 'assays/detail_assay2.html' %}
 
+{% block measured_values %}
+  <p>Small Intestine</p>
+  <p>Large Intestine</p>
+{% endblock %}
+
+{% block min_models %}
+  <p>3M + 3F</p>
+{% endblock %}
+
 {% block assay_content %}
  <!-- /.card -->
     <div class="row">
       <div class="col-12">
-        <div class="card">
+        <div class="card card-dark">
           <div class="card-header">
-            <h3 class="card-title">Measurements</h3>
+            <h3 class="card-title">Data</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -18,7 +27,7 @@
                 <tr>
                     <th>Mouse ID</th>
                     <th>Mouse Genotype</th>        
-                    <th>Timepoint</th>        
+                    <th>Timepoint ({{object.timesteps_in}})</th>        
                     <th>Measurement Date</th>
                     <th>Inflammation score small intestine</th>
                     <th>Epithelial damage small intestine</th>
@@ -40,13 +49,21 @@
                     <th>Crypt damage  large intestine</th>                  
                     <th>Endothelial cell activation large intestine</th>                  
                     <th>Age (days)</th>
-                    <th>Comments</th>                  
-
+                    <th>Comments</th>
                 </tr>
               </thead>
               <tbody>
                 {% for assay in measures %}
-                  <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+                  <tr class="table-row" data-href="#" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<div class="row"><div class="col-md-3"><img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"></div><div class="col-md-9"><h5><b>Mouse {{assay.mid}}</h5></div></div' data-content='
+                    <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender|default_if_none:""}}</p>
+                    <p><b>Genotype</b>: {{assay.mid.genotype|default_if_none:""}}</p> 
+                    <p><b>Date of Birth</b>: {{assay.mid.date|default_if_none:""}}</p> 
+                    <p><b>Age</b>: {{assay.mid.age|default_if_none:""}} </p> 
+                    <p><b>Induced</b>: {{assay.mid.induced|default_if_none:""}}</p>     
+                    <p><b>Treated</b>: {{assay.mid.treated|default_if_none:""}}</p> 
+                    <p><b>Diet</b>: {{assay.mid.diet|default_if_none:""}}</p> 
+                    <p><b>Other Mouse Information</b>: {{assay.mid.mouse_info|default_if_none:""}}</p>
+                    <p><b>Other environmental data</b>: {{assay.mid.other|default_if_none:""}}</p></div>'>
                     <!--<td>{{ assay.assayid }}</td>-->
                       <td>{{ assay.mid }}</td>
                       <td>{{ assay.mid.genotype|default_if_none:"" }}</td>          
@@ -85,4 +102,526 @@
         </div>
       </div>
     </div>
+{% endblock %}
+
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>A <b>Histological</b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
+                    <p> The charts show the results of measuring <b>Alanine aminotransferase</b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to <b>362 female</b>, <b>316 male</b> controls.</p> 
+                    <p> The mutants are <b></b> for the <b> Tnfrsf1a<sup>tm2b(EUCOMM)Wtsi</sup></b> allele.</p>
+{% endblock %}
+
+
+{% block equipment_content %}
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Protocol</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <h3 class="text-center"><b>HPIBD-02</b></h3>
+            <h3 class="text-center">Enteropathy Histopathology</h3>
+            <div class="picture_div" style="margin:0px auto; text-align:center;">
+              <img src="../../static/dist/img/footer-logo-new.png" />
+            </div>
+            <p></p>
+            <div class="row justify-content-center">              
+              <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box bg-newteal">
+              <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Date published</span>
+                <span class="info-box-number">7/5/2019</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+              </div>
+            <!-- /.info-box -->
+            <div class="col-md-2 col-sm-2 col-12">
+            <div class="info-box bg-newteal">
+              <span class="info-box-icon"><i class="fas fa-file-word"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Version</span>
+                <span class="info-box-number text-center"><b>2</b></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div> 
+          <div class="col-md-3 col-lg-4 col-12">
+            <div class="info-box bg-newteal">
+              <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Team</span>
+                <span class="info-box-number">Histology Unit</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+              </div>             
+          </div>
+              <div id="protocolTextContainer" style="visibility:visible">     
+                <a href="#Purpose" class="btn btn-default">Purpose</a>
+                <a href="#Experimental-Design" class="btn btn-default">Experimental Design</a>
+                <a href="#Equipment" class="btn btn-default">Equipment</a>                                
+                <a href="#Supplies" class="btn btn-default">Supplies</a>                                
+                <a href="#Procedure" class="btn btn-default">Procedure</a>
+                <a href="#Notes" class="btn btn-default">Notes</a>
+                <a href="#References" class="btn btn-default">References</a>
+              </div>
+              <hr>
+                                                  <div class="ptcl-item purpose">
+                                        <h3 id="Purpose" class="mb-3" tabindex="-1">Purpose</h3>
+                                        <div>
+                                          <p>
+                                            Histological evaluation of enteropathy caused by a-CD3 administration.
+                                          </p>
+                                        </div>
+                                    </div>
+                                    <div class="ptcl-item exp-design">
+                                        <h3 id="Experimental-Design" tabindex="-1">Experimental Design</h3>
+                                        <div>
+                                          <div class="expandable">
+                                              <ul>
+                                                <li>
+                                                  <strong>Minimum number of animals :</strong>&nbsp; 3M + 3F <br> 3 male and 3 female mice per genotype for anti-CD3 administration and 3 male and 3 female mice per genotype for anti-IgG administration to be used as controls.
+  </li>
+                                                <li>
+                                                  <strong>Age at test: </strong>6-8 weeks </li></ul>
+                                          </div>
+                                          </div>
+                                        </div>
+                                      <div class="ptcl-item equipment">
+                                        <h3 id="Equipment" class="mb-3" tabindex="-1">Equipment</h3>
+                                        <div>
+                                              <ul>
+                                                <li>Tissue embedder (Meditel TBS88) </li>
+                                                <li>Histokinette (Leica TP 1020) </li>
+                                                <li>Microtome (SLEE/Microm HM 200 Ergostar/Leica RM2125)</li>
+                                                <li>Waterbath (Meditel TFB35/Leica HI1210)</li>
+                                                <li>Hot plate (Leica HI1220) </li>
+                                                <li>Slide stainer (Leica AutostainerXL)</li>
+                                                <li>Glass coverslipper (Leica CV5030)</li>
+                                                <li>Microscopes (Primo Star Zeiss, Nikon Eclipse E200)</li>
+                                                <li>MilliQ H2O system (for type 1 ultrapure water; Merck, Synergy Water Purification System)</li>
+                                                <li>Hot plate with magnetic stirrer (DragonLab, MS-H-S)</li>
+                                                <li>Scales (MRC, Precision Balance, BPS-750-C2-V2)</li>
+                                                <li>SigmaPlot Software (Systat Software Inc.)</li> 
+                                                <li>Image J Software (NIH)</li>                                                                                                                                                 
+                                              </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ptcl-item supplies">
+                                        <h3 id="Supplies" class="mb-3" tabindex="-1">Suplies</h3>
+                                        <div>
+                                              <ul>
+                                                <li>Phosphate Buffer Saline (PBS) (homemade) </li>
+                                                <li>Sodium chloride (Fisher Scientific), BP358-1 </li>
+                                                <li>Potassium chloride (Riedel-de Haën), 31248</li>
+                                                <li>Sodium phosphate dibasic (Sigma), S7907 </li>
+                                                <li>Potassium phosphate (VWR), 26936.260</li>
+                                                <li>Formaldehyde 4% (VWR Chemicals BDH), 9713.500</li>
+                                                <li>Papanicolaou’s solution, 1a Harris Hematoxylin Solution (Merck), 1.09253.2500</li>
+                                                <li>Eosin Y (Merck), 1.15935.0100</li>
+                                                <li>50%, 70%, 80% Ethanol (homemade)</li>
+                                                <li>96% Ethanol (Fisher Chemical), M/4000/PC25</li>
+                                                <li>Ethanol absolute (VWR Chemicals BDH), 20821.330</li>
+                                                <li>Xylene (Fisher Chemical), X/0250/17</li> 
+                                                <li>Magnesium sulphate 7-hydrate (Analar BDH), 101514Y</li>
+                                                <li>Potassium bicarbonate (Sigma),  P9144</li>
+                                                <li>Acetic acid glacial (Fisher Scientific), A/0360/PB17</li>
+                                                <li>Schiff’s reagent (Merck), 1.09033.0500</li>
+                                                <li>Periodic acid (Merck), 1.00524.0025</li>
+                                                <li>DPX (Sigma), 06522</li>
+                                                <li>Paraffin (VWR Chemicals), 361334C</li>
+                                                <li>Microscope slides (Knittel Glass), KA-01001004</li>
+                                                <li>Cover slips (Knittel Glass), KA-01101008</li>
+                                                <li>Microtome blade S-35 (Feather), 207500000</li>
+                                                <li>Embedding cassettes (Simport), QTY/PK</li>
+                                                <li>Biopsy pads (Bio - optica), 07-7290</li>
+                                                <li>Forceps (Stainless Germany)</li>
+                                                <li>Scissors (at least one medium size and one small) (Stainless Germany)</li>
+                                                <li>10 ml syringes with needles 21G (BD M</li>                                                                                                                                                 
+                                              </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ptcl-item procedure">
+                                        <h3 id="Procedure" class="mb-3" tabindex="-1">Procedure</h3>
+                                        <div><p>3.1 Calculate and record the volume of anaesthetic solution required for intraperitoneal (IP) injection.</p><p>3.2 Anesthetize the mice.</p><p>3.3 Monitor the animal carefully until unconsciousness by ensuring that the mouse is adequately sedated.</p><p>3.4 Weigh the mouse and record the value.</p><p>3.5 Measure the length of the mouse as follows and record the value (accuracy �0.1cm)</p><p>3.5.1 Place the unconscious mouse on a disinfected ruler so that its nose is at zero</p><p>(figure 1).</p><p><img src="https://api.mousephenotype.org/impress/image/a829fd141ffa7626fbf640550df0cfd8bef837d893d25885b1eeb2b5ea2ae7e1"></p><p>Figure 1</p><p>3.5.2 To measure the entire length of the head press gently against the ruler</p><p>(figure 2) and gently pull the tail to ensure that the spine returns to its full</p><p>length (figure 3).</p><p><img src="https://api.mousephenotype.org/impress/image/b1f12d54fff821d05284ba7f379d81472b384831ad4973897d973d6facdefbc7"></p><p>Figure 2</p><p><img src="https://api.mousephenotype.org/impress/image/2666263a24f43572af79a61384b35b48fb5488f1251e84e16ee0f819f24da9d2"></p><p>Figure 3</p><p>3.5.3 Measure the length starting from the nose (0cm) to the beginning of the tail</p><p>(figure 4). Record the measurement  the accuracy is within 0.1cm. For</p><p>example in figure 4 the length of the mouse is 9.5cm.</p><p><img src="https://api.mousephenotype.org/impress/image/79e5372f68c9124e05c245f7e3f047423cd2b868b75e3dee0eb26ee3a54584fb"></p><p>Figure 4</p><p>3.5.4 Disinfect the ruler and contact area after the measurement has been taken.</p><p>3.6 Place the unconscious mouse into the DEXA analyser.</p><p>3.7 Perform a scout-scan.</p><p>3.8 Optimise the area of interest and perform a measure-scan.</p><p>3.9 Note that the exposure dose per mouse is 300?Sv.</p><p>3.10 For the analysis of the data, regions of interest must be defined. The standard analysis comprises of a whole body analysis excluding the head area.</p><p>Continue with X-ray analysis or</p><p>3.11 Remove the mouse once the image is captured. Place the mouse on a heated mat, set at 37�C, in a cage and monitor closely until consciousness is regained.</p></div>
+                                    </div>
+                                    <div class="ptcl-item procedure">
+                                        <h3 id="Procedure" class="mb-3" tabindex="-1">Procedure</h3>
+                                        <div><p>3.1 Calculate and record the volume of anaesthetic solution required for intraperitoneal (IP) injection.</p><p>3.2 Anesthetize the mice.</p><p>3.3 Monitor the animal carefully until unconsciousness by ensuring that the mouse is adequately sedated.</p><p>3.4 Weigh the mouse and record the value.</p><p>3.5 Measure the length of the mouse as follows and record the value (accuracy �0.1cm)</p><p>3.5.1 Place the unconscious mouse on a disinfected ruler so that its nose is at zero</p><p>(figure 1).</p><p><img src="https://api.mousephenotype.org/impress/image/a829fd141ffa7626fbf640550df0cfd8bef837d893d25885b1eeb2b5ea2ae7e1"></p><p>Figure 1</p><p>3.5.2 To measure the entire length of the head press gently against the ruler</p><p>(figure 2) and gently pull the tail to ensure that the spine returns to its full</p><p>length (figure 3).</p><p><img src="https://api.mousephenotype.org/impress/image/b1f12d54fff821d05284ba7f379d81472b384831ad4973897d973d6facdefbc7"></p><p>Figure 2</p><p><img src="https://api.mousephenotype.org/impress/image/2666263a24f43572af79a61384b35b48fb5488f1251e84e16ee0f819f24da9d2"></p><p>Figure 3</p><p>3.5.3 Measure the length starting from the nose (0cm) to the beginning of the tail</p><p>(figure 4). Record the measurement  the accuracy is within 0.1cm. For</p><p>example in figure 4 the length of the mouse is 9.5cm.</p><p><img src="https://api.mousephenotype.org/impress/image/79e5372f68c9124e05c245f7e3f047423cd2b868b75e3dee0eb26ee3a54584fb"></p><p>Figure 4</p><p>3.5.4 Disinfect the ruler and contact area after the measurement has been taken.</p><p>3.6 Place the unconscious mouse into the DEXA analyser.</p><p>3.7 Perform a scout-scan.</p><p>3.8 Optimise the area of interest and perform a measure-scan.</p><p>3.9 Note that the exposure dose per mouse is 300?Sv.</p><p>3.10 For the analysis of the data, regions of interest must be defined. The standard analysis comprises of a whole body analysis excluding the head area.</p><p>Continue with X-ray analysis or</p><p>3.11 Remove the mouse once the image is captured. Place the mouse on a heated mat, set at 37�C, in a cage and monitor closely until consciousness is regained.</p></div>
+                                    </div>
+                                    <div class="ptcl-item notes">
+                                        <h3 id="Notes" class="mb-3">Notes</h3>
+                                        <div>
+                                          <p>
+                                            1. For every large intestine segment (3 seg) score 3 fields (40x) with maximum phenotype. Total number of apoptotic bodies /9 = Apoptotic bodies /field.</p>
+                                          <p>
+                                            2. Evaluate the Pas stained slide in conjunction to control.</p>
+                                          <p>
+                                            3. Evaluate enlarged and distended lymph and blood vessels.</p>
+                                        </div>
+                                    </div>
+                                    <div class="ptcl-item references">
+                                        <h3 id="References" class="mb-3">References</h3>
+                                        <div>
+                                          <p>
+                                            <strong>1. </strong> M. Merger, J. L. Viney, R. Borojevic, D. Steele-Norwood, P. Zhou, D. A. Clark, R. Riddell, D. Maric, E. R. Podack, K. Croitoru (2002). Defining the roles of perforin, Fas/FasL, and tumour necrosis factor a in T cell induced mucosal damage in the mouse intestine. Gut, 51:155–163.</p>
+                                          <p>
+                                            <strong>2. </strong> U. Erben, C. Loddenkemper, K. Doerfel3, S. Spieckermann, D. Haller, M. M. Heimesaat, M. Zeitz1, B. Siegmund, A. A Kühl (2014). A guide to histomorphological evaluation of intestinal inflammation in mouse models. Int J Clin Exp Pathol, 7:4557-4576.</p>
+                                        </div>
+                                    </div>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+{% endblock %}
+
+{% block info_content %}
+<div id="Scoring"><h3>Histological Scoring for a-CD3 mediated enteropathy </h3></div> 
+    <div class="row">
+          <!-- Left col -->
+      <div class="col-md-6">
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Small intestine</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-valign-middle">
+                      <thead>
+                          <tr>
+                              <th>Score</th>
+                              <th>0    </th>
+                              <th>1    </th>
+                              <th>2    </th>
+                              <th>3    </th>
+                              <th>4    </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                            <tr>
+                              <td>Epithelium flattening</td>
+                              <td> </td>
+                              <td>Minimal (<10%)</td>
+                              <td>Mild (10-25%)</td>
+                              <td>Moderate (26-50%)</td>
+                              <td>Marked (>51%)</td>
+                          </tr>
+                          <tr>
+                              <td>Apoptotic bodies/field</td>
+                              <td>0</td>
+                              <td>1-3</td>
+                              <td>4-5</td>
+                              <td>8-13</td>
+                              <td> >13</td>
+                          </tr>
+                            <tr>
+                              <td>Goblet cell depletion (relative to baseline by Pas stain)</td>
+                              <td> </td>
+                              <td>Minimal (<10%)</td>
+                              <td>Mild (10-25%)</td>
+                              <td>Moderate (26-50%)</td>
+                              <td>Marked (>51%)</td>
+                          </tr>
+                            <tr>
+                              <td>Lumen exfoliation</td>
+                              <td> </td>
+                              <td>Minimal</td>
+                              <td>Mild</td>
+                              <td>Moderate</td>
+                              <td>Marked</td>
+                          </tr>
+                            <tr>
+                              <td>Villus shortening</td>
+                              <td> </td>
+                              <td> </td>
+                              <td>Mild (< 25%)</td>
+                              <td>Moderate (26-50%)</td>
+                              <td>Marked (>51%)</td>
+                          </tr>
+                            <tr>
+                              <td>Intestinal gland damage</td>
+                              <td> </td>
+                              <td> </td>
+                              <td>Mild</td>
+                              <td>Moderate</td>
+                              <td>Marked</td>
+                          </tr>
+                            <tr>
+                              <td>Paneth activation (relative to baseline by Pas stain)</td>
+                              <td> </td>
+                              <td> </td>
+                              <td>Mild</td>
+                              <td> </td>
+                              <td>Marked</td>
+                          </tr>
+                            <tr>
+                              <td>Peyer patch</td>
+                              <td>1-2</td>
+                              <td> </td>
+                              <td>3-5</td>
+                              <td> </td>
+                              <td> >6 </td>
+                          </tr>
+                            <tr>
+                              <td><strong>Score (min 0, max 32)</strong></td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                          </tr>                                    
+                      </tbody>
+                </table>
+              </div>
+            </div>
+      </div>
+      <div class="col-md-6">
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Large intestine</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-valign-middle">
+                      <thead>
+                          <tr>
+                              <th>Score</th>
+                              <th>0    </th>
+                              <th>1    </th>
+                              <th>2    </th>
+                              <th>3    </th>
+                              <th>4    </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td>Apoptotic bodies/field</td>
+                              <td>0</td>
+                              <td> </td>
+                              <td>1-3</td>
+                              <td>4-8</td>
+                              <td> >9</td>
+                          </tr>
+                            <tr>
+                              <td>Goblet cell depletion (relative to baseline by Pas stain)</td>
+                              <td> </td>
+                              <td>Minimal (<10%)</td>
+                              <td>Mild (10-25%)</td>
+                              <td>Moderate (26-50%)</td>
+                              <td>Marked (>51%)</td>
+                          </tr>
+                            <tr>
+                              <td>Lumen exfoliation</td>
+                              <td> </td>
+                              <td>Minimal</td>
+                              <td>Mild</td>
+                              <td>Moderate</td>
+                              <td>Marked</td>
+                          </tr>
+                            <tr>
+                              <td>Crypt damage</td>
+                              <td> </td>
+                              <td> </td>
+                              <td>Mild</td>
+                              <td>Moderate</td>
+                              <td>Marked</td>
+                          </tr>
+                            <tr>
+                              <td>Endothelial cell activation</td>
+                              <td> </td>
+                              <td> </td>
+                              <td>Mild</td>
+                              <td> </td>
+                              <td>Marked</td>
+                          </tr>
+                            <tr>
+                              <td><strong>Score (min 0, max 32)</strong></td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                          </tr>                                    
+                      </tbody>
+                </table>
+              </div>
+            </div>
+      </div>
+    </div>
+
+{% endblock%}
+{% block chart_content %}
+<div class="card">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card card-teal card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Line Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="line-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+            <!-- Area chart -->
+            <div class="card card-teal card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Area Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="area-chart" style="height: 338px;" class="full-width-chart"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+
+          </div>
+          <!-- /.col -->
+
+          <div class="col-md-4">
+            <!-- Bar chart -->
+            <div class="card card-teal card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Bar Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="bar-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+
+            <!-- Donut chart -->
+            <div class="card card-teal card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Donut Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="donut-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-4">
+            <!-- Line chart -->
+            <div class="card card-teal card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Line Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="line-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+            <!-- Line chart -->
+            <div class="card card-teal card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Line Chart
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="line-chart" style="height: 300px;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->            
+          </div>
+        </div>
+      </div>
 {% endblock %}

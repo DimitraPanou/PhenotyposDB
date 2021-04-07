@@ -41,7 +41,7 @@ class PipelineListView(LoginRequiredMixin,ListView):
 		return super(PipelineListView, self).dispatch(*args, **kwargs)
 
 #Authenticate scientist here
-@allowed_users(allowed_roles=['admin','scientific_staff'])
+@allowed_users(allowed_roles=['Admin','Scientific staff'])
 def add_pipeline(request, *args, **kargs):
     if request.method == 'POST':
         form = PipelineForm(request.POST, request.FILES)
@@ -118,18 +118,17 @@ class PipelineTypeListView(LoginRequiredMixin,ListView):
 	context_object_name = 'list_pipelines'
 
 
-@allowed_users(allowed_roles=['admin','scientific_staff'])
+@allowed_users(allowed_roles=['Admin','Scientific staff'])
 def add_pipelinetype(request, *args, **kargs):
     if request.method == 'POST':
-        form = PipelineForm(request.POST, request.FILES)
+        form = PipelineTypeForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('pipelinetypes')
     else:
-        form = PipelineForm()
+        form = PipelineTypeForm()
     return render(request, 'pipelines/add_pipelinetype.html', {
-        'form': form,
-        'a': a
+        'form': form
     })
 
 class PipelineTypeUpdateView(LoginRequiredMixin,UpdateView):
@@ -144,7 +143,7 @@ class PipelineTypeDeleteView(LoginRequiredMixin,DeleteView):
 	success_url = '/pipelines/types/'
 
 
-@allowed_users(allowed_roles=['admin','scientific_staff'])
+@allowed_users(allowed_roles=['Admin','Scientific staff'])
 def add_assay_to_pipeline(request, pk):
 	pipeline = get_object_or_404(Pipeline, pk=pk, pi=request.user)
 	if request.method == 'POST':
@@ -154,7 +153,7 @@ def add_assay_to_pipeline(request, pk):
 			form.instance.author = request.user			
 			test = form.save()
 			handle_uploaded_file(test)			
-			return redirect('pipelines')
+			return redirect('pipeline-detail',pk)
 	else:
 		form = AssayForm()
 	return render(request,'pipelines/add_assay.html',{'pipeline':pipeline, 'form':form})

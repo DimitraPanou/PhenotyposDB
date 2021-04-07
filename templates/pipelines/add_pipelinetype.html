@@ -3,7 +3,11 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-	  {% crispy form %}
-
+  <h2>New Pipeline Protocol</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-info">Add Protocol</button>
+  </form>
 {% endblock %}
+
