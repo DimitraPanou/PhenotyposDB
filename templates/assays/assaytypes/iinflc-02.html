@@ -55,8 +55,17 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {% for assay in measures %}
-                        <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+                    {% for assay in measures %}
+                      <tr class="table-row" data-href="#" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
+                        <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender|default_if_none:""}}</p>
+                        <p><b>Genotype</b>: {{assay.mid.genotype|default_if_none:""}}</p> 
+                        <p><b>Date of Birth</b>: {{assay.mid.date|default_if_none:""}}</p> 
+                        <p><b>Age</b>: {{assay.mid.age|default_if_none:""}} </p> 
+                        <p><b>Induced</b>: {{assay.mid.induced|default_if_none:""}}</p>     
+                        <p><b>Treated</b>: {{assay.mid.treated|default_if_none:""}}</p> 
+                        <p><b>Diet</b>: {{assay.mid.diet|default_if_none:""}}</p> 
+                        <p><b>Other Mouse Information</b>: {{assay.mid.mouse_info|default_if_none:""}}</p>
+                        <p><b>Other environmental data</b>: {{assay.mid.other|default_if_none:""}}</p></div>'>                    <!--<td>{{ assay.assayid }}</td>-->       
                           <!--<td>{{ assay.assayid }}</td>-->
                           <td>{{ assay.mid }}</td>
                           <td>{{ assay.mid.genotype|default_if_none:"" }}</td>          
@@ -79,179 +88,4 @@
       </div>
     </div>
 {% endblock %}
-
-{% block equipment_content %}
-      <div class="modal fade" id="modal-default">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Protocol</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <h3 class="text-center"><b>IINFLC-02</b></h3>
-              <h3 class="text-center">Luminal Exudation</h3>
-              <div class="picture_div" style="margin:0px auto; text-align:center;">
-                <img src="../../static/dist/img/footer-logo-new.png" />
-              </div>
-              <p></p>
-              <div class="row justify-content-center">              
-                <div class="col-md-3 col-sm-6 col-12">
-                  <div class="info-box bg-newteal">
-                    <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
-
-                    <div class="info-box-content">
-                      <span class="info-box-text">Date published</span>
-                      <span class="info-box-number">25/2/2019</span>
-                    </div>
-                <!-- /.info-box-content -->
-                  </div>
-                </div>
-              <!-- /.info-box -->
-                <div class="col-md-2 col-sm-2 col-12">
-                <div class="info-box bg-newteal">
-                  <span class="info-box-icon"><i class="fas fa-file-word"></i></span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">Version</span>
-                    <span class="info-box-number text-center"><b>2</b></span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div> 
-              <div class="col-md-3 col-lg-4 col-12">
-                <div class="info-box bg-newteal">
-                  <span class="info-box-icon"><i class="fas fa-users"></i></span>
-
-                  <div class="info-box-content">
-                    <span class="info-box-text">Team</span>
-                    <span class="info-box-number">Kontogiannis Lab</span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-              </div>             
-            </div>
-              <div id="protocolTextContainer" style="visibility:visible">     
-                <a href="#Purpose" class="btn btn-default">Purpose</a>
-                <a href="#Experimental-Design" class="btn btn-default">Experimental Design</a>
-                <a href="#Equipment" class="btn btn-default">Equipment</a>                                
-                <a href="#Supplies" class="btn btn-default">Supplies</a>                                
-                <a href="#Procedure" class="btn btn-default">Procedure</a>
-                <a href="#Cell_counting" class="btn btn-default">Cell counting</a>
-                <a href="#References" class="btn btn-default">References</a>
-                <a href="#Appendix" class="btn btn-default">Appendix</a>
-              </div>
-              <hr>
-              <div class="ptcl-item purpose">
-                <h3 id="Purpose" class="mb-3" tabindex="-1">Purpose</h3>
-                <div>
-                  <p>Evaluate mucosal cell loss by detachment and luminal expulsion after a-CD3 administration.</p>
-                </div>
-              </div>
-              <div class="ptcl-item exp-design">
-                <h3 id="Experimental-Design" tabindex="-1">Experimental Design</h3>
-                <div>
-                  <div class="expandable">
-                    <ul>
-                      <li><strong>Minimum number of animals :</strong>&nbsp; 3M + 3F <br> 3 male and 3 female mice per genotype for anti-CD3 administration and 3 male and 3 female mice per genotype for anti-IgG administration to be used as controls.</li>
-                      <li><strong>Age at test: </strong>6-8 weeks </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="ptcl-item equipment">
-                <h3 id="Equipment" class="mb-3" tabindex="-1">Equipment</h3>
-                <div>
-                  <ul>
-                    <li>Forceps </li>
-                    <li>Scissors </li>
-                    <li>Balance (Kern EW220-NM)</li>                                                                                                 
-                  </ul>
-                </div>
-              </div>
-              <div class="ptcl-item supplies">
-                <h3 id="Supplies" class="mb-3" tabindex="-1">Supplies</h3>
-                <div>
-                  <ul>
-                    <li>Phosphate Buffer Saline 1X (homemade/ see Appendix) </li>
-                    <li>FBS (Gibco, Cat. No 10270) </li>
-                    <li>Petri dishes (Sarstedt, Cat. No 82.1473.001)</li>
-                    <li>15 ml Falcon tubes (Sarstedt, Cat. No 62.554.502)</li>
-                    <li>10 ml syringes with needles 21G (BD, Cat. No 307737)</li> 
-                    <li>Measuring cylinders</li>                                                                                                 
-                  </ul>
-                </div>
-              </div>
-              <div class="ptcl-item procedure">
-                <h3 id="Procedure" class="mb-3" tabindex="-1">Procedure</h3>
-                <div>
-                  <p><b>1. Supply preparation</b></p>
-                  <ul>
-                    <li>Prepare a buffer with 5%FBS in 1X PBS</li>
-                    <li>Label two 15ml Falcon tubes for each animal for the collection of the lumen expulsion. One for the small intestine and one for the large intestine (No of animal/small intestine, No of animal/large intestine)</li>                                                                                                 
-                  </ul>
-                  <p><b>2. Luminal expulsion and tissue collection at the endpoint (24h)</b></p>
-                  <ul>
-                    <li>Euthanize the mouse in a chamber, gradually filled with CO2</li>
-                    <li>Remove the animal from the chamber when it has stopped breathing. (The killing of animals is completed by subsequent exsanguination and confirmation of permanent cessation of the circulation)</li>
-                    <li>Make a midline incision through the skin, starting from above the urethral opening straight up to the lower jaw with scissors and extend the incision downward to the knees on both sides. The incision looks like an upside down “Y”. Pull the loose skin back on the sides, and pin it to the dissection mat</li>
-                    <li>Continue by cutting the abdominal wall to expose the organs with in the abdominal cavity</li>
-                    <li>By using a set of small forceps and scissors, locate and remove the whole intestine, starting just past the stomach outlet until the rectum, trimming away mesentery and any fatty tissue</li>
-                    <li>Place the intestine into a labeled (No of animal) Petri dish containing 1x PBS and keep it on ice</li>
-                    <li>Cut the small intestine into two equal segments. The first starts just past the stomach outlet until the middle of jejunum (containing duodenum and part of the jejunum) and the second from that point until the junction with the cecum (containing part of jejunum and ileum)</li>
-                    <li>Cut the large intestine in one segment (without the cecum)</li>
-                    <li>Using a forceps try gently to move away any remnants of food or feces, pushing them out of the lumen</li>
-                    <li>Flush the two segments of the small intestine with 5 ml PBS+5%FBS each and collect the luminal expulsion into a labeled 15ml Falcon tube. Count the cells and proceed with FACS/Luminal Cell Death analysis (see SOP FC-04)</li>
-                    <li>EFlush the one segment of the large intestine with 10 ml PBS+5%FBS and collect the luminal expulsion into a labeled 15ml Falcon tube. Count the cells and proceed with FACS/Luminal Cell Death analysis (see SOP FC-04) analysis</li>
-                    <li>Collect the intestine and proceed with Histological analysis (see SOP HPIBD-02)</li>
-                  </ul>                  
-                </div>
-              </div>
-              <div class="ptcl-item cell_counting">
-                <h3 id="Cell_counting" class="mb-3" tabindex="-1">Cell counting</h3>
-                <div>
-                  <ul>
-                    <li>Filter the samples in clean 15mL conical tunes in order to remove any  feces or food remnants </li>
-                    <li>Wash cells (1200rpm/5 min/4°C), aspirate the supernatant and gently tap the vial to break the cell pellet</li>
-                    <li>Resuspend cells in 10mL 1x PBS and wash again</li>
-                    <li>Resuspend cells in 1-2mL 1x Binding Buffer depending on pellet size</li>
-                    <li>Keep 20-30μL of each sample in eppendorf tubes and count the cells in a hemocytometer</li>
-                    <li>Clean the hemocytometer and coverslip with 70% ethanol</li>
-                    <li>Take 10μL of the sample and gently fill the chamber underneath the coverslip, allowing cell suspension to be drawn out by capillary action</li>
-                    <li>Using a microscope, focus on the grid lines of the hemocytometer with a 10X objective</li>
-                    <li>Count the cells in four squares of the first set of 16 squares (second or third line or diagonal). When counting, employ a system whereby cells are only counted when they are set within a square or on the right-hand or bottom boundary line</li>
-                    <li>Move the hemocytometer to the next set of 16 corner squares (count the cells in four squares as mentioned above) and carry on counting until all 4 sets of 16 corners are counted</li>
-                    <li>Take the number of cells counted and multiply by 10,000 (104) in order to calculate the number of cells/mL</li>
-                    <li>Multiply the number of cell/mL by the sample volume in order to calculate the total number of cells in your sample</li>
-                    <li>Clean the hemocytometer and coverslip with 70% ethanol and proceed with the next sample</li>                                   
-                  </ul>
-                </div>
-              </div>                            
-              <div class="ptcl-item references">
-                <h3 id="References" class="mb-3">References</h3>
-                <div>
-
-                </div>
-              </div>
-              <div class="ptcl-item appendix">
-                <h3 id="Appendix" class="mb-3" tabindex="-1">Appendix</h3>
-                <div>
-                  <p>Recipe for homemade 1X PBS</p>
-                  <ul>
-                    <li>Dissolve 8g of NaCl, 0.2g of KCl, 1.44g of Na2HPO4 and 0.24g of KH2PO4 in 800ml ddH2O</li>
-                    <li>Adjust pH to 7.4 using 2N HCl</li>
-                    <li>Adjust volume to 1L with additional ddH2O</li>
-                    <li>15 ml Falcon tubes (Sarstedt, Cat. No 62.554.502)</li>
-                    <li>10 ml syringes with needles 21G (BD, Cat. No 307737)</li> 
-                    <li>Sterilize by autoclaving</li>                                                                                                 
-                  </ul>
-                </div>
-              </div>              
-            </div>
-          </div>
-        </div>
-      </div>
-
-{% endblock %}
+ 

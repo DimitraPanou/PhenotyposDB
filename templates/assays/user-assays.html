@@ -1,89 +1,328 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
   {% block content_header %}
-    <h2>Assays</h2>
+    <h2 class="text-center">Assays</h2>
+    <hr>
+<!--
     <p>
       <a href="{% url 'add_assay' %}" class="btn btn-info">Add Assay</a>
     </p>
+-->
   {% endblock %}
-        <div class="card-body table-responsive p-0">
-          <table class="table table-striped projects">     
-              <thead>
-                  <tr>
-                      <th style="width: 8%">
-                          Code
-                      </th>
-                      <th style="width: 8%">
-                          Name
-                      </th>
-                      <th style="width: 8%" class="text-center">
-                          Status
-                      </th>
-                      <th style="width: 20%">
-                          Members
-                      </th>
-                      <th style="width: 8%">
-                          Staff
-                      </th>
-                      <th style="width: 8%">
-                          Created at
-                      </th>
-                        <th style="width: 18%">
-                        </th>
-                  </tr>
-              </thead>
-              <tbody>
-                {% for assay in list_assays %}
-                  {% if assay.author == user or  assay.scientist == user%}
-                    <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
-                  {% else %}
-                    <tr>
-                  {% endif %}                 
-                      <td>{{ assay.type }}</td>
-                      <td>{{ assay.name }}</td>
-                      <td class="project-state">
-                          <span class="badge badge-success">Success</span>
-                      </td> 
-                      <td>
-                          <ul class="list-inline">
-                              <li class="list-inline-item">
-                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
-                              </li>
-                            {% if assay.scientist %}
-                              <li class="list-inline-item">
-                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}">
-                              </li>
-                            {% endif %}
-                          </ul>
-                      </td>
-                      <td>{{ assay.staff }}</td>
-                      <td>{{ assay.created_at }}</td>
-                      {% if assay.author == user or assay.scientist == user%}
-                        <td class="project-actions text-right">
-                            <a class="btn btn-info btn-sm" href="{% url 'assay-detail' assay.id %}">
-                                <i class="fas fa-eye">
-                                </i>
-                            </a>
 
-                            <a class="btn btn-info btn-sm" href="{% url 'assay-update' assay.id %}">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                            </a>
-                            <a class="btn btn-danger btn-sm" href="{% url 'assay-delete' assay.id %}">
-                                <i class="fas fa-trash">
-                                </i>
-                            </a>
-                        </td>
-                      {% else %}
-                        <td class="project-actions text-right"></td>                        
-                      {% endif %}
-                  </tr>
-                {% endfor %}
-              </tbody>
-          </table>
+<div class="row">
+          <div class="col-12 connectedSortable">
+            <!-- Custom Tabs -->
+            <div class="card-default p-0">
+              <div class="card-header">
+                <h3 class="card-title p-3"></h3>
+                <ul class="nav nav-pills ml-auto p-2 u-custom-font u-font-ubuntu u-spacing-30 d-flex justify-content-center">
+                  <li class="nav-item"><a class="u-border-2 u-border-active-palette-1-base u-border-hover-palette-5-dark-2 u-border-no-bottom u-border-no-left u-border-no-right u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-70 u-text-hover-grey-70" href="#tab_1" data-toggle="tab">ALL ({{all}})</a></li>
+                  <li class="nav-item"><a class="u-border-2 u-border-active-palette-1-base u-border-hover-palette-5-dark-2 u-border-no-bottom u-border-no-left u-border-no-right u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-70 u-text-hover-grey-70" href="#tab_2" data-toggle="tab">My Records ({{a}})</a></li>
+                  <li class="nav-item"><a class="u-border-2 u-border-active-palette-1-base u-border-hover-palette-5-dark-2 u-border-no-bottom u-border-no-left u-border-no-right u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-70 u-text-hover-grey-70" href="#tab_3" data-toggle="tab">Provided Access ({{b}})</a></li>
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                	                  <!-- /.tab-pane -->
+                  <div class="tab-pane active" id="tab_1">
+			        <div class="card-body table-responsive p-0">
+			          <table class="table table-striped projects">     
+			              <thead>
+			                  <tr>
+  			                  	  <th style="width: 2%"></th>
+			                      <th style="width: 8%">
+			                          Code
+			                      </th>
+			                      <th style="width: 8%">
+			                          Name
+			                      </th>
+			                      <th style="width: 8%" class="text-center">
+			                          Status
+			                      </th>
+			                      <th style="width: 20%">
+			                          Members
+			                      </th>
+			                      <th style="width: 8%">
+			                          Staff
+			                      </th>
+			                      <th style="width: 8%">
+			                          Unit/Lab
+			                      </th>
+			                      <th style="width: 8%">
+			                          Duration
+			                      </th>
+			                      <th style="width: 8%">
+			                          Start
+			                      </th>			                      			                      
+			                      <th style="width: 8%">
+			                          Created at
+			                      </th>
+			                        <th style="width: 18%">
+			                        </th>
+			                  </tr>
+			              </thead>
+			              <tbody>
+			                {% for assay in list_assays %}
+			                  {% if assay.author == user or  assay.scientist == user%}
+			                    <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+			                  {% else %}
+			                    <tr>
+			                  {% endif %}
+			                      <td>
+			                        <li class="list-inline-item">
+			                          <img alt="Avatar" id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="35" height="35">
+			                        </li>
+			                      </td>			                                   
+			                      <td>{{ assay.type }}</td>
+			                      <td>{{ assay.name }}</td>
+			                      <td class="project-state">
+			                        {% if assay.rawdata_file.url %}
+			                          <span class="badge badge-success">Success</span>
+			                        {% else %}
+			                          <span class="badge badge-warning">Missing File</span>
+			                        {% endif %}
+			                      </td> 
+			                      <td>
+			                          <ul class="list-inline">
+			                              <li class="list-inline-item">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
+			                              </li>
+			                            {% if assay.scientist %}
+			                              <li class="list-inline-item">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}">
+			                              </li>
+			                            {% endif %}
+			                          </ul>
+			                      </td>
+			                      <td>{{ assay.staff }}</td>
+			                      <td>{{ assay.type.unit }}</td>
+			                      <td>{{ assay.duration }}</td>
+			                      <td>{{ assay.measurement_day }}</td>
+			                      <td>{{ assay.created_at }}</td>
+			                      {% if assay.author == user or assay.scientist == user%}
+			                        <td class="project-actions text-right">
+			                            <a class="btn btn-info btn-sm" href="{% url 'assay-detail' assay.id %}">
+			                                <i class="fas fa-eye">
+			                                </i>
+			                            </a>
+
+			                            <a class="btn btn-info btn-sm" href="{% url 'assay-update' assay.id %}">
+			                                <i class="fas fa-pencil-alt">
+			                                </i>
+			                            </a>
+			                            <a class="btn btn-danger btn-sm" href="{% url 'assay-delete' assay.id %}">
+			                                <i class="fas fa-trash">
+			                                </i>
+			                            </a>
+			                        </td>
+			                      {% else %}
+			                        <td class="project-actions text-right"></td>                        
+			                      {% endif %}
+			                  </tr>
+			                {% endfor %}
+			              </tbody>
+			          </table>
+			        </div>
+			        <!-- /.card-body -->
+
+                  </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="tab_2">
+			        <div class="card-body table-responsive p-0">
+			          <table class="table table-striped projects">     
+			              <thead>
+			                  <tr>
+			                  	  <th style="width: 2%"></th>
+			                      <th style="width: 8%">
+			                          Code
+			                      </th>
+			                      <th style="width: 8%">
+			                          Name
+			                      </th>
+			                      <th style="width: 8%" class="text-center">
+			                          Status
+			                      </th>
+			                      <th style="width: 20%">
+			                          Members
+			                      </th>
+			                      <th style="width: 8%">
+			                          Staff
+			                      </th>
+			                      <th style="width: 8%">
+			                          Created at
+			                      </th>
+			                        <th style="width: 18%">
+			                        </th>
+			                  </tr>
+			              </thead>
+			              <tbody>
+			                {% for assay in user_assays %}
+			                  {% if assay.author == user or  assay.scientist == user%}
+			                    <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+			                  {% else %}
+			                    <tr>
+			                  {% endif %}
+			                  	  <td>
+			                        <li class="list-inline-item">
+			                          <img alt="Avatar" id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="35" height="35">
+			                        </li>
+			                      </td>                 
+			                      <td>{{ assay.type }}</td>
+			                      <td>{{ assay.name }}</td>
+			                      <td class="project-state">
+			                        {% if assay.rawdata_file.url %}
+			                          <span class="badge badge-success">Success</span>
+			                        {% else %}
+			                          <span class="badge badge-warning">Missing File</span>
+			                        {% endif %}
+			                      </td> 
+			                      <td>
+			                          <ul class="list-inline">
+			                              <li class="list-inline-item">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
+			                              </li>
+			                            {% if assay.scientist %}
+			                              <li class="list-inline-item">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}">
+			                              </li>
+			                            {% endif %}
+			                          </ul>
+			                      </td>
+			                      <td>{{ assay.staff }}</td>
+			                      <td>{{ assay.created_at }}</td>
+			                      {% if assay.author == user or assay.scientist == user%}
+			                        <td class="project-actions text-right">
+			                            <a class="btn btn-info btn-sm" href="{% url 'assay-detail' assay.id %}">
+			                                <i class="fas fa-eye">
+			                                </i>
+			                            </a>
+
+			                            <a class="btn btn-info btn-sm" href="{% url 'assay-update' assay.id %}">
+			                                <i class="fas fa-pencil-alt">
+			                                </i>
+			                            </a>
+			                            <a class="btn btn-danger btn-sm" href="{% url 'assay-delete' assay.id %}">
+			                                <i class="fas fa-trash">
+			                                </i>
+			                            </a>
+			                        </td>
+			                      {% else %}
+			                        <td class="project-actions text-right"></td>                        
+			                      {% endif %}
+			                  </tr>
+			                {% endfor %}
+			              </tbody>
+			          </table>
+			        </div>
+			        <!-- /.card-body -->
+
+                  </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="tab_3">
+                  <div class="tab-pane" id="tab_2">
+			        <div class="card-body table-responsive p-0">
+			          <table class="table table-striped projects">     
+			              <thead>
+			                  <tr>
+			                  	  <th style="width: 2%"></th>
+			                      <th style="width: 8%">
+			                          Code
+			                      </th>
+			                      <th style="width: 8%">
+			                          Name
+			                      </th>
+			                      <th style="width: 8%" class="text-center">
+			                          Status
+			                      </th>
+			                      <th style="width: 20%">
+			                          Members
+			                      </th>
+			                      <th style="width: 8%">
+			                          Staff
+			                      </th>
+			                      <th style="width: 8%">
+			                          Created at
+			                      </th>
+			                        <th style="width: 18%">
+			                        </th>
+			                  </tr>
+			              </thead>
+			              <tbody>
+			                {% for assay in access_assays %}
+			                  {% if assay.author == user or  assay.scientist == user%}
+			                    <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+			                  {% else %}
+			                    <tr>
+			                  {% endif %}
+			                  <td>
+			                        <li class="list-inline-item">
+			                          <img alt="Avatar" id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="35" height="35">
+			                        </li>
+			                      </td>               
+			                      <td>{{ assay.type }}</td>
+			                      <td>{{ assay.name }}</td>
+			                      <td class="project-state">
+			                      	{% if assay.rawdata_file.url %}
+			                          <span class="badge badge-success">Success</span>
+			                        {% else %}
+			                          <span class="badge badge-warning">Missing File</span>
+			                        {% endif %}
+			                      </td> 
+			                      <td>
+			                          <ul class="list-inline">
+			                              <li class="list-inline-item">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
+			                              </li>
+			                            {% if assay.scientist %}
+			                              <li class="list-inline-item">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}">
+			                              </li>
+			                            {% endif %}
+			                          </ul>
+			                      </td>
+			                      <td>{{ assay.staff }}</td>
+			                      <td>{{ assay.created_at }}</td>
+			                      {% if assay.author == user or assay.scientist == user%}
+			                        <td class="project-actions text-right">
+			                            <a class="btn btn-info btn-sm" href="{% url 'assay-detail' assay.id %}">
+			                                <i class="fas fa-eye">
+			                                </i>
+			                            </a>
+
+			                            <a class="btn btn-info btn-sm" href="{% url 'assay-update' assay.id %}">
+			                                <i class="fas fa-pencil-alt">
+			                                </i>
+			                            </a>
+			                            <a class="btn btn-danger btn-sm" href="{% url 'assay-delete' assay.id %}">
+			                                <i class="fas fa-trash">
+			                                </i>
+			                            </a>
+			                        </td>
+			                      {% else %}
+			                        <td class="project-actions text-right"></td>                        
+			                      {% endif %}
+			                  </tr>
+			                {% endfor %}
+			              </tbody>
+			          </table>
+			        </div>
+			        <!-- /.card-body -->
+                  </div>
+                  
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+
+            </div>
+            <!-- ./card -->
+          </div>
+          <!-- /.col -->
         </div>
-        <!-- /.card-body -->
+  </div>
 {% endblock %}
 
 {% block sidebar_content %}
@@ -96,7 +335,7 @@
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
             <li class="nav-item has-treeview menu-open">
-              <a href="#" class="nav-link active">
+              <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   Dashboard
@@ -141,7 +380,7 @@
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
             <li class="nav-item has-treeview menu-open">
-              <a href="#" class="nav-link active">
+              <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   Dashboard

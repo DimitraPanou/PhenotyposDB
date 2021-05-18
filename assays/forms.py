@@ -10,15 +10,48 @@ class AssayForm(forms.ModelForm):
         exclude = ('author',)
         fields = ('code', 'name','type','version','staff','measurement_day','mouse_age','duration','timesteps_in','scientist','assayqc','rawdata_file','comments')
         widgets = {
+        'name': forms.TextInput(attrs={'class':'input'}),
+        'rawdata_file': forms.FileInput(attrs={'class':'dropify'}),
         'measurement_day': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date','useCurrent': True}),
+        'type': forms.Select(attrs={'class':'form-control select2'}),
+        'timesteps_in': forms.Select(attrs={'class':'form-control select2'}),
+        'scientist': forms.Select(attrs={'class':'form-control select2'}),
+        'mouse_age': forms.Select(attrs={'class':'form-control select2'})
     	}
+    def __init__(self, user, *args, **kwargs):
+        super(AssayForm,self).__init__(*args, **kwargs)
+        print('inside form')
+        print(user)
+        if(user.groups.all()[0].name =='Admin' or user.groups.all()[0].name =='Scientific staff'):
+            self.fields['type'].queryset = Atype.objects.all()
+        else:
+            self.fields['type'].queryset = Atype.objects.filter(facilitylong = user.profile.facility)
+        
+#        def save(self,user, *args, **kwargs):
+#        form = super(AssayForm, self).save(*args, **kwargs)
+#        return form
+    
+class Assay2Form(forms.ModelForm):
+    class Meta:
+        model = Assay
+        exclude = ('author',)
+        fields = ('code', 'name','version','staff','measurement_day','mouse_age','duration','timesteps_in','scientist','assayqc','rawdata_file','comments')
+        widgets = {
+        'name': forms.TextInput(attrs={'class':'input'}),
+        'rawdata_file': forms.FileInput(attrs={'class':'dropify'}),
+        'measurement_day': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date','useCurrent': True}),
+        'timesteps_in': forms.Select(attrs={'class':'form-control select2'}),
+        'scientist': forms.Select(attrs={'class':'form-control select2'}),
+        'mouse_age': forms.Select(attrs={'class':'form-control select2'})
+        }
 
+#'data-default-file': self.rawdata_file
 class AtypeForm(forms.ModelForm):
     class Meta:
         model = Atype
         fields = ('code', 'name', 'facility','facilitylong','unit','staff','publication_date','version')
         widgets = {
-        'publication_date': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+        'publication_date': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date','useCurrent': True}),
     	}
 
     def __init__(self, *args, **kwargs):

@@ -36,9 +36,10 @@ urlpatterns = [
     ###########
 	#  Assays #
 	###########
-	path('assays/',AssaysListView.as_view(),name='assays'),
+	path('assays/',assayslist,name='assays'),
 	path('assays/<str:username>',UserAssaysListView.as_view(),name='user-assays'),
 	path('assays/<str:username>/access',GroupAssaysListView.as_view(),name='group-assays'),
+	path('assays/<str:username>/lab',FacilityAssaysListView.as_view(),name='lab-assays'),
 
 	path('assays/add/',add_assay,name='add_assay'),
 #
@@ -48,7 +49,9 @@ urlpatterns = [
 
 	#path('assays/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
 #
+	#path('assays/delete/<int:pk>/', assay_delete, name='assay_delete'),
 	path('assays/<int:pk>/delete/', AssaysDeleteView.as_view(), name='assay-delete'),
+	#path('assays/<int:pk>/delete/', assay_delete, name='assay-delete'),
 #
 	path('assays/types/',AtypeListView.as_view(),name='atypes'),
 #
@@ -61,14 +64,17 @@ urlpatterns = [
 	path('assays/types/update/<int:pk>/', AtypeUpdateView.as_view(), name='assaytype-update'),
 #
 	path('assays/types/<int:pk>/delete/', AtypeDeleteView.as_view(), name='assaytype-delete'),
+	path('assays/<int:pk>/addimages', uploadImage, name='uploadImage'),
+
 	#path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
 
 ##########################################
 ##             pipelines                ##
 #########################################
-	path('pipelines/',PipelineListView.as_view(),name='pipelines'),
+	path('pipelines/',pipelineslist,name='pipelines'),
 	path('pipelines/add/',add_pipeline,name='add-pipeline'),
 	path('pipelines/update/<int:pk>/', PipelineUpdateView.as_view(), name='pipeline-update'),
+	path('pipelines2/<int:pk>/', pipeline_detail_view, name='pipeline-detail2'),
 	path('pipelines/<int:pk>/', PipelineDetailView.as_view(), name='pipeline-detail'),
 	path('pipelines/<int:pk>/delete/', PipelineDeleteView.as_view(), name='pipeline-delete'),
 	path('pipelines/<str:username>',UserPipelineListView.as_view(),name='user-pipelines'),	
@@ -94,6 +100,10 @@ urlpatterns = [
 	path('password-reset-confirm/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'),
 	path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),
 	path('users', users_all, name='users_all'),
+	path('search', search_view, name='search'),
+	path('selectParameters', selectParameters, name='selectParameters'),
+
+	#path('piecharts/', piecharts, name='piecharts'),
 ]
 
 ''''

@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'fleming',
     'assays',
     'pipelines',
+    'bootstrap_modal_forms',
+    'ckeditor',
 #    'users',
 ]
 
@@ -162,10 +164,13 @@ EMAIL_USE_TLS = True
 #EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 #EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 
-EMAIL_HOST_USER = 'panoudia@gmail.com'
-EMAIL_HOST_PASSWORD = 'TcFHJqa3'
+EMAIL_HOST_USER = 'phenotypos@fleming.gr'
+EMAIL_HOST_PASSWORD = 'a7ddaVxz57EKXSvN'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
 AWS_S3_FILE_OVERWRITE = False
+
+
+

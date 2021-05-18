@@ -3,13 +3,19 @@
 {% block content %}
 
   {% block content_header %}
-    <h2>Assay Types</h2>
-    <p>
+<div class="card">
+    <h2 class="text-center">Assay Types</h2>
+      <div class="fab fab-fixed" id="fab-publish">
+    <a class="btn btn-primary btn-float" href="{% url 'add_atype' %}" title="" data-provide="tooltip" data-original-title="Publish new SOP"><i class="ti-plus"></i>
+    </a>
+  </div>
+    <!--<p>
       <a href="{% url 'add_atype' %}" class="btn btn-info">New</a>
-    </p>
+    </p>-->
+   </div> 
   {% endblock %}
-
-  <table class='table table-bordered table-condensed table-striped table-hover'>
+    <h1></h1>
+  <table class='table sortable table-bordered table-condensed table-striped table-hover'>
     <thead>
       <tr>
         <th>ID</th>

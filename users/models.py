@@ -2,10 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 
+from assays.models import Facility
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	#facility = models.ForeignKey('Facility', models.DO_NOTHING)
+	facility = models.ForeignKey(Facility, models.DO_NOTHING,blank=True, null=True)
 	first_name = models.CharField(max_length=256, blank=True, null=True)
 	last_name = models.CharField(max_length=256, blank=True, null=True)
 	internal_phone = models.CharField(max_length=16, blank=True, null=True)

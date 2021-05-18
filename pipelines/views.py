@@ -18,6 +18,7 @@ from django.urls import reverse_lazy
 #from .forms import AssayForm
 from .forms import PipelineForm, PipelineTypeForm
 from .models import Pipeline, PipelineType
+from .filters import PipelineFilter,PipelinetypeFilter
 from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic import FormView
@@ -26,7 +27,7 @@ from users.decorators import admin_only, allowed_users
 from assays.models import Assay
 from assays.forms import AssayForm
 from assays.functions import handle_uploaded_file
-
+from assays.views import returnMeasurements
 ####################
 #    Pipelines     #
 ####################
@@ -37,8 +38,18 @@ class PipelineListView(LoginRequiredMixin,ListView):
 	template_name = 'pipelines/pipelines.html'
 	context_object_name = 'list_pipelines'
 
-	def dispatch(self, *args, **kwargs):
-		return super(PipelineListView, self).dispatch(*args, **kwargs)
+	def get_context_data(self, **kwargs):
+		pipelines = Pipeline.objects.all()
+		myFilter = PipelineFilter(self.request.GET, queryset=pipelines)
+		kwargs['myFilter'] = myFilter
+		return super().get_context_data(**kwargs)
+
+def pipelineslist(request):
+	myFilter = PipelineFilter(request.GET)
+	pipelines = myFilter.qs 
+	context = {'list_pipelines':pipelines,
+	'myFilter':myFilter}
+	return render(request, 'pipelines/pipelines.html',context)
 
 #Authenticate scientist here
 @allowed_users(allowed_roles=['Admin','Scientific staff'])
@@ -98,6 +109,22 @@ class PipelineDetailView(LoginRequiredMixin,DetailView):
 		kwargs['assays'] = self.get_object().assays.annotate()		
 		return super().get_context_data(**kwargs)
 
+
+def pipeline_detail_view(request, pk):
+	try:
+		pipeline = Pipeline.objects.get(id=pk)
+		assays = pipeline.assays.annotate()
+		measurements = []
+		for assay in assays:
+			assay.measures = len(returnMeasurements(assay))
+			#measurements.append(measures)
+	except Pipeline.DoesNotExist:
+		raise Http404("Pipeline does not exist")
+	return render(request, 'pipelines/detail_pipeline2.html', {'pipeline': pipeline,
+		'assays': assays,
+		'measurements': measurements
+	})
+
 '''
 class UserAssaysListView(LoginRequiredMixin,ListView):
 	model = Assay
@@ -147,7 +174,7 @@ class PipelineTypeDeleteView(LoginRequiredMixin,DeleteView):
 def add_assay_to_pipeline(request, pk):
 	pipeline = get_object_or_404(Pipeline, pk=pk, pi=request.user)
 	if request.method == 'POST':
-		form = AssayForm(request.POST, request.FILES)
+		form = AssayForm(request.user,request.POST, request.FILES)
 		if form.is_valid():
 			form.instance.pipeline = pipeline
 			form.instance.author = request.user			
@@ -155,5 +182,5 @@ def add_assay_to_pipeline(request, pk):
 			handle_uploaded_file(test)			
 			return redirect('pipeline-detail',pk)
 	else:
-		form = AssayForm()
+		form = AssayForm(request.user)
 	return render(request,'pipelines/add_assay.html',{'pipeline':pipeline, 'form':form})

@@ -6,6 +6,7 @@
 <h1>Update: {{object.id }} - {{ object.code }}</h1>
 
 <form action='.' method='POST'>{% csrf_token %}
+{{ form.media }}
 {{ form|crispy }}
     <input type='submit' value='Save' />
     <input type='submit' value='Cancel' />

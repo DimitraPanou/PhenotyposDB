@@ -32,6 +32,7 @@
                       {{ u_form|crispy }}
 
               <legend class="border-bottom mb-4">Profile Info</legend>
+              {{ p_form.facility|as_crispy_field }}
               {{ p_form.first_name|as_crispy_field }}
               {{ p_form.last_name|as_crispy_field}}
               <div class= "form-row">
@@ -70,7 +71,7 @@
                       {% csrf_token %}
           </fieldset>
           <div class="form-group">
-              <button class="btn btn-outline-info" type="submit">Save Profile</button>
+              <button class="u-btn u-btn-rectangle u-button-style u-color-scheme-summer-time u-color-style-multicolor-1 u-palette-3-base u-radius-0 u-btn-1" type="submit">Save Profile</button>
           </div>
       </form>
     </div>

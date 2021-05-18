@@ -1,5 +1,6 @@
 from .models import *
 import openpyxl
+import pandas as pd
 from openpyxl import Workbook
 import collections
 
@@ -7,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from datetime import date
 tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
 				'BIOCHEM-06','BIOCHEM-07','BIOCHEM-08','CBA-01','CBA-02','ENDO-01','FC-04',
-				'FC-07','FC-08','HEM-01','HPIBD-01','HPIBD-02','HPIBD-03','HPNI-01','IINFLC-01',
-				'IINFLC-02','IINFLC-03','IINFLC-04','NI-01','NI-02-GRS-01','NI-02-OFD-01',
-				'NI-02-ROT-01','PR-02','AR-02',"info"
+				'FC-07','FC-08','HEM-01','HPIBD-01','HPIBD-02','HPIBD-03','HPIBD-04','HPNI-01','IINFLC-01',
+				'IINFLC-02','IINFLC-03','IINFLC-04','IINFLC-05','IINFLC-06','NI-01','NI-02-GRS-01','NI-02-OFD-01',
+				'NI-02-ROT-01','PR-02','AR-02','AR-03','AR-04','AR-05','AR-06',"info"
 				]
 
 
@@ -18,6 +19,7 @@ def create_mouseHash(data):
 	for i in range(len(data["Mouse ID"])):
 		m = Mouse()
 		#print("MOUSE")
+
 		for key in data:
 			if ('ID' in key):
 				m.mid = data[key][i]			
@@ -46,6 +48,7 @@ def create_mouseHash(data):
 			elif ('report' in key.lower()):
 				m.health_report = data[key][i]
 		if(Mouse.objects.filter(mid=m.mid, genotype=m.genotype,dateofBirth=m.dateofBirth)):
+			print('mphke edw')
 			continue;
 		print("Saving mouse {}".format(m.mid)) 	
 		m.save()
@@ -82,6 +85,50 @@ def data_iinflc04(data,assay):
 					iinflc04.comment= data[key][i]
 		if(flag):				
 			iinflc04.save()
+
+def data_iinflc01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Iinflc01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('weight' in key.lower()):
+					if ('score' in key.lower()):
+						experiment.weight_score = data[key][i]
+					else:
+						experiment.weight = data[key][i]
+				elif ('stool' in key.lower()):
+					if ('consistency' in key.lower()):
+						experiment.stool_consistency = data[key][i]
+					else:
+						experiment.blood_in_stool = data[key][i]
+				elif ('dai' in key.lower()):
+					experiment.dai= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
 
 def data_iinflc02(data,assay):
 	for i in range(len(data["Mouse ID"])):
@@ -162,6 +209,87 @@ def data_iinflc03(data,assay):
 		if(flag):				
 			experiment.save()
 
+
+def data_iinflc05(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Iinflc05()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('sum intensity' in key.lower()):
+					experiment.sum_intensity= data[key][i]
+				elif ('net intensity' in key.lower()):
+					experiment.net_intensity = data[key][i]
+				elif ('mean intensity' in key.lower()):
+					experiment.mean_intensity = data[key][i]
+				elif ('acquisition' in key.lower()):
+					experiment.acquisition_settings = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+
+def data_iinflc06(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Iinflc06()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('sum intensity' in key.lower()):
+					experiment.sum_intensity= data[key][i]
+				elif ('net intensity' in key.lower()):
+					experiment.net_intensity = data[key][i]
+				elif ('mean intensity' in key.lower()):
+					experiment.mean_intensity = data[key][i]
+				elif ('acquisition' in key.lower()):
+					experiment.acquisition_settings = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
 def data_ni01(data,assay):
 	for i in range(len(data["Mouse ID"])):
 		flag =1
@@ -875,6 +1003,87 @@ def data_hpni01(data,assay):
 		if(flag):				
 			experiment.save()
 
+
+def data_fc07(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Fc07()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					#print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d
+				elif ('source' in key.lower()):
+					experiment.sample_source= data[key][i]
+				elif ('facs' in key.lower()):
+					experiment.facs_lysing= data[key][i]					 
+				elif ('aquis' in key.lower()):
+					experiment.live_aquis= data[key][i]					 
+				elif ('total cell' in key.lower()):
+					experiment.total_cell_count = data[key][i]
+				elif ('% neu' in key.lower()):
+					experiment.neu_per = data[key][i]					 
+				elif ('% eos' in key.lower()):
+					experiment.eos_per = data[key][i]					 
+				elif ('% mon' in key.lower()):
+					experiment.mon_per = data[key][i]					 
+				elif ('% ly6chimono' in key.lower()):
+					experiment.ly6chimono_per = data[key][i]					 
+				elif ('% ly6cintermono' in key.lower()):
+					experiment.ly6cintermono_per = data[key][i]					 
+				elif ('% ly6clowmono' in key.lower()):
+					experiment.ly6clowmono_per = data[key][i]					 
+#				elif ('% dcs' in key.lower()):
+#					experiment.dcs_per = data[key][i]
+				elif ('% b cells' in key.lower()):
+					experiment.b_cells_per = data[key][i]					 
+				elif ('% cd8' in key.lower()):
+					experiment.cd8_t_per = data[key][i]					 
+				elif ('% cd4' in key.lower()):
+					experiment.cd4_t_per = data[key][i]					 
+
+				elif ('# neu' in key.lower()):
+					experiment.neu_per = data[key][i]					 
+				elif ('# eos' in key.lower()):
+					experiment.eos_per = data[key][i]					 
+				elif ('# mon' in key.lower()):
+					ly6chimono_perexperiment.mon_per = data[key][i]					 
+				elif ('# ly6chimono' in key.lower()):
+					experiment.ly6chimono_per = data[key][i]					 
+				elif ('# ly6cintermono' in key.lower()):
+					experiment.ly6cintermono_per = data[key][i]					 
+				elif ('# ly6clowmono' in key.lower()):
+					experiment.ly6clowmono_per = data[key][i]
+				elif ('# b cells' in key.lower()):
+					experiment.b_cells_num = data[key][i]					 
+				elif ('# cd8' in key.lower()):
+					experiment.cd8_t_num = data[key][i]					 
+				elif ('# cd4' in key.lower()):
+					experiment.cd4_t_num = data[key][i]											 
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+				print(experiment)
+		if(flag):				
+			experiment.save()
+
 def data_fc08(data,assay):
 	for i in range(len(data["Mouse ID"])):
 		flag =1
@@ -1009,6 +1218,526 @@ def data_ar02(data,assay):
 					experiment.comment= data[key][i]
 		if(flag):				
 			experiment.save()
+
+def data_ar03(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ar03()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('sum intensity' in key.lower()):
+					if ('fl' in key.lower()):
+						experiment.sum_intensity_fl = data[key][i]
+					elif ('hl' in key.lower()):
+						experiment.sum_intensity_hl = data[key][i]
+					elif ('total' in key.lower()):
+						experiment.sum_intensity_total = data[key][i]
+				elif ('net intensity' in key.lower()):
+					if ('fl' in key.lower()):
+						experiment.net_intensity_fl = data[key][i]
+					elif ('hl' in key.lower()):
+						experiment.net_intensity_hl = data[key][i]
+					elif ('total' in key.lower()):
+						experiment.net_intensity_total = data[key][i]					
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_ar04(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ar03()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('sum intensity' in key.lower()):
+					experiment.sum_intensity= data[key][i]
+				elif ('net intensity' in key.lower()):
+					experiment.net_intensity = data[key][i]
+				elif ('mean intensity' in key.lower()):
+					experiment.mean_intensity = data[key][i]
+				elif ('acquisition' in key.lower()):
+					experiment.acquisition_settings = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_ar05(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ar05()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('trabecular' in key.lower()):
+					if ('thickness' in key.lower()):
+						experiment.clinical_score= data[key][i]
+					elif ('number' in key.lower()):
+						experiment.clinical_score= data[key][i]
+					elif ('seperation' in key.lower()):
+						experiment.clinical_score= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_ar06(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ar06()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('clinical' in key.lower()):
+					experiment.clinical_score= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_pr02(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Pr02()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('mg feacal mass' in key.lower()):
+					experiment.mg_feacal_mass= data[key][i]
+				elif ('concentration' in key.lower()):
+					experiment.protein_concentration= data[key][i]
+				elif ('protocol' in key.lower()):
+					experiment.digestion_protocol= data[key][i]
+				elif ('amount' in key.lower()):
+					experiment.amount_injected= data[key][i]
+				elif ('LC-MS/MS' in key):
+					experiment.lc_ms_analysis_time= data[key][i]
+				elif ('instrument' in key.lower()):
+					experiment.instrument_method= data[key][i]
+				elif ('total l bacterial' in key.lower()):
+					experiment.total_bac_signal= data[key][i]
+				elif ('firmicutes' in key.lower()):
+					if ('signal' in key.lower()):
+						experiment.firmicutes_per = data[key][i]
+					elif('ratio' in key.lower()):
+						experiment.firm_bac_ratio = data[key][i]					
+				elif ('bacteroidetes' in key.lower()):
+					experiment.bacteroidetes_per= data[key][i]
+				elif ('proteobacteria' in key.lower()):
+					experiment.proteobacteria_per= data[key][i]					
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_cba01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Cba01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('dilution factor' in key.lower()):
+					experiment.dilution_factor = data[key][i]
+				elif ('il-6' in key.lower()):
+					experiment.il_six = data[key][i]
+				elif ('il-10' in key.lower()):
+					experiment.il_ten = data[key][i]
+				elif ('il-12' in key.lower()):
+					experiment.il_twelve = data[key][i]
+				elif ('il-17' in key.lower()):
+					experiment.il_seventeen = data[key][i]
+				elif ('ifn' in key.lower()):
+					experiment.ifn_gamma = data[key][i]
+				elif ('tnf' in key.lower()):
+					experiment.tnf_alpha = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_cba02(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Cba02()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('dilution factor' in key.lower()):
+					experiment.dilution_factor = data[key][i]
+				elif ('igg1 ng/ml' in key.lower()):
+					experiment.igg1 = data[key][i]
+				elif ('igg2a ng/ml' in key.lower()):
+					experiment.igg2a = data[key][i]
+				elif ('igg3 ng/ml' in key.lower()):
+					experiment.igg3 = data[key][i]
+				elif ('iga' in key.lower()):
+					experiment.iga = data[key][i]
+				elif ('igm' in key.lower()):
+					experiment.igm = data[key][i]
+				elif ('igg2b' in key.lower()):
+					experiment.igg2b = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_hpibd01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Hpibd01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('histology' in key.lower()):
+					experiment.histology_num = data[key][i]
+				elif ('colon' in key.lower()):
+					experiment.colon_length = data[key][i]
+				elif ('inflammation' in key.lower()):
+					experiment.inflammation_score = data[key][i]
+				elif ('tissue damage score' in key.lower()):
+					experiment.tissue_damage_score = data[key][i]
+				elif ('ulceration score' in key.lower()):
+					experiment.ulceration_score = data[key][i]										
+				elif ('involvement' in key.lower()):
+					experiment.involvement_per = data[key][i]	
+				elif ('total colitis score' in key.lower()):
+					experiment.total_colitis_score = data[key][i]						
+				elif ('tumor' in key.lower()):
+					if('macroscopic' in key.lower()):
+						experiment.tumor_num = data[key][i]
+					elif ('size' in key.lower()):
+						experiment.tumor_size = data[key][i]									
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_hpibd03(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Hpibd03()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('histology' in key.lower()):
+					experiment.histology_num = data[key][i]
+				elif ('si inflammation' in key.lower()):
+					experiment.si_inflammation_score = data[key][i]
+				elif ('colon inflammation' in key.lower()):
+					experiment.colon_inflammation_score = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_hpibd04(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Hpibd04()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('slide' in key.lower()):
+					experiment.slide_number = data[key][i]
+				elif ('leukocyte' in key.lower()):
+					if ('1' in key.lower()):
+						experiment.leukocyte_density_1 = data[key][i]
+					elif ('2' in key.lower()):
+						experiment.leukocyte_density_2 = data[key][i]
+					elif ('3' in key.lower()):
+						experiment.leukocyte_density_3 = data[key][i]
+					elif ('avg' in key.lower()):
+						experiment.leukocyte_density_avg = data[key][i]
+				elif ('level' in key.lower()):
+					if ('1' in key.lower()):
+						experiment.level_1 = data[key][i]
+					elif ('2' in key.lower()):
+						experiment.level_2 = data[key][i]
+					elif ('3' in key.lower()):
+						experiment.level_3 = data[key][i]
+					elif ('avg' in key.lower()):
+						experiment.level_avg = data[key][i]
+				elif ('extent' in key.lower()):
+					if ('1' in key.lower()):
+						experiment.extent_1 = data[key][i]
+					elif ('2' in key.lower()):
+						experiment.extent_2 = data[key][i]
+					elif ('3' in key.lower()):
+						experiment.extent_3 = data[key][i]
+					elif ('avg' in key.lower()):
+						experiment.extent_avg = data[key][i]						
+				elif ('inflammation' in key.lower()):
+					experiment.inflammation_score = data[key][i]
+				elif ('abscesses' in key.lower()):
+					experiment.abscesses = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_endo01(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Endo01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('thickening' in key.lower()):
+					experiment.thicken_colon = data[key][i]
+				elif ('vascular' in key.lower()):
+					experiment.changes_vascular = data[key][i]
+				elif ('fibrin' in key.lower()):
+					experiment.fibrin_visible = data[key][i]
+				elif ('granularity' in key.lower()):
+					experiment.granularity_mucosak = data[key][i]
+				elif ('stool consistency' in key.lower()):
+					experiment.stool_consistency = data[key][i]
+				elif ('total colitis score' in key.lower()):
+					experiment.total_colitis_score = data[key][i]																		
+				elif ('number of tumors' in key.lower()):
+					if ('1' in key.lower()):
+						experiment.num_tumor_size_1 = data[key][i]
+					elif ('2' in key.lower()):
+						experiment.num_tumor_size_2 = data[key][i]
+					elif ('3' in key.lower()):
+						experiment.num_tumor_size_3 = data[key][i]
+					elif ('4' in key.lower()):
+						experiment.num_tumor_size_4 = data[key][i]
+					elif ('5' in key.lower()):
+						experiment.num_tumor_size_5 = data[key][i]												
+				elif ('total tumor' in key.lower()):
+					experiment.total_tumor_num = data[key][i]
+				elif ('tumor load' in key.lower()):
+					experiment.tumor_load = data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
 #Returns number of rows & number of columns with data in excel tab  
 def find_edges(sheet):
     row = sheet.max_row
@@ -1044,6 +1773,10 @@ def dataofAssay(assay,filename):
 	else:
 		sheet = wb[assay]
 	[rows,cols]=find_edges(sheet)
+	#Column_C=sheet['Mouse ID']   
+	#print ( len(column_C))
+	#print("test")
+	#rows = len(sheet["Mouse ID"])
 	d = {}
 	d = collections.OrderedDict()
 
@@ -1110,12 +1843,40 @@ def handle_uploaded_file(assayobject):
 		data_biochem08(data,assayobject)
 	if(assayobject.type.code == "HPNI-01"):
 		data_hpni01(data,assayobject)
+	if(assayobject.type.code == "FC-07"):
+		data_fc07(data,assayobject)
 	if(assayobject.type.code == "FC-08"):
 		data_fc08(data,assayobject)
 	if(assayobject.type.code == "AR-02"):
 		data_ar02(data,assayobject)
-
-
+	if(assayobject.type.code == "AR-03"):
+		data_ar03(data,assayobject)
+	if(assayobject.type.code == "AR-04"):
+		data_ar04(data,assayobject)
+	if(assayobject.type.code == "AR-05"):
+		data_ar05(data,assayobject)
+	if(assayobject.type.code == "AR-06"):
+		data_ar06(data,assayobject)
+	if(assayobject.type.code == "IINFLC-05"):
+		data_iinflc05(data,assayobject)
+	if(assayobject.type.code == "IINFLC-06"):
+		data_iinflc06(data,assayobject)				
+	if(assayobject.type.code == "PR-02"):
+		data_pr02(data,assayobject)
+	if(assayobject.type.code == "CBA-01"):
+		data_cba01(data,assayobject)
+	if(assayobject.type.code == "CBA-02"):
+		data_cba02(data,assayobject)
+	if(assayobject.type.code == "HPIBD-03"):
+		data_hpibd03(data,assayobject)
+	if(assayobject.type.code == "HPIBD-01"):
+		data_hpibd01(data,assayobject)
+	if(assayobject.type.code == "HPIBD-04"):
+		data_hpibd04(data,assayobject)		
+	if(assayobject.type.code == "ENDO-01"):
+		data_endo01(data,assayobject)
+	if(assayobject.type.code == "IINFLC-01"):
+		data_iinflc01(data,assayobject)
 
 def returnTemplateName(assayobject):
 	switcher ={
@@ -1138,8 +1899,22 @@ def returnTemplateName(assayobject):
 		20:'assays/assaytypes/biochem08.html',
 		22:'assays/assaytypes/hpni01.html',		
 		23:'assays/assaytypes/fc08.html',
-		24:'assays/assaytypes/ar02.html'
-
+		24:'assays/assaytypes/ar02.html',
+		25:'assays/assaytypes/iinflc-05.html',
+		26:'assays/assaytypes/iinflc-06.html',
+		27:'assays/assaytypes/fc07.html',
+		28:'assays/assaytypes/pr02.html',
+		29:'assays/assaytypes/cba01.html',	
+		30:'assays/assaytypes/cba02.html',
+		31:'assays/assaytypes/hpibd03.html',
+		32:'assays/assaytypes/hpibd01.html',
+		33:'assays/assaytypes/hpibd04.html',
+		34:'assays/assaytypes/endo01.html',
+		35:'assays/assaytypes/iinflc-01.html',
+		36:'assays/assaytypes/ar03.html',
+		37:'assays/assaytypes/ar04.html',
+		38:'assays/assaytypes/ar05.html',
+		39:'assays/assaytypes/ar06.html',			
 	}
 	return switcher.get(assayobject.id,"Ivalid")
 
@@ -1167,3 +1942,72 @@ def returnTemplateName(assayobject):
 	switcher.get(assayobject.type.id,"Ivalid")
 
 '''
+
+def get_parameters(assay):
+	switcher ={
+		4: Iinflc03._meta.get_fields(),
+		5: Iinflc04._meta.get_fields(),
+		6: Iinflc02._meta.get_fields(),
+		7: Ni01._meta.get_fields(),
+		8: Ni02Rot01._meta.get_fields(),
+		9: Ni02ofd01._meta.get_fields(),
+		10: Ni02grs01._meta.get_fields(),
+		11: Hem01._meta.get_fields(),
+		12: Hpibd02._meta.get_fields(),
+		13: Biochem01._meta.get_fields(),
+		14: Biochem02._meta.get_fields(),		
+		15: Biochem03._meta.get_fields(),		
+		16: Biochem04._meta.get_fields(),
+		17: Biochem05._meta.get_fields(),		
+		18: Biochem06._meta.get_fields(),
+		19: Biochem07._meta.get_fields(),
+		20: Biochem08._meta.get_fields(),
+		22: Hpni01._meta.get_fields(),		
+		23: Fc08._meta.get_fields(),
+		24: Ar02._meta.get_fields(),
+		25: Iinflc05._meta.get_fields(),
+		26: Iinflc06._meta.get_fields(),
+		27: Fc07._meta.get_fields(),
+		28: Pr02._meta.get_fields(),
+		29: Cba01._meta.get_fields(),
+		30: Cba02._meta.get_fields(),
+		31: Hpibd03._meta.get_fields(),
+		32: Hpibd01._meta.get_fields(),
+		33: Hpibd04._meta.get_fields(),
+		34: Endo01._meta.get_fields(),
+		35: Iinflc01._meta.get_fields(),
+		36: Ar03._meta.get_fields(),
+		37: Ar04._meta.get_fields(),
+		38: Ar05._meta.get_fields(),
+		39: Ar06._meta.get_fields(),
+	}
+	parameters = []
+	pars = switcher.get(assay.type.id,"Ivalid")
+	if (pars):
+		for i in range(6,len(pars)-2):
+			if(pars[i].get_internal_type()=='FloatField'):
+				parameters.append(pars[i].name)
+			elif(pars[i].get_internal_type()=='IntegerField'):
+				parameters.append(pars[i].name)
+	return parameters
+
+def parameterMeasures(measures, parameter):
+    mouselist = measures.values('mid').distinct().order_by('mid')
+    gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).distinct()
+    genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).distinct()
+    test = {}
+    for sex in gender:
+        for gene in genotype:
+            label = sex + " "+gene
+            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
+            parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+            if not df.empty:
+                df = df[['timepoint',parameter]] 
+            print(df)
+            #col_name='timepoint'
+            #first_col = df.pop(col_name)
+            #df.insert(0, col_name, first_col)
+            #print(df)
+            test[label] = df
+    return test

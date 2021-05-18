@@ -4,9 +4,25 @@
 
 {% block content %}
   <h2>New Assay</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Add Assay</button>
-  </form>
+  <div class="card card-default">
+          <div class="card-header">
+            <h3 class="card-title">Select2 (Bootstrap4 Theme)</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+           <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+			{{ form|crispy }}
+			<button type="submit" class="btn btn-primary">Add Assay</button>
+           </form>
+          </div>
+   </div>
 {% endblock %}

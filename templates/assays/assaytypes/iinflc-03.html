@@ -1,4 +1,4 @@
-{% extends 'assays/detail_assay.html' %}
+{% extends 'assays/detail_assay2.html' %}
 
 {% block assay_content %}
  <!-- /.card -->
@@ -29,7 +29,16 @@
               </thead>
               <tbody>
                 {% for assay in measures %}
-                  <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
+                  <tr class="table-row" data-href="#" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
+                    <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender|default_if_none:""}}</p>
+                    <p><b>Genotype</b>: {{assay.mid.genotype|default_if_none:""}}</p> 
+                    <p><b>Date of Birth</b>: {{assay.mid.date|default_if_none:""}}</p> 
+                    <p><b>Age</b>: {{assay.mid.age|default_if_none:""}} </p> 
+                    <p><b>Induced</b>: {{assay.mid.induced|default_if_none:""}}</p>     
+                    <p><b>Treated</b>: {{assay.mid.treated|default_if_none:""}}</p> 
+                    <p><b>Diet</b>: {{assay.mid.diet|default_if_none:""}}</p> 
+                    <p><b>Other Mouse Information</b>: {{assay.mid.mouse_info|default_if_none:""}}</p>
+                    <p><b>Other environmental data</b>: {{assay.mid.other|default_if_none:""}}</p></div>'>
                     <!--<td>{{ assay.assayid }}</td>-->
                     <td>{{ assay.mid }}</td>
                     <td>{{ assay.timepoint|default_if_none:"" }}</td>

@@ -3,7 +3,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from .models import PipelineType, Pipeline
-
+from bootstrap_modal_forms.forms import BSModalModelForm
 class PipelineForm(forms.ModelForm):
     class Meta:
         model = Pipeline
@@ -36,7 +36,7 @@ class PipelineForm(forms.ModelForm):
         )
 
 
-class PipelineTypeForm(forms.ModelForm):
+class PipelineTypeForm(BSModalModelForm):
     class Meta:
         model = PipelineType
         fields = ('code', 'name')
