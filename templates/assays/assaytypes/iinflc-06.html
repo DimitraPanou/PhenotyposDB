@@ -1,0 +1,65 @@
+{% extends 'assays/detail_assay2.html' %}
+
+{% block assay_content %}
+ <!-- /.card -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Measurements</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table id="example1" class="table table-bordered table-hover dataTable" aria-describedby="example1_info">
+                <thead class="thead-light">
+                <tr>
+                  <th>Mouse ID</th>
+                  <th>Timepoint</th>        
+                  <th>Age</th>
+                  <th>Measurement Date</th>
+                  <th>sum Intensity</th>
+                  <th>net Intensity</th>
+                  <th>mean Intensity</th>
+                  <th>Acquisition Settings</th>
+                  <th>Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for assay in measures %}
+                  <tr class="table-row" data-href="#" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
+                    <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender|default_if_none:""}}</p>
+                    <p><b>Genotype</b>: {{assay.mid.genotype|default_if_none:""}}</p> 
+                    <p><b>Date of Birth</b>: {{assay.mid.date|default_if_none:""}}</p> 
+                    <p><b>Age</b>: {{assay.mid.age|default_if_none:""}} </p> 
+                    <p><b>Induced</b>: {{assay.mid.induced|default_if_none:""}}</p>     
+                    <p><b>Treated</b>: {{assay.mid.treated|default_if_none:""}}</p> 
+                    <p><b>Diet</b>: {{assay.mid.diet|default_if_none:""}}</p> 
+                    <p><b>Other Mouse Information</b>: {{assay.mid.mouse_info|default_if_none:""}}</p>
+                    <p><b>Other environmental data</b>: {{assay.mid.other|default_if_none:""}}</p></div>'>
+                    <!--<td>{{ assay.assayid }}</td>-->
+                    <td>{{ assay.mid }}</td>
+                    <td>{{ assay.timepoint|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
+                    <td>{{ assay.measurement_date|default_if_none:"" }}</td>
+                    <td>{{ assay.sum_intensity|default_if_none:"" }}</td>
+                    <td>{{ assay.net_intensity|default_if_none:"" }}</td>
+                    <td>{{ assay.mean_intensity|default_if_none:"" }}</td>
+                    <td>{{ assay.acquisition_settings|default_if_none:"" }}</td>
+                    <td>{{ assay.comments|default_if_none:"" }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2>Images</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ imageform|crispy }}
+    <button type="submit" class="btn btn-info">Add Image</button>
+  </form>
+{% endblock %}
+

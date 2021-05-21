@@ -680,6 +680,22 @@ class Cba02(models.Model):
         managed = True
         db_table = 'CBA-02'
 
+class Cba03(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='cba03s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    parameter1 = models.FloatField(blank=True, null=True)
+    parameter2 = models.FloatField(blank=True, null=True)
+    parameter3 = models.FloatField(blank=True, null=True)
+    parameter4 = models.TextField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'CBA-03'
+
 class Hpibd01(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='hpibd01s')  # Field name made lowercase.
     mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
@@ -856,6 +872,19 @@ class Ar06(models.Model):
     class Meta:
         managed = True
         db_table = 'AR-06'
+
+class Ar07(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='ar07s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    weight = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'AR-07'
 
 class Mouse(models.Model):
     GENDER = (

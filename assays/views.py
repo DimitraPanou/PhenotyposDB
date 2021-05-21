@@ -192,9 +192,7 @@ class AssaysDetailView(DetailView):
 		# mouselist = i4.values('mid').distinct().order_by('mid')
 		# objects = Mouse.objects.filter(id__in=mouselist)
 		#images = self.get_object().associated_images.annotate()
-		par = None
-		if(	self.request.GET.get('parameterName')):
-			par = self.request.GET.get('parameterName')
+
 		#	kwargs['par']=request.POST.get('parameterName')
 		measures = switcher.get(self.object.type.id,"Ivalid")
 		kwargs['measures'] = measures
@@ -209,18 +207,35 @@ class AssaysDetailView(DetailView):
 		kwargs['females'] = females.count()
 		kwargs['males'] = males.count()
 		kwargs['parameters'] = parameters
+		par = parameters[0]
+		if(	self.request.GET.get('parameterName')):
+			par = self.request.GET.get('parameterName')
 		kwargs['par'] = par
-		source = parameters[0]
-		if par:
-			source = par
-		test = parameterMeasures(measures,parameters[0])
+#		source = parameters[0]
+#		if par:
+#			source = par
+		test = parameterMeasures(measures,par)
+
 		series = []
 		for key in test:
 			data_dict = {}
 			data_dict['name'] = key
 			data_dict['data'] = test[key].values.tolist()
-			print(data_dict)
 			series.append(data_dict)
+		print('&&&&&&&&&&&&')
+		print(test)
+		series2 = []
+		for key in test:
+			if(len(test[key])):
+				test2 = test[key].groupby('timepoint').mean().reset_index()
+				print('sdsdsdsdsdsdssdsdsds')
+				print(test2)
+				data_dict = {}
+				data_dict['name'] = key
+				data_dict['type'] ='area'
+				data_dict['data'] = test2.values.tolist()
+				series2.append(data_dict)
+		print(series2)
 		kwargs['scarplot'] = [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], [155.8, 53.6], [170.0, 59.0], [159.1, 47.6], [166.0, 69.8], [176.2, 66.8], [160.2, 75.2]]
 		'''series = [{
 		'name': 'Female',
@@ -235,7 +250,10 @@ class AssaysDetailView(DetailView):
 		}
 		]'''
 		kwargs['series'] = series
+		if(series2):
+			kwargs['series2'] = series2
 		return super().get_context_data(**kwargs)
+
 
 def returnMeasurements(assay):
 	measures = 0

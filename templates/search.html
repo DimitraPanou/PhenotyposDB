@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <!--div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form method=POST action="{% url 'search' %}">
+                        {% csrf_token %}
+                        <div class="input-group input-group-lg">
+                            <input type="search" class="form-control form-control-lg" name= "searched" placeholder="Type your keywords here" value="{{ searched }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-lg btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div> -->
+            {% if searched %}
+            <div class="row mt-3">
+                <div class="col-md-10 offset-md-1">
+                    <h4 align="center">You searched for {{ searched }}</h4>
+                    <div class="list-group">
+                    {% if assays %}
+                        <h4>Assays</h4>
+                        {% for assay in assays %}
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <iframe width="240" height="160" src="https://www.youtube.com/embed/WEkSYw3o5is?controls=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="border-0" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="col px-4">
+                                        <div>
+                                            <div class="float-right">{{assay.measurement_day}}</div>
+                                            <h4>{{assay.name}}</h4>
+                                            <p class="mb-0">{{assay.type.description}}</p>
+                                        </div>
+                                        
+                                        <div class="key-financials" style="text-align:center;">
+                                            <table width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Testing Protocol</th>
+                                                        <th ng-show="details.coin.price_change_1D_percent" class="">Authors</th>
+                                                        <!----><th ng-if="(!_.isNull(details.coin.price_change_7D_percent))">Staff</th><!---->
+                                                        <!----><th ng-if="details.coin.supply">Duration time</th><!---->
+                                                               <th><a class="btn btn-outline-secondary btn-lg mt-3 mb-1" href="{% url 'assay-detail' assay.id %}"><i class="ti-eye" aria-hidden="true"></i></a></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><i ng-class="{ 'change-up fal fa-long-arrow-up': details.coin.price_change_1D_percent >= 0, 'change-down fal fa-long-arrow-down': details.coin.price_change_1D_percent < 0 }" class="change-up fal fa-long-arrow-up"></i><span class="underscore-tooltip" id="header-price"><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">
+                                              {{assay.type.code}}
+                                            </button></span></td>
+                                                            <td>
+                                                              <ul class="list-inline">
+                                                                  <li class="list-inline-item">
+                                                                      <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}" style="width: 30px;">
+                                                                  </li>
+                                                                {% if assay.scientist %}
+                                                                  <li class="list-inline-item">
+                                                                      <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}" style="width: 30px;">
+                                                                  </li>
+                                                                {% endif %}
+                                                              </ul>
+                                                            </td>
+                                                        <!----><td ng-if="(!_.isNull(details.coin.price_change_7D_percent))"><span ng-class="{ 'change-up': details.coin.price_change_7D_percent >= 0, 'change-down': details.coin.price_change_7D_percent < 0 }" class="change-up">{{assay.staff}}</span></td><!---->
+                                                        <!----><td ng-if="::details.total_score">
+                                                            <a ui-sref="{ 'view' : 'analysis', 'subview' : null }" uib-tooltip="Click to see the full analysis" tooltip-append-to-body="true" href="/coins/cardano/analysis">
+                                                                {{assay.duration|default_if_none:""}}/{{assay.timesteps_in|default_if_none:""}}
+                                                            </a>
+                                                        </td><!---->
+                                                        <td></td><!---->
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="list-group">
+                    {% if pipelines %}
+                        <h4>Pipelines</h4>
+                        {% for pipeline in pipelines %}
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <iframe width="240" height="160" src="https://www.youtube.com/embed/WEkSYw3o5is?controls=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="border-0" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="col px-4">
+                                        <div>
+                                            <div class="float-right">{{pipeline.name}}</div>
+                                            <h3>Lorem ipsum dolor sit amet</h3>
+                                            <p class="mb-0">consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

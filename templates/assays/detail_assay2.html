@@ -1,0 +1,631 @@
+
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    {% block content_header %}
+
+<div class="card">
+<div class="card-body">
+<div class="flexbox flex-wrap">
+<header class="coin-details-header" style="">
+<div class="coin-info">
+    <div class="coin-logo-name">
+        <div class="coin-logo">
+            <img id="{{object.id}}" class="squareicon user-image img-circle elevation-2" width="70" height="70">
+
+        </div>
+        <div class="coin-name">
+            {{object.type.code}}<br>
+            <small>{{object.name}}</small>
+        
+        </div>
+    </div>
+</div>
+
+<div class="key-financials" style="text-align:center;">
+    <table width="100%">
+        <thead>
+            <tr>
+                <th>Testing Protocol</th>
+                <th ng-show="details.coin.price_change_1D_percent" class="">Measured Values</th>
+                <!----><th ng-if="(!_.isNull(details.coin.price_change_7D_percent))">Minimum animals</th><!---->
+                       <th ng-if="details.coin.volume_24_usd">Total animals</th>
+                <!----><th ng-if="details.coin.last_market_cap_usd">Mouse life stage</th><!---->
+                <!----><th ng-if="details.coin.supply">Duration time</th><!---->
+                <!----><th ng-if="coinQuickLinks.length" class="hidden-xs">Links</th><!---->
+                       <th><a class="btn btn-outline-secondary btn-lg mt-3 mb-1" href="{% url 'assay-update' object.id %}"><i class="ti-pencil" aria-hidden="true"></i></a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><i ng-class="{ 'change-up fal fa-long-arrow-up': details.coin.price_change_1D_percent >= 0, 'change-down fal fa-long-arrow-down': details.coin.price_change_1D_percent < 0 }" class="change-up fal fa-long-arrow-up"></i><span class="underscore-tooltip" id="header-price"><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">
+      {{object.type.name}}
+    </button></span></td>
+                <td ng-if="details.coin.last_market_cap_usd">{% block measured_values %} {% endblock %}</td>
+                <!----><td ng-if="(!_.isNull(details.coin.price_change_7D_percent))"><span ng-class="{ 'change-up': details.coin.price_change_7D_percent >= 0, 'change-down': details.coin.price_change_7D_percent < 0 }" class="change-up">{% block min_models %} {% endblock %}</span></td><!---->
+                <!----><td ng-if="details.coin.last_market_cap_usd">{{total}}<br>{{males}}M + {{females}}F</td><!---->
+                <!----><td ng-if="details.coin.volume_24_usd">Adult</td><!---->
+                <!----><td ng-if="::details.total_score">
+                    <a ui-sref="{ 'view' : 'analysis', 'subview' : null }" uib-tooltip="Click to see the full analysis" tooltip-append-to-body="true" href="/coins/cardano/analysis">
+                        {{object.duration|default_if_none:""}}/{{object.timesteps_in|default_if_none:""}}
+                    </a>
+                </td><!---->
+                <!----><td ng-if="coinQuickLinks.length" class="hidden-xs">
+                    <div class="links">
+                        <!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Website" uib-tooltip="Website" href="https://www.cardano.org/en/home/" target="_blank">
+                            <i class="fa-fw fal fa-globe" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Twitter" uib-tooltip="Twitter" href="https://twitter.com/Cardano" target="_blank">
+                            <i class="fa-fw fab fa-twitter-square" aria-hidden="true"></i>
+                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Telegram" uib-tooltip="Telegram" href="https://t.me/CardanoAnnouncements" target="_blank">
+                            <i class="fa-fw fab fa-telegram" aria-hidden="true"></i><!---->
+                    </div>
+                </td>
+                <td></td><!---->
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+</header>
+</div>
+</div>
+<hr>
+   <div class="p-1 pb-2 pl-3" id="protocolTextContainer" style="visibility:visible">
+   <div class="row">     
+        <a href="#Info" class="u-btn u-button-style u-palette-2-base u-btn-1"> Experiment Info </a>
+        <a href="#Measuraments" class="u-btn u-button-style u-palette-2-base u-btn-1"> Measuraments </a>
+        <a href="#Analysis" class="u-btn u-button-style u-palette-2-base u-btn-1"> Analysis </a>
+  </div>
+  </div>
+</div>
+<div class="page-content">         
+    
+    {% endblock %}
+  <br>
+  <div id="Info"><h3>Experiment Info</h3></div>
+  <br>
+  <div class="row">
+          <!-- Left col -->
+          <div class="col-sm-6">
+            <!-- MAP & BOX PANE -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title" >Description of experiment</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" >
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body pr-0 pt-0 pl-4">
+
+                <div class="d-md-flex">
+                  <div class="p-1 flex-fill" style="overflow: hidden">
+                    {% block assaytype_content %}
+                   
+                    {% endblock %}
+                    <hr>
+                        <strong><i class="fas fa-book mr-1"></i> Description </strong>
+                        <p class="text-muted">
+                          {{ assay.type.experimental_design|default_if_none:""|safe }}
+                        </p>
+                        <hr>
+                        <strong><i class="fas fa-pencil-alt mr-1"></i> Purpose</strong>
+                        <p class="text-muted">{{ assay.type.purpose|default_if_none:""|safe }}</p>
+                        <hr>
+                        <strong><i class="fas fa-calendar mr-1"></i> Dates</strong>
+                        <p class="text-muted">Date Created: {{ assay.created_at }}</p>
+                        <p class="text-muted">Date Modified: {{ assay.updated_at }}</p>                
+                        <hr>
+                        <strong><i class="far fa-file-alt mr-1"></i> Comments</strong>
+                        <p class="text-muted">{{ assay.comments|default_if_none:"" }}</p>
+                        <h5 class="mt-5 text-muted">Project files</h5>
+                        <ul class="list-unstyled">
+                          <li>
+                            <a href="{{assay.rawdata_file.url}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-excel"></i> Raw Data</a>
+                          </li>
+                          {% if assay.type.word %}
+                          <li>
+                            <a href="{{assay.type.word.url}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> {{ assay.type.word.name}}</a>
+                          </li>
+                          {% endif %}
+                        </ul>
+                        
+                  </div>
+
+                  <div class="card-pane-right bg-newteal pt-2 pb-2 pl-4 pr-4">
+                    <div class="description-block mb-4">
+                      <span class="description-text"><i class="fas fa-calendar mr-1"></i> Unit </span>
+                      <div class="sparkbar pad" data-color="#fff">{{assay.type.unit}}</div>
+                      <h5 class="description-header"></h5>
+                    </div>
+                    <!-- /.description-block -->
+                    <div class="description-block">
+                      <span class="description-text">PI</span>
+                      <h5 class="description-header">Author</h5>
+                      <div class="sparkbar pad" data-color="#fff"><img alt="Avatar" class="img-circle elevation-2" width="60px" src="{{ assay.author.profile.image.url }}"></div>
+                      {% if assay.scientist %}
+                        <h5 class="description-header">Scientist in charge</h5>
+                        <div class="sparkbar pad" data-color="#fff"><img alt="Avatar" class="img-circle elevation-2" width="60px" src="{{ assay.scientist.profile.image.url }}"></div>
+                      {% endif %}
+                    </div>
+                  </div><!-- /.card-pane-right -->
+                </div><!-- /.d-md-flex -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+            <div class="col-6">
+              <div class="card bg-dark">
+              <div class="card-header">
+                <h3 class="card-title">List of experimental mouse models</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+
+                </div>
+              </div>
+
+              <!-- /.card-header -->
+              <div class="card-body table-responsive table-valign-middle p-0">
+                    <table id="example3" class="table table-dark">     
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">
+                                    ID
+                                </th>
+                                <th style="width: 6%">
+                                    Gender
+                                </th>
+                                <th style="width: 6%">
+                                    Age ({{object.mouse_age}})
+                                </th>
+                                <th style="width: 10%">
+                                    Genotype
+                                </th>
+                                <th style="width: 10%">
+                                    Induced
+                                     <span data-tip="The number of active units of the asset multiplied by the price of one unit" class="btn" data-toggle="popover" title='The number of active units of the asset multiplied by the price of one unit'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                   
+                                </th>
+                                <th style="width: 10%">
+                                    Treated
+                                </th>
+                                <th style="width: 10%">
+                                    Other Mouse Information
+                                    <span data-tip="cage number, mouse number, ear marking" class="btn" data-toggle="popover" title='Cage number, mouse number, ear marking'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                    
+                                </th>
+                                <th style="width: 8%">
+                                    Environmental data
+                                    <span data-tip="housing, water, light cycles, temperature" class="btn" data-toggle="popover" title='Housing, water, light cycles, temperature'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                    
+                                </th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for m in mouselist %}
+                              <tr>
+                                <td >
+                                  <div class="row">
+                                    <div class="col-4">
+                                    <img class="img-circle img-size-32 mr-2" src="{% static 'dist/img/mouse4.png' %}">
+                                  </div>
+                                  <div class="col-8"><b>  {{ m.mid }}</b></div>
+                                  </div>
+                                </td>
+                                <td style="font-family:Verdana;font-weight:bold;">
+                                  {% if m.gender == "Male" %}
+                                    <i class="fa fa-mars" style="font-size: 1.8em;"></i>
+                                  {% elif m.gender == "Female" %}
+                                    <i class="fa fa-venus" style="font-size: 1.8em;"></i>
+                                  {% else %}
+                                    {{ m.gender|default_if_none:"" }}
+                                  {% endif %}
+                                </td>
+                                <td>{{ m.age|default_if_none:"" }}</td>
+                                <td>{{ m.genotype|default_if_none:"" }}</td>
+                                <td style="font-family:Verdana;font-weight:bold;">
+                                  {% if m.induced == "induced " %}
+                                    <i class="fa fa-check" style="font-size: 1.8em;"></i>                                  
+                                  {% elif m.induced == "induced" %}
+                                    <i class="fa fa-check" style="font-size: 1.8em;"></i>
+                                  {% elif m.induced == "non-induced " %}
+                                    <i class="fa fa-close" style="font-size: 1.8em;"></i>
+                                  {% elif m.induced == "non-induced" %}
+                                    <i class="fa fa-close" style="font-size: 1.8em;"></i>                                    
+                                  {% else %}
+                                    {{ m.induced|default_if_none:"" }}
+                                  {% endif %}
+                                </td>
+                                <td style="font-family:Verdana;font-weight:bold;">
+                                  {% if m.treated == "treated"%}
+                                    <i class="fa fa-check" style="font-size: 1.8em;"></i>
+                                  {% elif m.treated == "T"%}
+                                    <i class="fa fa-check" style="font-size: 1.8em;"></i>
+                                  {% elif m.treated == "non-treated" %}
+                                    <i class="fa fa-close" style="font-size: 1.8em;"></i>
+                                  {% elif m.treated == "NT" %}
+                                    <i class="fa fa-close" style="font-size: 1.8em;"></i>                                    
+                                  {% else %}
+                                    {{ m.treated|default_if_none:"" }}
+                                  {% endif %}
+                                </td>
+                                <td>{{ m.mouse_info|default_if_none:"" }}</td>
+                                <td>{{ m.other|default_if_none:"" }}</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+              </div>
+              <!-- /.card-body -->
+                            
+            </div>
+            <!-- /.card -->
+
+          </div>
+
+      </div>
+                    <!-- /.card-header -->
+              <div class="card-body table-responsive p-0" style="display: none;">
+                    <table id="example5" class="table table-dark">     
+                        <thead>
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Gender
+                                </th>
+                                <th>
+                                    Age ({{object.mouse_age}})
+                                </th>
+                                <th>
+                                    Genotype
+                                </th>
+                                <th>
+                                    Induced
+                                     <span data-tip="The number of active units of the asset multiplied by the price of one unit" class="btn" data-toggle="popover" title='The number of active units of the asset multiplied by the price of one unit'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                   
+                                </th>
+                                <th>
+                                    Treated
+                                </th>
+                                <th>
+                                    Other Mouse Information
+                                    <span data-tip="cage number, mouse number, ear marking" class="btn" data-toggle="popover" title='Cage number, mouse number, ear marking'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                    
+                                </th>
+                                <th>
+                                    Environmental data
+                                    <span data-tip="housing, water, light cycles, temperature" class="btn" data-toggle="popover" title='Housing, water, light cycles, temperature'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                    
+                                </th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for m in mouselist %}
+                              <tr>
+                                <td>
+                                  <span>
+                                  <img class="img-circle img-size-32 mr-2" src="{% static 'dist/img/mouse4.png' %}">
+                                  <strong>  {{ m.mid }}</strong>
+                                  </span>
+                                </td>
+                                <td>{{ m.gender|default_if_none:"" }}</td>                                
+                                <td>{{ m.age|default_if_none:"" }}</td>
+                                <td>{{ m.genotype|default_if_none:"" }}</td>
+                                <td>{{ m.induced|default_if_none:"" }}</td>
+                                <td>{{ m.treated|default_if_none:"" }}</td>
+                                <td>{{ m.mouse_info|default_if_none:"" }}</td>
+                                <td>{{ m.other|default_if_none:"" }}</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+              </div>
+              <!-- /.card-body -->
+{% block info_content %}
+
+{% endblock %}
+
+  <div id="Measuraments"><h3>Measuraments</h3></div>
+  <div class="row">
+          <div class="col-12 connectedSortable">
+
+                {% block assay_content %}
+                   
+                {% endblock %}
+        <div class="row">
+
+          <div class="col-md-6">
+            <div class="card card-dark">
+              <div class="card-header">
+                <h3 class="card-title"> Stats </h3>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                <div class="col-md-6">                    
+                  <div id="container1" style="width:100%; height:300px;"></div>
+                </div>
+                <div class="col-md-6">
+                  <div id="container3" style="width:100%; height:300px;"></div>
+                </div>
+              </div>
+              </div>
+                  
+                  <!-- /.tab-pane -->
+            </div>
+          </div>
+        <div class="col-md-6">          
+          <div class="card card-dark">
+              <div class="card-header">
+                <h4 class="card-title">Associated Images</h4>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  {% for gallery_image in object.associated_images.all %}                        
+                    <div class="col-sm-3">
+                      <a href="{{ gallery_image.image.url }}" data-toggle="lightbox" data-title="{{ gallery_image.title }}" data-title="{{ gallery_image.caption }}" data-gallery="gallery">
+                        <img src="{{ gallery_image.image.url }}" class="img-fluid mb-2" alt="white sample"/>
+                      </a>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="p-1">
+                  <button type="button" class="btn-sm btn-dark"  data-target="#">Add Images</button>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+                <!-- /.tab-content -->
+       <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title"></h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-sm btn-tool">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-sm btn-tool">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+          <div class="card-body">
+            <div class="position-relative mb-4">
+              <div class="row">
+                <div class ="col-md-6">
+                        <form method="GET" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <select id="parameterName" name="parameterName" onchange="this.form.submit()">
+                            {% for con in parameters %}
+                              {% if con == par %}
+                                <option selected="selected" value={{par}}>{{par|safe}}</option>>
+                              {% else %}
+                                <option value={{con}}>{{con|safe}}</option>                          
+                              {% endif %}
+                            {% endfor %}                        
+                            </option>
+                          </select>
+                        </form>              
+                    <div id="container"></div>
+                    <h3>{{par}}</h3>
+                </div>
+                <div class ="col-md-6">
+                  <div id="containerboxplot"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class ="col-md-12">
+                  <div id="containerline"></div>
+                </div>
+              </div>
+                <div class='buttons'>
+                  <button id='2000'>
+                    2000
+                  </button>
+                  <button id='2004'>
+                    2004
+                  </button>
+                  <button id='2008'>
+                    2008
+                  </button>
+                  <button id='2012'>
+                    2012
+                  </button>
+                  <button id='2016' class='active'>
+                    2016
+                  </button>
+                </div>
+                <div id="containercolumn"></div>
+              </div>
+              </div>
+              <!-- ./card -->
+            </div>
+            <!-- /.col -->
+          </div>
+      </div>
+</div>
+
+<!--
+                      <form method="POST" enctype="multipart/form-data" action="{% url 'selectParameters' %}">
+                      {% csrf_token %}
+                      <select id="parameterName" name="parameterName" onchange="this.form.submit()">
+                        {% for con in parameters %}
+                          <option value={{con}}>{{con|safe}}</option>
+                        {% endfor %}
+                      </select>
+                    </form>              
+
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title">Images</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ imageform|crispy }}
+          <button type="submit" class="btn btn-info">Add Images</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+-->
+<div id="Analysis"><h3>Analysis</h3></div>
+
+{% block chart_content %}
+
+{% endblock %}
+      
+   <div id="protocolTextContainer" style="visibility:visible">     
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Protocol</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h3 class="text-center"><b>{{object.type.code|safe}}</b></h3>
+              <h3 class="text-center">{{object.type.name|safe}}</h3>
+              <div class="picture_div" style="margin:0px auto; text-align:center;">
+                <img src="../../static/dist/img/footer-logo-new.png" />
+              </div>
+              <p></p>
+              <div class="row justify-content-center">              
+                <div class="col-md-3 col-sm-6 col-12">
+                  <div class="info-box bg-newteal">
+                    <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
+
+                    <div class="info-box-content">
+                      <span class="info-box-text">Date published</span>
+                      <span class="info-box-number">{{object.type.publication_date|safe}}</span>
+                    </div>
+                <!-- /.info-box-content -->
+                  </div>
+                </div>
+              <!-- /.info-box -->
+                <div class="col-md-2 col-sm-2 col-12">
+                <div class="info-box bg-newteal">
+                  <span class="info-box-icon"><i class="fas fa-file-word"></i></span>
+                  <div class="info-box-content">
+                    <span class="info-box-text">Version</span>
+                    <span class="info-box-number text-center"><b>{{object.type.version|safe}}</b></span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div> 
+              <div class="col-md-3 col-lg-4 col-12">
+                <div class="info-box bg-newteal">
+                  <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">Team</span>
+                    <span class="info-box-number">{{object.type.unit|safe}}</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+              </div>             
+            </div>
+              <div id="protocolTextContainer" style="visibility:visible">     
+                {% if object.type.purpose %}<a href="#Purpose" class="btn btn-default">Purpose</a>{% endif %}
+                {% if object.type.experimental_design %}<a href="#Experimental-Design" class="btn btn-default">Experimental Design</a>{% endif %}
+                {% if object.type.equipment %}<a href="#Equipment" class="btn btn-default">Equipment</a>{% endif %}                                
+                {% if object.type.supplies %}<a href="#Supplies" class="btn btn-default">Supplies</a>{% endif %}                                
+                {% if object.type.procedures %}<a href="#Procedure" class="btn btn-default">Procedure</a>{% endif %}
+                {% if object.type.troubleshooting %}<a href="#Troubleshooting" class="btn btn-default">Troubleshooting</a>{% endif %}
+                {% if object.type.references %}<a href="#References" class="btn btn-default">References</a>{% endif %}
+              </div>
+              <hr>
+              {% if object.type.purpose %}
+              <div class="ptcl-item purpose">
+                <h3 id="Purpose" class="mb-3" tabindex="-1">Purpose</h3>
+                <div>
+                  <p>{{object.type.purpose|safe}}</p>
+                </div>
+              </div>
+              {% endif %}
+              {% if object.type.experimental_design %}
+              <div class="ptcl-item exp-design">
+                <h3 id="Experimental-Design" tabindex="-1">Experimental Design</h3>
+                <div>
+                  <div class="expandable">
+                    {{object.type.experimental_design|safe}}
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% if object.type.equipment %}
+              <div class="ptcl-item equipment">
+                <h3 id="Equipment" class="mb-3" tabindex="-1">Equipment</h3>
+                <div>
+                  {{object.type.equipment|safe}}
+                </div>
+              </div>
+              {% endif %}
+              {% if object.type.supplies %}              
+              <div class="ptcl-item supplies">
+                <h3 id="Supplies" class="mb-3" tabindex="-1">Supplies</h3>
+                <div>
+                  {{object.type.supplies|safe}}
+                </div>
+              </div>
+              {% endif %}
+              {% if object.type.procedures %}              
+              <div class="ptcl-item procedure">
+                <h3 id="Procedure" class="mb-3" tabindex="-1">Procedure</h3>
+                <div>
+                  {{object.type.procedures|safe}}            
+                </div>
+              </div>
+              {% endif %}
+              {% if object.type.troubleshooting %}               
+              <div class="ptcl-item troubleshooting">
+                <h3 id="Troubleshooting" class="mb-3">Troubleshooting</h3>
+                <div>
+                {{object.type.troubleshooting|safe}} 
+                </div>
+              </div> 
+              {% endif %}
+              {% if object.type.references %}                                                         
+              <div class="ptcl-item references">
+                <h3 id="References" class="mb-3">References</h3>
+                <div>
+                {{object.type.references|safe}} 
+                </div>
+              </div>
+              {% endif %}             
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  {% endif %}  
+
+
+{% endblock %}
+
+
+
+

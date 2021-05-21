@@ -10,7 +10,7 @@ tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
 				'BIOCHEM-06','BIOCHEM-07','BIOCHEM-08','CBA-01','CBA-02','ENDO-01','FC-04',
 				'FC-07','FC-08','HEM-01','HPIBD-01','HPIBD-02','HPIBD-03','HPIBD-04','HPNI-01','IINFLC-01',
 				'IINFLC-02','IINFLC-03','IINFLC-04','IINFLC-05','IINFLC-06','NI-01','NI-02-GRS-01','NI-02-OFD-01',
-				'NI-02-ROT-01','PR-02','AR-02','AR-03','AR-04','AR-05','AR-06',"info"
+				'NI-02-ROT-01','PR-02','AR-02','AR-03','AR-04','AR-05','AR-06','AR-07',"info"
 				]
 
 
@@ -1268,7 +1268,7 @@ def data_ar03(data,assay):
 def data_ar04(data,assay):
 	for i in range(len(data["Mouse ID"])):
 		flag =1
-		experiment = Ar03()
+		experiment = Ar04()
 		experiment.assayid = assay
 		for key in data:
 			if(flag):
@@ -1331,14 +1331,17 @@ def data_ar05(data,assay):
 					experiment.age= data[key][i]
 				elif ('measurement' in key.lower()):
 					d = data[key][i]
-					experiment.measurement_date= d				 
+				elif ('BV/TV' in key):
+					experiment.bvtv = data[key][i]
+				elif ('BS/TV' in key):
+					experiment.bstv= data[key][i]				
 				elif ('trabecular' in key.lower()):
 					if ('thickness' in key.lower()):
-						experiment.clinical_score= data[key][i]
+						experiment.trabecular_thickness= data[key][i]
 					elif ('number' in key.lower()):
-						experiment.clinical_score= data[key][i]
+						experiment.trabecular_number= data[key][i]
 					elif ('seperation' in key.lower()):
-						experiment.clinical_score= data[key][i]
+						experiment.trabecular_seperation= data[key][i]
 				elif ('comment' in key.lower()):
 					experiment.comment= data[key][i]
 		if(flag):				
@@ -1373,6 +1376,40 @@ def data_ar06(data,assay):
 					experiment.measurement_date= d				 
 				elif ('clinical' in key.lower()):
 					experiment.clinical_score= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_ar07(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Ar07()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('weight' in key.lower()):
+					experiment.weight= data[key][i]
 				elif ('comment' in key.lower()):
 					experiment.comment= data[key][i]
 		if(flag):				
@@ -1857,6 +1894,8 @@ def handle_uploaded_file(assayobject):
 		data_ar05(data,assayobject)
 	if(assayobject.type.code == "AR-06"):
 		data_ar06(data,assayobject)
+	if(assayobject.type.code == "AR-07"):
+		data_ar07(data,assayobject)
 	if(assayobject.type.code == "IINFLC-05"):
 		data_iinflc05(data,assayobject)
 	if(assayobject.type.code == "IINFLC-06"):
@@ -1914,7 +1953,8 @@ def returnTemplateName(assayobject):
 		36:'assays/assaytypes/ar03.html',
 		37:'assays/assaytypes/ar04.html',
 		38:'assays/assaytypes/ar05.html',
-		39:'assays/assaytypes/ar06.html',			
+		39:'assays/assaytypes/ar06.html',
+		40:'assays/assaytypes/ar07.html',		
 	}
 	return switcher.get(assayobject.id,"Ivalid")
 
@@ -1980,11 +2020,13 @@ def get_parameters(assay):
 		37: Ar04._meta.get_fields(),
 		38: Ar05._meta.get_fields(),
 		39: Ar06._meta.get_fields(),
+		40: Ar07._meta.get_fields(),
+
 	}
 	parameters = []
 	pars = switcher.get(assay.type.id,"Ivalid")
 	if (pars):
-		for i in range(6,len(pars)-2):
+		for i in range(6,len(pars)-1):
 			if(pars[i].get_internal_type()=='FloatField'):
 				parameters.append(pars[i].name)
 			elif(pars[i].get_internal_type()=='IntegerField'):
@@ -1995,19 +2037,31 @@ def parameterMeasures(measures, parameter):
     mouselist = measures.values('mid').distinct().order_by('mid')
     gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).distinct()
     genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).distinct()
+    print('gender {} {}',genotype, len(genotype))
+    print('sex {}',gender)
     test = {}
-    for sex in gender:
-        for gene in genotype:
-            label = sex + " "+gene
-            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
-            parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
-            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
-            if not df.empty:
-                df = df[['timepoint',parameter]] 
-            print(df)
-            #col_name='timepoint'
-            #first_col = df.pop(col_name)
-            #df.insert(0, col_name, first_col)
-            #print(df)
-            test[label] = df
+    if(gender.exists()):
+        print('gender not empty')
+        if(genotype.exists()):
+            print('genotype not empty')
+            for sex in gender:
+                for gene in genotype:
+                    if(gene):
+                        label = sex + " "+gene
+                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
+                        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        if not df.empty:
+                            df = df[['timepoint',parameter]] 
+                        print(df)
+                        test[label] = df
+                    else:
+                        label = sex
+                        m = Mouse.objects.filter(id__in= mouselist,gender=sex)
+                        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        if not df.empty:
+                            df = df[['timepoint',parameter]] 
+                        print(df)
+                        test[label] = df
     return test
