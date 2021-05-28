@@ -141,6 +141,59 @@ class AssaysDeleteView(DeleteView):
 	#assay.delete()
 	return redirect('assays')
 '''
+class AssaysDetailView2(DetailView):
+	model = Assay
+	template_name = 'assays/detail_assay3.html'
+
+	def get_context_data(self, **kwargs):
+		switcher ={
+			4: self.get_object().iinflc03s.annotate(),
+			5: self.get_object().iinflc04s.annotate(),
+			6: self.get_object().iinflc02s.annotate(),
+			7: self.get_object().ni01s.annotate(),
+			8: self.get_object().ni02rot01s.annotate(),
+			9: self.get_object().ni02ofd01s.annotate(),
+			10: self.get_object().ni02grs01s.annotate(),
+			11: self.get_object().hem01s.annotate(),
+			12: self.get_object().hpibd02s.annotate(),
+			13: self.get_object().biochem01s.annotate(),
+			14: self.get_object().biochem02s.annotate(),
+			15: self.get_object().biochem03s.annotate(),
+			16: self.get_object().biochem04s.annotate(),
+			17: self.get_object().biochem05s.annotate(),
+			18: self.get_object().biochem06s.annotate(),
+			19: self.get_object().biochem07s.annotate(),
+			20: self.get_object().biochem08s.annotate(),
+			22: self.get_object().hpni01s.annotate(),
+			23: self.get_object().fc08s.annotate(),
+			24: self.get_object().ar02s.annotate(),
+			25: self.get_object().iinflc05s.annotate(),
+			26: self.get_object().iinflc06s.annotate(),	
+			27: self.get_object().fc07s.annotate(),
+			28: self.get_object().pr02s.annotate(),
+			29: self.get_object().cba01s.annotate(),								
+			30: self.get_object().cba02s.annotate(),
+			31: self.get_object().hpibd03s.annotate(),
+			32: self.get_object().hpibd01s.annotate(),
+			33: self.get_object().hpibd04s.annotate(),
+			34: self.get_object().endo01s.annotate(),
+			35: self.get_object().iinflc01s.annotate(),
+			36: self.get_object().ar03s.annotate(),
+			37: self.get_object().ar04s.annotate(),
+			38: self.get_object().ar05s.annotate(),
+			39: self.get_object().ar06s.annotate(),
+			40: self.get_object().ar07s.annotate(),
+			41: self.get_object().cba03s.annotate(),
+			42: self.get_object().fc01s.annotate(),
+			43: self.get_object().fc03s.annotate(),
+			44: self.get_object().hpa02s.annotate(),
+		}
+		measures = switcher.get(self.object.type.id,"Ivalid")
+		kwargs['measures'] = measures
+		mouselist = measures.values('mid').distinct().order_by('mid')
+		kwargs['mouselist'] = Mouse.objects.filter(id__in=mouselist)
+		return super().get_context_data(**kwargs)
+
 class AssaysDetailView(DetailView):
 	model = Assay
 	#template_name = 'assays/assaytypes/iinflc-04.html'
@@ -188,6 +241,11 @@ class AssaysDetailView(DetailView):
 			37: self.get_object().ar04s.annotate(),
 			38: self.get_object().ar05s.annotate(),
 			39: self.get_object().ar06s.annotate(),
+			40: self.get_object().ar07s.annotate(),
+			41: self.get_object().cba03s.annotate(),
+			42: self.get_object().fc01s.annotate(),
+			43: self.get_object().fc03s.annotate(),
+			44: self.get_object().hpa02s.annotate(),
 		}
 		# mouselist = i4.values('mid').distinct().order_by('mid')
 		# objects = Mouse.objects.filter(id__in=mouselist)
@@ -196,7 +254,7 @@ class AssaysDetailView(DetailView):
 		#	kwargs['par']=request.POST.get('parameterName')
 		measures = switcher.get(self.object.type.id,"Ivalid")
 		kwargs['measures'] = measures
-		parameters = get_parameters(self.object)
+		[parameters,parameters_names] = get_parameters(self.object)
 		mouselist = measures.values('mid').distinct().order_by('mid')
 		mouse_num = measures.values('mid').annotate(dcount=Count('mid')).count()	
 		females = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Female')
@@ -250,6 +308,7 @@ class AssaysDetailView(DetailView):
 		}
 		]'''
 		kwargs['series'] = series
+		kwargs['title'] = par
 		if(series2):
 			kwargs['series2'] = series2
 		return super().get_context_data(**kwargs)
@@ -293,6 +352,11 @@ def returnMeasurements(assay):
 		37: assay.ar04s.annotate(),
 		38: assay.ar05s.annotate(),
 		39: assay.ar06s.annotate(),
+		40: assay.ar07s.annotate(),
+		41: assay.cba03s.annotate(),
+		42: assay.fc01s.annotate(),
+		43: assay.fc03s.annotate(),
+		44: assay.hpa02s.annotate(),
 	}
 	measures = switcher.get(assay.type.id,"Ivalid")
 	return measures

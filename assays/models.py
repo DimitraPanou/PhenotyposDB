@@ -477,6 +477,58 @@ class Biochem08(models.Model):
         managed = True
         db_table = 'BIOCHEM-08'
 
+class Fc01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='fc01s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    live_aquis = models.CharField(max_length=64, blank=True, null=True)
+    total_cell_count = models.FloatField(blank=True, null=True)
+    neu_per = models.FloatField(blank=True, null=True)
+    eos_per = models.FloatField(blank=True, null=True)
+    mon_per = models.FloatField(blank=True, null=True)
+    recent_emigrant_monocytes_per = models.FloatField(blank=True, null=True)
+    inflammatory_monocytes_per = models.FloatField(blank=True, null=True)
+    steady_state_monocytes_per = models.FloatField(blank=True, null=True)
+    nk_cells_per = models.FloatField(blank=True, null=True)
+    b_cells_per = models.FloatField(blank=True, null=True)
+    t_cells_per = models.FloatField(blank=True, null=True)
+    b1b_cells_per = models.FloatField(blank=True, null=True)
+    b2b_cells_per = models.FloatField(blank=True, null=True)
+    dcs_per = models.FloatField(blank=True, null=True)
+    cds_per = models.FloatField(blank=True, null=True)
+    cds_cd11_per = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+    pdcs_per = models.FloatField(blank=True, null=True)
+    macrophages_per = models.FloatField(blank=True, null=True)
+    class Meta:
+        managed = True
+        db_table = 'FC-01'
+
+class Fc03(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='fc03s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    live_aquis = models.CharField(max_length=64, blank=True, null=True)
+    total_cell_count = models.FloatField(blank=True, null=True)
+    total_b_cells = models.FloatField(blank=True, null=True)
+    b1b_cells_per = models.FloatField(blank=True, null=True)
+    b2b_cells_per = models.FloatField(blank=True, null=True)
+    b2b_immature_cells_per = models.FloatField(blank=True, null=True)
+    t1_cells_per = models.FloatField(blank=True, null=True)
+    mzb_cells_per = models.FloatField(blank=True, null=True)
+    b2_mature_cells_per = models.FloatField(blank=True, null=True)
+    t2_cells_per = models.FloatField(blank=True, null=True)
+    t3_cells_per = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+    class Meta:
+        managed = True
+        db_table = 'FC-03'
 
 class Fc04(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='fc04s')  # Field name made lowercase.
@@ -814,7 +866,7 @@ class Ar03(models.Model):
     timepoint = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     measurement_date = models.DateField(blank=True, null=True)
-    sum_intensity_fl = models.FloatField(blank=True, null=True)
+    sum_intensity_fl = models.FloatField(verbose_name ="sum intensity (FL)", blank=True, null=True)
     net_intensity_fl = models.FloatField(blank=True, null=True)
     sum_intensity_hl = models.FloatField(blank=True, null=True)
     net_intensity_hl = models.FloatField(blank=True, null=True)
@@ -885,6 +937,22 @@ class Ar07(models.Model):
     class Meta:
         managed = True
         db_table = 'AR-07'
+
+class Hpa02(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='hpa02s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    synovitis = models.FloatField(blank=True, null=True)
+    cartilage_destruction = models.FloatField(blank=True, null=True)
+    bone_erosion = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'HPA-02'
+
 
 class Mouse(models.Model):
     GENDER = (

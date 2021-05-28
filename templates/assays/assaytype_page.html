@@ -3,12 +3,22 @@
 {% block content %}
 
   {% block content_header %}
-    <h2>{{object.code}}</h2>
-    <p>
-      {{object.name}}
-    </p>
-    <a class="btn btn-secondary btn-lg mt-1 mb-1 ti-pencil" href="{% url 'assaytype-detail-update' object.id %}"></a>
-
+  <div class="container">
+    <div class="card">
+      <div class="card-body">
+        <div class="flexbox flex-wrap">
+        <div class="img-thumbnail display-4 align-self-center mr-3">
+        <i class="ti-write"></i>
+        </div>
+        <div class="flex-grow align-self-center">
+        <h1>{{object.code}}</h1>
+        <p>{{object.name}}</p>
+        </div>
+        <p><a class="btn btn-white btn-lg mt-1 mb-1 ti-pencil" href="{% url 'assaytype-detail-update' object.id %}"></a></p>
+        </div>
+      </div>
+    </div>
+</div>
   {% endblock %}
 
 <br>
@@ -19,9 +29,7 @@
     <h5>Purpose:</h5>
     <hr>
     <div class="card card-body">
-    <p>
       {{object.purpose|safe}}
-    </p>
     </div>
   </div>
 </div>

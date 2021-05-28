@@ -80,6 +80,9 @@ class AtypeExtraForm(forms.ModelForm):
     class Meta:
         model = Atype
         fields = ('assay_word','purpose','experimental_design','equipment','supplies','procedures','troubleshooting','appendix','references')
+        widgets = {
+        'assay_word': forms.FileInput(attrs={'class':'dropify'}),
+        }
 
 class ImageForm(forms.ModelForm):
     class Meta:
