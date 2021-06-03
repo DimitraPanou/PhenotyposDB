@@ -75,13 +75,12 @@ class AtypeForm(forms.ModelForm):
             Submit('submit', 'Add')
         )
 
-
 class AtypeExtraForm(forms.ModelForm):
     class Meta:
         model = Atype
         fields = ('assay_word','purpose','experimental_design','equipment','supplies','procedures','troubleshooting','appendix','references')
         widgets = {
-        'assay_word': forms.FileInput(attrs={'class':'dropify'}),
+        'assay_word': forms.FileInput(attrs={'class':'dropify','useCurrent': True}),
         }
 
 class ImageForm(forms.ModelForm):

@@ -15,12 +15,32 @@
 	</div>
 	</div>
 	</div>
-<form action='.' method='POST'>{% csrf_token %}
-	{{ form|crispy }}
-    <input type='submit' class="btn btn-cool" value='Save' />
-    <a href="{% url 'atypes' %}" class="btn btn-danger" value='Cancel'>Cancel</a>
-    <!--<input type='submit' value='Cancel' />-->
-</form>
+	<div class="row align-items-center">
+  	<div class="col">
+	  <div class="card card-default">
+	          <div class="card-header text-center">
+	            <h3 class="card-title" style="font-size:14px; text-transform: uppercase !important; letter-spacing: .5px;">General Information</h3>
+	            <div class="card-tools">
+	              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+	                <i class="fas fa-minus"></i>
+	              </button>
+	              <button type="button" class="btn btn-tool" data-card-widget="remove">
+	                <i class="fas fa-times"></i>
+	              </button>
+	            </div>
+	          </div>
+	          <!-- /.card-header -->
+	          <div class="card-body">
+				<form action='.' method='POST'>{% csrf_token %}
+					{% crispy form %}
+				    <!--input type='submit' class="btn btn-cool" value='Save' />
+				    <a href="{% url 'atypes' %}" class="btn btn-danger" value='Cancel'>Cancel</a>-->
+				    <!--<input type='submit' value='Cancel' />-->
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 </div>
 
 

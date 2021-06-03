@@ -50,10 +50,12 @@ def profile(request):
 
 def users_all(request):
     users = Profile.objects.all()
+    flag_users =1
     #for 
     #groups = User.objects.groups.all()
     return render(request, 'users/users_all.html', {
-        'users': users
+        'users': users,
+        'flag_users':flag_users
     })
 
 @login_required

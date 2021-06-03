@@ -102,6 +102,7 @@ urlpatterns = [
 	path('users', users_all, name='users_all'),
 	path('search', search_view, name='search'),
 	path('selectParameters', selectParameters, name='selectParameters'),
+	path('mouselist', getmouselist, name='mouselist'),
 
 	#path('piecharts/', piecharts, name='piecharts'),
 ]

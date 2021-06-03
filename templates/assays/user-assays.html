@@ -352,21 +352,45 @@
                 </li>
                 <li class="nav-item">
                   <a href="{% url 'group-assays' user.username %}" class="nav-link">
-                    <i class="fas fa-th nav-icon"></i>
-                    <p>Group</p>
+                    <i class="fa fa-group nav-icon"></i>
+                    <p>Facility</p>
                   </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'add_atype'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>New SOP</p>
+                    </a>
                 </li>
               </ul>
               <ul class="nav nav-treeview">
          <li class="nav-header">PIPELINES</li>
                 <li class="nav-item">
                   <a href="{% url 'user-pipelines' user.username %}" class="nav-link">
-                    <i class="fas fa-circle nav-icon"></i>
+                    <i class="fas fa-sitemap nav-icon"></i>
                     <p>My Pipelines</p>
                   </a>
                 </li>
-              </ul>
-
+                {% if user.groups.all.0.name == "Admin" %}
+                  <li class="nav-item">
+                    <a href="{% url 'add_pipelinetype'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>New Protocol</p>
+                    </a>
+                  </li>
+                  {% endif %}                 
+                </ul>
+                {% if user.groups.all.0.name == "Admin" %}
+                <ul class="nav nav-treeview">
+                  <li class="nav-header">USERS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'users_all'%}" class="nav-link">
+                      <i class="fas fa-cog nav-icon"></i>
+                      <p>Users</p>
+                    </a>
+                  </li>
+                </ul>  
+                {% endif %}  
             </li>
           </ul>
         </nav>
@@ -397,20 +421,45 @@
                 </li>
                 <li class="nav-item active">
                   <a href="{% url 'group-assays' user.username %}" class="nav-link active">
-                    <i class="fas fa-th nav-icon"></i>
-                    <p>Group</p>
+                    <i class="fa fa-group nav-icon"></i>
+                    <p>Facility</p>
                   </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'add_atype'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>New SOP</p>
+                    </a>
                 </li>
               </ul>
               <ul class="nav nav-treeview">
          <li class="nav-header">PIPELINES</li>
                 <li class="nav-item">
                   <a href="{% url 'user-pipelines' user.username %}" class="nav-link">
-                    <i class="fas fa-circle nav-icon"></i>
+                    <i class="fas fa-sitemap nav-icon"></i>
                     <p>My Pipelines</p>
                   </a>
                 </li>
-              </ul>
+                {% if user.groups.all.0.name == "Admin" %}
+                  <li class="nav-item">
+                    <a href="{% url 'add_pipelinetype'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>New Protocol</p>
+                    </a>
+                  </li>
+                  {% endif %}                 
+                </ul>
+                {% if user.groups.all.0.name == "Admin" %}
+                <ul class="nav nav-treeview">
+                  <li class="nav-header">USERS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'users_all'%}" class="nav-link">
+                      <i class="fas fa-cog nav-icon"></i>
+                      <p>Users</p>
+                    </a>
+                  </li>
+                </ul>  
+                {% endif %}  
 
             </li>
           </ul>

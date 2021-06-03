@@ -409,11 +409,11 @@
                         <form method="GET" enctype="multipart/form-data">
                           {% csrf_token %}
                           <select id="parameterName" name="parameterName" onchange="this.form.submit()">
-                            {% for con in parameters %}
+                            {% for con, name in parameters %}
                               {% if con == par %}
-                                <option selected="selected" value={{par}}>{{par|safe}}</option>>
+                                <option selected="selected" value={{par}}>{{name|safe}}</option>>
                               {% else %}
-                                <option value={{con}}>{{con|safe}}</option>                          
+                                <option value={{con}}>{{name|safe}}</option>                          
                               {% endif %}
                             {% endfor %}                        
                             </option>

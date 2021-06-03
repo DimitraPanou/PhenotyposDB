@@ -27,7 +27,7 @@ from django.views.generic.edit import FormMixin
 from django.views.generic import FormView
 
 from .functions import handle_uploaded_file, returnTemplateName, get_parameters, parameterMeasures
-from .filters import AssayFilter
+from .filters import AssayFilter, MouseFilter
 from django.db.models import Count
 
 ####################
@@ -255,6 +255,10 @@ class AssaysDetailView(DetailView):
 		measures = switcher.get(self.object.type.id,"Ivalid")
 		kwargs['measures'] = measures
 		[parameters,parameters_names] = get_parameters(self.object)
+		print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+		print(parameters_names)
+		print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+
 		mouselist = measures.values('mid').distinct().order_by('mid')
 		mouse_num = measures.values('mid').annotate(dcount=Count('mid')).count()	
 		females = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Female')
@@ -264,7 +268,7 @@ class AssaysDetailView(DetailView):
 		kwargs['assayjson']= json.dumps(self.object.id)
 		kwargs['females'] = females.count()
 		kwargs['males'] = males.count()
-		kwargs['parameters'] = parameters
+		kwargs['parameters'] = zip(parameters,parameters_names)
 		par = parameters[0]
 		if(	self.request.GET.get('parameterName')):
 			par = self.request.GET.get('parameterName')
@@ -478,6 +482,14 @@ class Atype2UpdateView(UpdateView):
 
 	def get_success_url(self):
 		return(reverse_lazy('assaytype-detail', kwargs={'pk': self.object.id}))
+
+
+def getmouselist(request):
+	myFilter = MouseFilter(request.GET)
+	mouselist = myFilter.qs 
+	context = {'mouselist':mouselist,
+	'myFilter':myFilter}
+	return render(request, 'assays/mouselist.html',context)
 
 '''
 	def post(self,request,pk,*args,**kwargs):

@@ -24,3 +24,8 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['facility','first_name','last_name','internal_phone','phone_number','address_1','address_2','city','state','postal_code','image']
+
+class UserProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['facility','first_name','last_name','internal_phone','phone_number','address_1','address_2','city','state','postal_code','image']

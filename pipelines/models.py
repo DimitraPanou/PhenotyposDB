@@ -7,6 +7,7 @@ class PipelineType(models.Model):
     code = models.TextField()  # This field type is a guess.
     name = models.CharField(max_length=256, blank=True, null=True)
 
+
     def __str__(self):
         return u'{0}'.format(self.code)
 
@@ -27,9 +28,12 @@ class Pipeline(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     type = models.ForeignKey(PipelineType, models.DO_NOTHING, db_column='type')
 
-    def __str__(self):
-        return u'{0}\t\t{1}'.format(self.name, self.model)
-
     class Meta:
         managed = True
         db_table = 'pipelines'
+
+    def get_absolute_url(self):
+        return reverse('pipeline-detail', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return u'{0}\t\t{1}'.format(self.name, self.model)

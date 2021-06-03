@@ -23,39 +23,33 @@
                 <div class="col-md-10 offset-md-1">
                     <h4 align="center">You searched for {{ searched }}</h4>
                     <div class="list-group">
-                    {% if assays %}
+                        {% if assays %}
                         <h4>Assays</h4>
                         {% for assay in assays %}
                             <div class="list-group-item">
-
                                 <div class="row">
-
                                     <div class="col-2">
-                                        <h6>{{assay.name}}</h6>
+                                        <label style="color:rgba(0, 0, 0, 0.66);"><strong>{{assay.name|default_if_none:""}}</strong></label style="color:rgba(0, 0, 0, 0.66);">
                                         <img alt="Avatar" id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="130" height="130">
                                         <!--<iframe width="240" height="160" src="{% url 'assay-detail2' assay.id %}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="border-0" allowfullscreen></iframe>-->
-                                    </div>
-                                                                
+                                    </div>                                                                
                                     <div class="col px-4">
                                         <div>
-
-                                            <div class="float-right"><small>{{assay.measurement_day}}</small></div>
-                                            <h3>Lorem ipsum dolor sit amet</h3>
-                                            <p class="mb-0">{{assay.type.purpose|safe|default_if_none:""}}</p>
-                                            <p class="mb-0">{{assay.description|safe|default_if_none:""}}</p>
+                                            <div class="float-right"><small>{{assay.measurement_day|default_if_none:""}}</small>   <div class="col-auto"><a class="btn btn-light btn-md mt-3 mb-1" href="{% url 'assay-detail' assay.id %}"><i class="ti-eye" aria-hidden="true"></i></a></div></div>
+                                            <h3>{{assay.type.name|default_if_none:""|safe}}</h3>
+                                            <p class="mb-0">{{assay.type.purpose|default_if_none:""|safe}}</p>
+                                            <p class="mb-0">{{assay.type.description|safe|default_if_none:""}}</p>
                                         </div>
-                                        <div class= "row" width="100%">
-                            
-                                <div class="col-auto"><strong>Testing Protocol</strong><br><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">{{assay.type.code}}</br></div>
-                                <div class="col-auto"><strong>Authors</strong><br><img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}" style="width: 30px;">
-                                                                {% if assay.scientist %}
-                                                                      <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}" style="width: 30px;">
-                                                                {% endif %}
-                                                             </br></div>
-                        <!----> <div class="col-auto"><strong>Staff</strong><br>{{assay.staff}}</br></div>
-                                <div class="col-auto"><strong>Duration time</strong><br>{{assay.duration|default_if_none:""}}/{{assay.timesteps_in|default_if_none:""}}</br></div>
-                                <div class="col-auto"><a class="btn btn-outline-secondary btn-lg mt-3 mb-1" href="{% url 'assay-detail' assay.id %}"><i class="ti-eye" aria-hidden="true"></i></a></div>
-                                </div>
+                                        <div class= "row" width="100%">                                
+                                            <div class="col-auto"><strong>Testing Protocol</strong><br><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">{{assay.type.code}}</br></div>
+                                            <div class="col-auto"><strong>Authors</strong><br><img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}" style="width: 30px;">
+                                                {% if assay.scientist %}
+                                                    <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}" style="width: 30px;">
+                                                {% endif %}
+                                            </br></div>
+                                            <div class="col-auto"><strong>Staff</strong><br>{{assay.staff|default_if_none:""}}</br></div>
+                                            <div class="col-auto"><strong>Duration time</strong><br>{{assay.duration|default_if_none:""}}/{{assay.timesteps_in|default_if_none:""}}</br></div>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -64,25 +58,21 @@
 
                         {% endfor %}
                     {% endif %}
-                    </div>
-                    <div class="list-group">
+
                     {% if pipelines %}
                         <h4>Pipelines</h4>
                         {% for pipeline in pipelines %}
                             <div class="list-group-item">
                                 <div class="row">
-                                    <div class="col-auto">
-                                        <iframe width="240" height="160" src="https://www.youtube.com/embed/WEkSYw3o5is?controls=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="border-0" allowfullscreen></iframe>
-                                    </div>
+                                    <div class="col-2">
+                                        <label style="color:rgba(0, 0, 0, 0.66);"><strong>{{pipeline.name|default_if_none:""}}</strong></label style="color:rgba(0, 0, 0, 0.66);">
+                                        <img alt="Avatar" id="{{pipeline.id}}" class="squareicon user-image img-circle elevation-2" width="130" height="130">
+                                        <!--<iframe width="240" height="160" src="{% url 'assay-detail2' assay.id %}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="border-0" allowfullscreen></iframe>-->
+                                        <label style="color:rgba(0, 0, 0, 0.66);"><strong>{{pipeline.model|default_if_none:""}}</strong></label style="color:rgba(0, 0, 0, 0.66);">
+                                    </div>                                                                
                                     <div class="col px-4">
-                                        <div>
-                                            <div class="float-right">{{pipeline.name}}</div>
-                                            <h3>Lorem ipsum dolor sit amet</h3>
-                                            <p class="mb-0">consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                                        </div>
                                     </div>
                                 </div>
-
                             </div>
                         {% endfor %}
                     {% endif %}

@@ -23,3 +23,8 @@ class AssayFilter(django_filters.FilterSet):
         'start_date': forms.DateInput(format=('%Y-%m-%d'), attrs={'placeholder':'Select a date', 'type':'date'}),
     	}'''
 
+class MouseFilter(django_filters.FilterSet):
+	gender = ModelChoiceFilter(field_name='gender',queryset=Mouse.objects.all())
+	class Meta:
+		model = Mouse
+		fields = '__all__'
