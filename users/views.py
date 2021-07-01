@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .decorators import allowed_users
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, UserProfileUpdateForm
 from .models import Profile
+from django.contrib.auth.models import User
 from django.db import IntegrityError, transaction
 
 from .decorators import unauthenticated_user
@@ -48,6 +50,32 @@ def profile(request):
 
     return render(request, 'users/profile.html', context)
 
+@allowed_users(allowed_roles=['Admin'])
+def editUser(request,pk):
+    user1 = User.objects.get(id=pk)
+    u_form = UserUpdateForm(request.POST, instance=user1)
+    p_form = UserProfileUpdateForm(request.POST,request.FILES, instance=user1.profile)
+    if request.method == 'POST':
+        u_form = UserUpdateForm(instance=user1)    
+        p_form = UserProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=user1.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            messages.success(request, 'Your account has been updated!')
+            u_form.save()
+            p_form.save()
+            return redirect('edit-user',pk=user1.id)
+        else:
+            messages.error(request,'Please correct the error below.')    
+    context = {
+        'user1': user1,
+        'u_form': u_form,
+        'p_form': p_form
+    }
+
+    return render(request, 'users/edit-profile.html', context)
+
+@allowed_users(allowed_roles=['Admin'])
 def users_all(request):
     users = Profile.objects.all()
     flag_users =1

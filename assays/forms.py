@@ -30,7 +30,12 @@ class AssayForm(forms.ModelForm):
 #        def save(self,user, *args, **kwargs):
 #        form = super(AssayForm, self).save(*args, **kwargs)
 #        return form
-    
+
+
+'''class ChoiceForm(forms.Form):
+    Countries = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                          choices=OPTIONS)
+   '''
 class Assay2Form(forms.ModelForm):
     class Meta:
         model = Assay

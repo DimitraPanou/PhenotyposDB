@@ -80,6 +80,7 @@ urlpatterns = [
 	path('pipelines/<str:username>',UserPipelineListView.as_view(),name='user-pipelines'),	
 	path('pipelines/types/',PipelineTypeListView.as_view(),name='pipelinetypes'),
 	path('pipelines/<int:pk>/add/new', add_assay_to_pipeline, name='add_assay_to_pipeline'),
+	path('pipelines/<int:pk>/add/existing', add_assays_to_pipeline, name='add_assays_to_pipeline'),
 
 	#path('pipelines/types/<int:pk>/', PipelineTypeDetailView.as_view(), name='pipelinetype-detail'),
 	path('pipelines/types/add',add_pipelinetype,name='add_pipelinetype'),
@@ -100,6 +101,7 @@ urlpatterns = [
 	path('password-reset-confirm/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'),
 	path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),
 	path('users', users_all, name='users_all'),
+	path('users/<int:pk>/', editUser, name='edit-user'),
 	path('search', search_view, name='search'),
 	path('selectParameters', selectParameters, name='selectParameters'),
 	path('mouselist', getmouselist, name='mouselist'),

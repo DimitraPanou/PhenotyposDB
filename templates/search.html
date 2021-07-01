@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block content %}
     <section class="content">
@@ -22,14 +23,13 @@
             <div class="row mt-3">
                 <div class="col-md-10 offset-md-1">
                     <h4 align="center">You searched for {{ searched }}</h4>
-                    <div class="list-group">
                         {% if assays %}
                         <h4>Assays</h4>
                         {% for assay in assays %}
                             <div class="list-group-item">
                                 <div class="row">
                                     <div class="col-2">
-                                        <label style="color:rgba(0, 0, 0, 0.66);"><strong>{{assay.name|default_if_none:""}}</strong></label style="color:rgba(0, 0, 0, 0.66);">
+                                        <label style="color:rgba(0, 0, 0, 0.66);"><strong>{{assay.name|default_if_none:""}}</strong></label style="color:rgba(0, 0, 0, 0.66);"><br>
                                         <img alt="Avatar" id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="130" height="130">
                                         <!--<iframe width="240" height="160" src="{% url 'assay-detail2' assay.id %}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="border-0" allowfullscreen></iframe>-->
                                     </div>                                                                
@@ -40,87 +40,66 @@
                                             <p class="mb-0">{{assay.type.purpose|default_if_none:""|safe}}</p>
                                             <p class="mb-0">{{assay.type.description|safe|default_if_none:""}}</p>
                                         </div>
-                                        <div class= "row" width="100%">                                
+                                        <div class="row" width="100%">                                
                                             <div class="col-auto"><strong>Testing Protocol</strong><br><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">{{assay.type.code}}</br></div>
-                                            <div class="col-auto"><strong>Authors</strong><br><img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}" style="width: 30px;">
+                                            <div class="col-auto">
+                                                <strong>Authors</strong>
+                                                <br>
+                                                <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}" style="width: 30px;">
                                                 {% if assay.scientist %}
                                                     <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}" style="width: 30px;">
                                                 {% endif %}
-                                            </br></div>
+                                                </br>
+                                            </div>
                                             <div class="col-auto"><strong>Staff</strong><br>{{assay.staff|default_if_none:""}}</br></div>
-                                            <div class="col-auto"><strong>Duration time</strong><br>{{assay.duration|default_if_none:""}}/{{assay.timesteps_in|default_if_none:""}}</br></div>
+                                            <div class="col-auto"><strong>Duration time</strong><br>{{assay.duration|default_if_none:"x"}}/{{assay.timesteps_in|default_if_none:""}}</br></div>
                                         </div>
-
                                     </div>
                                 </div>
-
                             </div>
-
                         {% endfor %}
                     {% endif %}
-
                     {% if pipelines %}
                         <h4>Pipelines</h4>
-                        {% for pipeline in pipelines %}
-                            <div class="list-group-item">
-                                <div class="row">
+                        <div class="list-group-item">
+                            <div class="row">
+                                {% for pipeline in pipelines %}
                                     <div class="col-2">
-                                        <label style="color:rgba(0, 0, 0, 0.66);"><strong>{{pipeline.name|default_if_none:""}}</strong></label style="color:rgba(0, 0, 0, 0.66);">
-                                        <img alt="Avatar" id="{{pipeline.id}}" class="squareicon user-image img-circle elevation-2" width="130" height="130">
-                                        <!--<iframe width="240" height="160" src="{% url 'assay-detail2' assay.id %}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="border-0" allowfullscreen></iframe>-->
-                                        <label style="color:rgba(0, 0, 0, 0.66);"><strong>{{pipeline.model|default_if_none:""}}</strong></label style="color:rgba(0, 0, 0, 0.66);">
-                                    </div>                                                                
-                                    <div class="col px-4">
+                                        <label style="color:rgba(0, 0, 0, 0.66);"><strong>{{pipeline.name|default_if_none:""}}</strong></label style="color:rgba(0, 0, 0, 0.66);"><br>
+                                       <img src="{% static 'images/network.png' %}" class="squareicon user-image img-circle elevation-2" width="130" height="130">
+                                    </div>  
+                                     <div class="col px-4">
+                                        <div>
+                                            <div class="float-right"><small>
+                                                <div class="col-auto"><strong>Duration</strong><br>{{pipeline.pip_start|default_if_none:"TBD"}}-{{pipeline.pip_end|default_if_none:"TBD"}}</small></br><div class="col-auto"><a class="btn btn-light btn-md mt-3 mb-1" href="{% url 'pipeline-detail2' pipeline.id %}"><i class="ti-eye" aria-hidden="true"></i></a></div></div>
+                                        </div>
+                                        <div class="row" width="100%">                                
+                                            <div class="col-auto"><strong>Model</strong><br><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">{{pipeline.model|default_if_none:""}}</br></div>
+                                            <div class="col-auto"><strong>Status</strong><br>
+                                                {% if pipeline.status == 'Pending' %}
+                                                    <button type="button" class="btn-xs btn-warning" data-toggle="modal" data-target="#modal-default">{{pipeline.status}}</br></div>
+                                                {% else %}
+                                                    <button type="button" class="btn-xs btn-success" data-toggle="modal" data-target="#modal-default">{{pipeline.status}}</br></div>
+                                                {% endif %}                                            
+
+                                            <div class="col-auto">
+                                                <strong>PI</strong>
+                                                <br>
+                                                <img alt="Avatar" class="table-avatar" src="{{ pipeline.pi.profile.image.url }}" style="width: 30px;">
+                                                </br>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endfor %}
                             </div>
-                        {% endfor %}
+                        </div>
                     {% endif %}
+                    
                     </div>
                 </div>
             </div>
-            {% endif %}
+
+        {% endif %}
         </div>
     </section>
 {% endblock %}
-
-
-                                        <div class="key-financials" style="text-align:left;">
-                                            <table class="float-right" width="50%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Testing Protocol</th>
-                                                        <th ng-show="details.coin.price_change_1D_percent" class="">Authors</th>
-                                                        <!----><th ng-if="(!_.isNull(details.coin.price_change_7D_percent))">Staff</th><!---->
-                                                        <!----><th ng-if="details.coin.supply">Duration time</th><!---->
-                                                               <th><a class="btn btn-outline-secondary btn-lg mt-3 mb-1" href="{% url 'assay-detail' assay.id %}"><i class="ti-eye" aria-hidden="true"></i></a></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><i ng-class="{ 'change-up fal fa-long-arrow-up': details.coin.price_change_1D_percent >= 0, 'change-down fal fa-long-arrow-down': details.coin.price_change_1D_percent < 0 }" class="change-up fal fa-long-arrow-up"></i><span class="underscore-tooltip" id="header-price"><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">
-                                              {{assay.type.code}}
-                                            </button></span></td>
-                                                            <td>
-                                                              <ul class="list-inline">
-                                                                  <li class="list-inline-item">
-                                                                      <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}" style="width: 30px;">
-                                                                  </li>
-                                                                {% if assay.scientist %}
-                                                                  <li class="list-inline-item">
-                                                                      <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}" style="width: 30px;">
-                                                                  </li>
-                                                                {% endif %}
-                                                              </ul>
-                                                            </td>
-                                                        <!----><td ng-if="(!_.isNull(details.coin.price_change_7D_percent))"><span ng-class="{ 'change-up': details.coin.price_change_7D_percent >= 0, 'change-down': details.coin.price_change_7D_percent < 0 }" class="change-up">{{assay.staff}}</span></td><!---->
-                                                        <!----><td ng-if="::details.total_score">
-                                                            <a ui-sref="{ 'view' : 'analysis', 'subview' : null }" uib-tooltip="Click to see the full analysis" tooltip-append-to-body="true" href="/coins/cardano/analysis">
-                                                                {{assay.duration|default_if_none:""}}/{{assay.timesteps_in|default_if_none:""}}
-                                                            </a>
-                                                        </td><!---->
-                                                        <td></td><!---->
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>

@@ -12,6 +12,11 @@
     <div class="row">
       <a class="btn btn-secondary btn-sm mt-1 mb-1 ti-plus" href="{% url 'add_assay_to_pipeline' pipeline.id %}"></a>
   </div>
+
+  <div class="fab fab-fixed" id="fab-publish">
+    <a class="btn btn-primary btn-float" href="{% url 'add_assay_to_pipeline' pipeline.id %}" title="" data-provide="tooltip" data-original-title="New Assay"><i class="ti-plus"></i></a>
+  </div>
+
   {% endblock %}
 <!--
         <div class="card-body table-responsive p-0">
@@ -109,6 +114,7 @@
           </table>
         </div>
 -->
+
 <div class="row">
           <div class="col-12 connectedSortable">
             <!-- Custom Tabs -->
@@ -167,76 +173,76 @@
                     </div>
                   </div>
                   <!-- /.tab-pane -->
-                    {% for assay in assays %}                <!-- /.tab-pane -->
-                  <div class="tab-pane" id="tab_{{assay.id}}">
-                    
-                    <div class="card">
-                      <div class="card-body">
-                      <div class="flexbox flex-wrap">
-                      <header class="coin-details-header" style="">
-                      <div class="coin-info">
-                          <div class="coin-logo-name">
-                              <div class="coin-logo">
-                                  <img id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="70" height="70">
+                  {% for assay in assays %}                <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_{{assay.id}}">
+                      
+                      <div class="card">
+                        <div class="card-body">
+                        <div class="flexbox flex-wrap">
+                        <header class="coin-details-header" style="">
+                        <div class="coin-info">
+                            <div class="coin-logo-name">
+                                <div class="coin-logo">
+                                    <img id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="70" height="70">
 
-                              </div>
-                              <div class="coin-name">
-                                  {{assay.type.code}}<br>
-                                  <small>{{assay.name}}</small>
-                              </div>
-                          </div>
-                      </div>
+                                </div>
+                                <div class="coin-name">
+                                    {{assay.type.code}}<br>
+                                    <small>{{assay.name}}</small>
+                                </div>
+                            </div>
+                        </div>
 
-                      <div class="key-financials">
-                          <table>
-                              <thead>
-                                  <tr>
-                                      <th>Testing Protocol</th>
-                                      <th ng-show="details.coin.price_change_1D_percent" class="">Measured Values</th>
-                                      <!----><th ng-if="(!_.isNull(details.coin.price_change_7D_percent))">Minimum animals</th><!---->
-                                             <th ng-if="details.coin.volume_24_usd">Total animals</th>
-                                      <!----><th ng-if="details.coin.last_market_cap_usd">Mouse life stage</th><!---->
-                                      <!----><th ng-if="details.coin.supply">Duration time</th><!---->
-                                      <!----><th ng-if="coinQuickLinks.length" class="hidden-xs">Links</th><!---->
-                                             <th><a class="btn btn-outline-secondary btn-lg mt-1 mb-1" href="{% url 'assay-update' assay.id %}"><i class="ti-pencil" aria-hidden="true"></i></a></th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td><i ng-class="{ 'change-up fal fa-long-arrow-up': details.coin.price_change_1D_percent >= 0, 'change-down fal fa-long-arrow-down': details.coin.price_change_1D_percent < 0 }" class="change-up fal fa-long-arrow-up"></i><span class="underscore-tooltip" id="header-price"><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">
-                            {{assay.type.name}}
-                          </button></span></td>
-                                      <td ng-show="details.coin.price_change_1D_percent" class=""><span ng-class="{ 'change-up': details.coin.price_change_1D_percent >= 0, 'change-down': details.coin.price_change_1D_percent < 0 }" class="change-up">{% block measured_values %} {% endblock %}</span></td>
-                                      <!----><td ng-if="(!_.isNull(details.coin.price_change_7D_percent))"><span ng-class="{ 'change-up': details.coin.price_change_7D_percent >= 0, 'change-down': details.coin.price_change_7D_percent < 0 }" class="change-up">{% block min_models %} {% endblock %}</span></td><!---->
-                                      <!----><td ng-if="details.coin.last_market_cap_usd">{{total}}</td><!---->
-                                      <!----><td ng-if="details.coin.volume_24_usd">Adult</td><!---->
-                                      <!----><td ng-if="::details.total_score">
-                                          <a ui-sref="{ 'view' : 'analysis', 'subview' : null }" uib-tooltip="Click to see the full analysis" tooltip-append-to-body="true" href="/coins/cardano/analysis">
-                                              {{assay.duration|default_if_none:""}}/{{assay.timesteps_in|default_if_none:""}}
-                                          </a>
-                                      </td><!---->
-                                      <!----><td ng-if="coinQuickLinks.length" class="hidden-xs">
-                                          <div class="links">
-                                              <!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Website" uib-tooltip="Website" href="https://www.cardano.org/en/home/" target="_blank">
-                                                  <i class="fa-fw fal fa-globe" aria-hidden="true"></i>
-                                               </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Twitter" uib-tooltip="Twitter" href="https://twitter.com/Cardano" target="_blank">
-                                                  <i class="fa-fw fab fa-twitter-square" aria-hidden="true"></i>
-                                               </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Telegram" uib-tooltip="Telegram" href="https://t.me/CardanoAnnouncements" target="_blank">
-                                                  <i class="fa-fw fab fa-telegram" aria-hidden="true"></i><!---->
-                                          </div>
-                                      </td><!---->
-                                  </tr>
-                              </tbody>
-                          </table>
+                        <div class="key-financials">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Testing Protocol</th>
+                                        <th ng-show="details.coin.price_change_1D_percent" class="">Measured Values</th>
+                                        <!----><th ng-if="(!_.isNull(details.coin.price_change_7D_percent))">Minimum animals</th><!---->
+                                               <th ng-if="details.coin.volume_24_usd">Total animals</th>
+                                        <!----><th ng-if="details.coin.last_market_cap_usd">Mouse life stage</th><!---->
+                                        <!----><th ng-if="details.coin.supply">Duration time</th><!---->
+                                        <!----><th ng-if="coinQuickLinks.length" class="hidden-xs">Links</th><!---->
+                                               <th><a class="btn btn-outline-secondary btn-lg mt-1 mb-1" href="{% url 'assay-update' assay.id %}"><i class="ti-pencil" aria-hidden="true"></i></a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i ng-class="{ 'change-up fal fa-long-arrow-up': details.coin.price_change_1D_percent >= 0, 'change-down fal fa-long-arrow-down': details.coin.price_change_1D_percent < 0 }" class="change-up fal fa-long-arrow-up"></i><span class="underscore-tooltip" id="header-price"><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">
+                              {{assay.type.name}}
+                            </button></span></td>
+                                        <td ng-show="details.coin.price_change_1D_percent" class=""><span ng-class="{ 'change-up': details.coin.price_change_1D_percent >= 0, 'change-down': details.coin.price_change_1D_percent < 0 }" class="change-up">{% block measured_values %} {% endblock %}</span></td>
+                                        <!----><td ng-if="(!_.isNull(details.coin.price_change_7D_percent))"><span ng-class="{ 'change-up': details.coin.price_change_7D_percent >= 0, 'change-down': details.coin.price_change_7D_percent < 0 }" class="change-up">{% block min_models %} {% endblock %}</span></td><!---->
+                                        <!----><td ng-if="details.coin.last_market_cap_usd">{{total}}</td><!---->
+                                        <!----><td ng-if="details.coin.volume_24_usd">Adult</td><!---->
+                                        <!----><td ng-if="::details.total_score">
+                                            <a ui-sref="{ 'view' : 'analysis', 'subview' : null }" uib-tooltip="Click to see the full analysis" tooltip-append-to-body="true" href="/coins/cardano/analysis">
+                                                {{assay.duration|default_if_none:""}}/{{assay.timesteps_in|default_if_none:""}}
+                                            </a>
+                                        </td><!---->
+                                        <!----><td ng-if="coinQuickLinks.length" class="hidden-xs">
+                                            <div class="links">
+                                                <!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Website" uib-tooltip="Website" href="https://www.cardano.org/en/home/" target="_blank">
+                                                    <i class="fa-fw fal fa-globe" aria-hidden="true"></i>
+                                                 </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Twitter" uib-tooltip="Twitter" href="https://twitter.com/Cardano" target="_blank">
+                                                    <i class="fa-fw fab fa-twitter-square" aria-hidden="true"></i>
+                                                 </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Telegram" uib-tooltip="Telegram" href="https://t.me/CardanoAnnouncements" target="_blank">
+                                                    <i class="fa-fw fab fa-telegram" aria-hidden="true"></i><!---->
+                                            </div>
+                                        </td><!---->
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                      </div>
-                      </header>
-                      </div>
-                      </div>
-                      <hr>
+                        </div>
+                        </header>
+                        </div>
+                        </div>
+                        <hr>
+                    </div>
                   </div>
-                  
-                  <!-- /.tab-pane -->
+                    <!-- /.tab-pane -->
                   {% endfor %}
                 </div>
                 <!-- /.tab-content -->
@@ -248,4 +254,110 @@
           <!-- /.col -->
         </div>
   </div>
+<div class="col-md-4">
+                      <div class="timeline timeline-inverse">
+                      <!-- timeline time label -->
+                      <div class="time-label">
+                        <span class="bg-teal">
+                          PROCEDURE
+                        </span>
+                      </div>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <div>
+                        <i class="fas fa-envelope bg-teal"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-arrow-up"></i> 12:05</span>
+
+                          <h3 class="timeline-header"><a href="#">Reagent preparation</h3></a>
+
+                          <div class="timeline-body">
+                            i. Reagent preparation<br>
+                            ii. Reagent preparation of tissue processing<br>
+                            iii. Hematoxylin
+                          </div>
+                          <div class="timeline-footer">
+                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <i class="fas fa-envelope bg-teal"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-arrow-up"></i> 12:05</span>
+
+                          <h3 class="timeline-header"><a href="#">Spinal cord and brain collection</h3>
+                        </div>
+                      </div>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <div>
+                        <i class="fas fa-user bg-info"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
+
+                          <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
+                          </h3>
+                        </div>
+                      </div>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <div>
+                        <i class="fas fa-comments bg-teal"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
+
+                          <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+
+                          <div class="timeline-body">
+                            Take me to your leader!
+                            Switzerland is small and neutral!
+                            We are more like Germany, ambitious and misunderstood!
+                          </div>
+                          <div class="timeline-footer">
+                            <a href="#" class="btn btn-primary btn-flat btn-sm">View comment</a>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- END timeline item -->
+                      <!-- timeline time label -->
+                      <div class="time-label">
+                        <span class="bg-success">
+                          3 Jan. 2014
+                        </span>
+                      </div>
+                      <div class="time-label">
+                        <span class="bg-teal">
+                          Reagent preparation of tissue processing
+                        </span>
+                      </div>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <div>
+                        <i class="fas fa-camera bg-purple"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
+
+                          <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+
+                          <div class="timeline-body">
+                            <img src="https://placehold.it/150x100" alt="...">
+                            <img src="https://placehold.it/150x100" alt="...">
+                            <img src="https://placehold.it/150x100" alt="...">
+                            <img src="https://placehold.it/150x100" alt="...">
+                          </div>
+                        </div>
+                      </div>
+                      <!-- END timeline item -->
+                      <div>
+                        <i class="far fa-clock bg-gray"></i>
+                      </div>
+                    </div>
+                  </div>
 {% endblock %}

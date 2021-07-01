@@ -1,7 +1,7 @@
 # Create your views here.
 import json
 from django.shortcuts import render, redirect,get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import (
     ListView,
@@ -90,7 +90,6 @@ def add_assay(request, *args, **kargs):
 
 @allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
 def uploadImage(request, pk):
-	#assay = get_object_or_404(Assay, pk=pk)
 	if request.method == 'POST':
 		form = ImageForm(request.POST, request.FILES)
 		if form.is_valid():
@@ -187,6 +186,7 @@ class AssaysDetailView2(DetailView):
 			42: self.get_object().fc01s.annotate(),
 			43: self.get_object().fc03s.annotate(),
 			44: self.get_object().hpa02s.annotate(),
+			45: self.get_object().fc04s.annotate(),
 		}
 		measures = switcher.get(self.object.type.id,"Ivalid")
 		kwargs['measures'] = measures
@@ -194,15 +194,22 @@ class AssaysDetailView2(DetailView):
 		kwargs['mouselist'] = Mouse.objects.filter(id__in=mouselist)
 		return super().get_context_data(**kwargs)
 
-class AssaysDetailView(DetailView):
+class AssaysDetailView(LoginRequiredMixin,DetailView):
 	model = Assay
-	#template_name = 'assays/assaytypes/iinflc-04.html'
-	#template_name = returnTemplateName(self.object)
-
 	def get_template_names(self):
 		print(self.object.type)
+		#if test_func(self):
 		#return ['assays/assaytypes/ni01.html','assays/assaytypes/iinflc-04.html']
 		return returnTemplateName(self.object.type)
+		#else:
+		#	return render(request, "error404.html")
+
+	def dispatch(self, request, *args, **kwargs):
+		user_obj = self.request.user
+		assay = self.get_object()
+		if not (assay.author == user_obj or assay.scientist== user_obj or user_obj.groups =='Admin'):
+			return render(request,"error404.html")
+		return super().dispatch(request,*args,**kwargs)
 
 	def get_context_data(self, **kwargs):
 		switcher ={
@@ -246,6 +253,7 @@ class AssaysDetailView(DetailView):
 			42: self.get_object().fc01s.annotate(),
 			43: self.get_object().fc03s.annotate(),
 			44: self.get_object().hpa02s.annotate(),
+			45: self.get_object().fc04s.annotate(),
 		}
 		# mouselist = i4.values('mid').distinct().order_by('mid')
 		# objects = Mouse.objects.filter(id__in=mouselist)
@@ -273,10 +281,11 @@ class AssaysDetailView(DetailView):
 		if(	self.request.GET.get('parameterName')):
 			par = self.request.GET.get('parameterName')
 		kwargs['par'] = par
+		kwargs['title'] = par.replace("_"," ").title()
 #		source = parameters[0]
 #		if par:
 #			source = par
-		test = parameterMeasures(measures,par)
+		[test,flag] = parameterMeasures(measures,par)
 
 		series = []
 		for key in test:
@@ -298,6 +307,7 @@ class AssaysDetailView(DetailView):
 				data_dict['data'] = test2.values.tolist()
 				series2.append(data_dict)
 		print(series2)
+		kwargs['flag'] = series
 		kwargs['scarplot'] = [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], [155.8, 53.6], [170.0, 59.0], [159.1, 47.6], [166.0, 69.8], [176.2, 66.8], [160.2, 75.2]]
 		'''series = [{
 		'name': 'Female',
@@ -312,7 +322,6 @@ class AssaysDetailView(DetailView):
 		}
 		]'''
 		kwargs['series'] = series
-		kwargs['title'] = par
 		if(series2):
 			kwargs['series2'] = series2
 		return super().get_context_data(**kwargs)
@@ -361,6 +370,7 @@ def returnMeasurements(assay):
 		42: assay.fc01s.annotate(),
 		43: assay.fc03s.annotate(),
 		44: assay.hpa02s.annotate(),
+		45: assay.fc04s.annotate(),
 	}
 	measures = switcher.get(assay.type.id,"Ivalid")
 	return measures
@@ -504,4 +514,15 @@ def getmouselist(request):
 	data = []
 	assay = Assay.objects
 	queryset = 
+'''
+	#template_name = 'assays/assaytypes/iinflc-04.html'
+	#template_name = returnTemplateName(self.object)
+
+'''	def test_func(self):
+		assay = self.get_object()
+		user_obj = self.request.user
+		if (assay.author == user_obj or assay.scientist== user_obj or user_obj.groups =='Admin'):
+			print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+			return True
+		return False
 '''

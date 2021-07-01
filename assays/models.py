@@ -536,6 +536,7 @@ class Fc04(models.Model):
     timepoint = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     measurement_date = models.DateField(blank=True, null=True)
+    sample_id = models.CharField(max_length=64, blank=True, null=True)
     sample_source = models.CharField(max_length=64, blank=True, null=True)
     live_aquis = models.CharField(max_length=64, blank=True, null=True)
     total_cell_count = models.FloatField(blank=True, null=True)

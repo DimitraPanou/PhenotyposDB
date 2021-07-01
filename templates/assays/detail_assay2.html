@@ -389,6 +389,8 @@
             </div>
         </div>
       </div>
+      <div id="Analysis"><h3>Analysis</h3></div>
+
                 <!-- /.tab-content -->
        <div class="card">
               <div class="card-header border-0">
@@ -404,11 +406,9 @@
               </div>
           <div class="card-body">
             <div class="position-relative mb-4">
-              <div class="row">
-                <div class ="col-md-6">
-                        <form method="GET" enctype="multipart/form-data">
+              <form method="GET" enctype="multipart/form-data">
                           {% csrf_token %}
-                          <select id="parameterName" name="parameterName" onchange="this.form.submit()">
+                          <select class= "form-control select2" id="parameterName" name="parameterName" onchange="this.form.submit()">
                             {% for con, name in parameters %}
                               {% if con == par %}
                                 <option selected="selected" value={{par}}>{{name|safe}}</option>>
@@ -418,19 +418,31 @@
                             {% endfor %}                        
                             </option>
                           </select>
-                        </form>              
+               </form>   
+              <div class="row">
+                <div class ="col-md-6">
+           
                     <div id="container"></div>
                     <h3>{{par}}</h3>
                 </div>
                 <div class ="col-md-6">
+                  {% if flag %}
                   <div id="containerboxplot"></div>
+                  {% else %}
+                  <div> No data </div>
+                  {% endif %}
                 </div>
               </div>
               <div class="row">
                 <div class ="col-md-12">
+                  {% if flag %}
                   <div id="containerline"></div>
+                  {% else %}
+                  <div> No data </div>
+                  {% endif %}
                 </div>
               </div>
+              <!--
                 <div class='buttons'>
                   <button id='2000'>
                     2000
@@ -449,6 +461,7 @@
                   </button>
                 </div>
                 <div id="containercolumn"></div>
+              -->
               </div>
               </div>
               <!-- ./card -->
@@ -489,7 +502,6 @@
   </div>
 </div>
 -->
-<div id="Analysis"><h3>Analysis</h3></div>
 
 {% block chart_content %}
 

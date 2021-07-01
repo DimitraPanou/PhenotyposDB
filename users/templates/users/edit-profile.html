@@ -17,9 +17,9 @@
         <div class="media">
           <div class="media-body">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-            <h2 class="account-heading">{{ user.username }}</h2>
-            <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">            
-            <p class="text-black-50">{{ user.email }}</p>
+            <h2 class="account-heading">{{ user1.username }}</h2>
+            <img class="rounded-circle account-img" src="{{ user1.profile.image.url }}">            
+            <p class="text-black-50">{{ user1.email }}</p>
           </div>
           </div>
         </div>
@@ -32,6 +32,7 @@
                       {{ u_form|crispy }}
 
               <legend class="border-bottom mb-4">Profile Info</legend>
+              {{ p_form.facility|as_crispy_field }}
               {{ p_form.first_name|as_crispy_field }}
               {{ p_form.last_name|as_crispy_field}}
               <div class= "form-row">

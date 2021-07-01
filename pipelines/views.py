@@ -184,3 +184,19 @@ def add_assay_to_pipeline(request, pk):
 	else:
 		form = AssayForm(request.user)
 	return render(request,'pipelines/add_assay.html',{'pipeline':pipeline, 'form':form})
+
+
+@allowed_users(allowed_roles=['Admin','Scientific staff'])
+def add_assays_to_pipeline(request, pk):
+	pipeline = get_object_or_404(Pipeline, pk=pk, pi=request.user)
+	if request.method == 'POST':
+		form = AssayForm(request.user,request.POST, request.FILES)
+		if form.is_valid():
+			form.instance.pipeline = pipeline
+			form.instance.author = request.user			
+			test = form.save()
+			handle_uploaded_file(test)			
+			return redirect('pipeline-detail',pk)
+	else:
+		form = AssayForm(request.user)
+	return render(request,'pipelines/add_assay.html',{'pipeline':pipeline, 'form':form})

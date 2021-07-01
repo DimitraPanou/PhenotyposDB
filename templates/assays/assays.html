@@ -95,7 +95,7 @@
               </thead>
               <tbody>
                 {% for assay in list_assays %}
-                  {% if assay.author == user or  assay.scientist == user%}
+                  {% if assay.author == user or assay.scientist == user or groups.all.0.name == "Admin"%}
                     <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                   {% else %}
                     <tr>

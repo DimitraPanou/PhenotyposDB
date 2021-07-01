@@ -634,23 +634,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
   Highcharts.chart('containerline', {
     colors: ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
     title: {
-        text: 'Solar Employment Growth by Sector, 2010-2016'
+        text: '{{title|safe}} by Gender & Genotype'
     },
 
     subtitle: {
-        text: 'Source: thesolarfoundation.com'
+        text: 'Average {{title|safe}} by Timepoint'
     },
 
     yAxis: {
         title: {
-            text: 'Number of Employees'
+            text: '{{title|safe}}'
         }
     },
 
     xAxis: {
-        accessibility: {
-            rangeDescription: 'Range: 2010 to 2015'
-        }
+        title: {
+          enabled: true,
+          text: 'Timepoint in {{object.timesteps_in}}' 
+        }
     },
 
     legend: {
@@ -712,7 +713,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 });
 
-
+/*
 var data = {
     2016: [
         ['South Korea', 0],
@@ -912,7 +913,7 @@ years.forEach(function (year) {
         });
     });
 });
-
+*/
 </script>
 <script type="text/javascript">
     var scarplot = {{scarplot|safe}};
@@ -926,10 +927,10 @@ years.forEach(function (year) {
         zoomType: 'xy'
       },
       title: {
-        text: '{{title}} Height Versus Weight of 507 Individuals by Gender'
+        text: '{{title|safe}} - Timestep by Gender & Genotype'
       },
       subtitle: {
-        text: 'Source: Heinz  2003'
+        text: 'Timepoint in {{object.timesteps_in}}'
       },
       xAxis: {
         title: {
@@ -942,7 +943,7 @@ years.forEach(function (year) {
       },
       yAxis: {
         title: {
-          text: 'Weight (kg)'
+          text: '{{title|safe}}'
         }
       },
       legend: {
@@ -989,7 +990,7 @@ years.forEach(function (year) {
         },
 
         title: {
-            text: 'Highcharts Box Plot Example'
+            text: 'Box Plot of {{title|safe}} - Timestep by Gender & Genotype'
         },
 
         legend: {
@@ -997,9 +998,9 @@ years.forEach(function (year) {
         },
 
         xAxis: {
-            categories: ['1', '2', '3', '4', '5'],
+            categories: ['6', '24'],
             title: {
-                text: 'Experiment No.'
+                text: 'Timestep'
             }
         },
 
@@ -1007,7 +1008,7 @@ years.forEach(function (year) {
             title: {
                 text: 'Observations'
             },
-            plotLines: [{
+/*            plotLines: [{
                 value: 932,
                 color: 'red',
                 width: 1,
@@ -1018,12 +1019,16 @@ years.forEach(function (year) {
                         color: 'gray'
                     }
                 }
-            }]
+            }]*/
         },
 
         series: [{
             name: 'Observations',
-            data: series2['data'],
+            /*data: series2['data'],*/
+                data: [
+            [760, 801, 848, 895, 965],
+            [834, 836, 864, 882, 910]
+    ],
             tooltip: {
                 headerFormat: '<em>Experiment No {point.key}</em><br/>'
             }
@@ -1031,19 +1036,56 @@ years.forEach(function (year) {
             name: 'Outliers',
             color: Highcharts.getOptions().colors[0],
             type: 'scatter',
-            data: [ // x, y positions where 0 is the first category
+            data: 
+            [ // x, y positions where 0 is the first category
+                [-0.1, 760],
+                [-0.12, 801],
+                [-0.13, 848],
+                [-0.14, 895],
+                [-0, 965],
                 [0, 644],
-                [4, 718],
-                [4, 951],
-                [4, 969]
+                [0.8, 718],
+                [0.7, 951],
+                [0.6, 969]
             ],
             marker: {
                 fillColor: 'white',
                 lineWidth: 1,
-                lineColor: Highcharts.getOptions().colors[0]
+                lineColor: Highcharts.getOptions().colors[5]
             },
             tooltip: {
                 pointFormat: 'Observation: {point.y}'
+            }
+        },
+        {
+            name: 'Observations',
+            /*data: series2['data'],*/
+                data: [
+            [73, 80, 84, 89, 96],
+            [840, 830, 860, 880, 910]
+    ],
+            tooltip: {
+                headerFormat: '<em>Experiment No {point.key}</em><br/>'
+            }
+        }, {
+            name: 'Outliers',
+            color: Highcharts.getOptions().colors[1],
+            type: 'scatter',
+            data: [ // x, y positions where 0 is the first category
+                [1.1, 840],
+                [1.3, 830],
+                [1, 860],
+                [1, 895],
+                [1, 880],
+                [1, 910]
+            ],
+            marker: {
+                fillColor: 'white',
+                lineWidth: 1,
+                lineColor: Highcharts.getOptions().colors[1]
+            },
+            tooltip: {
+                pointFormat: 'Test: {point.y}'
             }
         }]
 

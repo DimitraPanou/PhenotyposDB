@@ -1077,6 +1077,105 @@ def data_fc01(data,assay):
 		if(flag):				
 			experiment.save()
 
+
+def data_fc04(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Fc04()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					#print(data[key][i])
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d
+				elif ('sample id' in key.lower()):
+					experiment.sample_id = data[key][i]
+				elif ('source' in key.lower()):
+					experiment.sample_source= data[key][i]
+				elif ('aquis' in key.lower()):
+					experiment.live_aquis= data[key][i]					 
+				elif ('total cell' in key.lower()):
+					experiment.total_cell_count = data[key][i]
+				elif ('% all cells' in key.lower()):
+					experiment.all_cells_per = data[key][i]
+				elif ('% live' in key.lower()):
+					if('leukocytes' in key.lower()):
+						experiment.live_leukocytes_per = data[key][i]
+					elif('epithelial'in key.lower()):	
+						experiment.live_epithelial_per = data[key][i]
+					else: experiment.live_cells_per = data[key][i]
+				elif ('% early' in key.lower()):
+					experiment.early_apoptotic_per = data[key][i]
+				elif ('% late' in key.lower()):
+					experiment.late_apoptotic_per = data[key][i]
+				elif ('% neucrotic' in key.lower()):
+					if('leukocytes' in key.lower()):
+						experiment.total_leukocytes_per = data[key][i]
+					elif('epithelial'in key.lower()):	
+						experiment.total_epithelial_per = data[key][i]
+					else: experiment.necrotic_per = data[key][i]
+				elif ('# all cells' in key.lower()):
+					experiment.all_cells_num = data[key][i]
+				elif ('# live' in key.lower()):
+					if('leukocytes' in key.lower()):
+						experiment.live_leukocytes_num = data[key][i]
+					elif('epithelial'in key.lower()):	
+						experiment.live_epithelial_num = data[key][i]
+					else: experiment.live_cells_num = data[key][i]
+				elif ('# early' in key.lower()):
+					experiment.early_apoptotic_num = data[key][i]
+				elif ('# late' in key.lower()):
+					experiment.late_apoptotic_num = data[key][i]
+				elif ('# neucrotic' in key.lower()):
+					if('leukocytes' in key.lower()):
+						experiment.necrotic_leukocytes_num = data[key][i]
+					elif('epithelial'in key.lower()):	
+						experiment.necrotic_epithelial_num = data[key][i]
+					else: experiment.necrotic_num = data[key][i]					 
+				elif ('% total' in key.lower()):
+					if('leukocytes' in key.lower()):
+						experiment.total_leukocytes_per = data[key][i]
+					elif('epithelial'in key.lower()):	
+						experiment.total_epithelial_per = data[key][i]
+				elif ('% apoptotic' in key.lower()):
+					if('leukocytes' in key.lower()):
+						experiment.total_leukocytes_per = data[key][i]
+					elif('epithelial'in key.lower()):	
+						experiment.total_epithelial_per = data[key][i]
+				elif ('# total' in key.lower()):
+					if('leukocytes' in key.lower()):
+						experiment.total_leukocytes_num = data[key][i]
+					elif('epithelial'in key.lower()):	
+						experiment.total_epithelial_num = data[key][i]
+				elif ('# apoptotic' in key.lower()):
+					if('leukocytes' in key.lower()):
+						experiment.total_leukocytes_num = data[key][i]
+					elif('epithelial'in key.lower()):	
+						experiment.total_epithelial_num = data[key][i]
+
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+				print(experiment)
+		if(flag):				
+			experiment.save()
+
 def data_fc03(data,assay):
 	for i in range(len(data["Mouse ID"])):
 		flag =1
@@ -2131,6 +2230,8 @@ def handle_uploaded_file(assayobject):
 		data_fc01(data,assayobject)
 	if(assayobject.type.code == "FC-03"):
 		data_fc03(data,assayobject)
+	if(assayobject.type.code == "FC-04"):
+		data_fc04(data,assayobject)
 	if(assayobject.type.code == "HPA-02"):
 		data_hpa02(data,assayobject)
 
@@ -2176,6 +2277,7 @@ def returnTemplateName(assayobject):
 		42:'assays/assaytypes/fc01.html',
 		43:'assays/assaytypes/fc03.html',
 		44:'assays/assaytypes/hpa02.html',
+		45:'assays/assaytypes/fc04.html',
 	}
 	return switcher.get(assayobject.id,"Ivalid")
 
@@ -2246,8 +2348,10 @@ def get_parameters(assay):
 		42: Fc01._meta.get_fields(),
 		43: Fc03._meta.get_fields(),
 		44: Hpa02._meta.get_fields(),
+		45: Fc04._meta.get_fields(),
 
 	}
+	
 	parameters = []
 	parameters_names = []
 	pars = switcher.get(assay.type.id,"Ivalid")
@@ -2263,6 +2367,7 @@ def get_parameters(assay):
 	return parameters, parameters_names
 
 def parameterMeasures(measures, parameter):
+    flag = True
     mouselist = measures.values('mid').distinct().order_by('mid')
     gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).distinct()
     genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).distinct()
@@ -2279,7 +2384,14 @@ def parameterMeasures(measures, parameter):
                         label = sex + " "+gene
                         m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
                         parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                        df222 = pd.DataFrame(list(parameter_measures.values(parameter)))
+                        print(all(df222))
+                        flag = False
                         df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        print('Test dataframe parameter')
+                        #par_df = df[parameter]
+                        #if par_df.empty:
+                        #    print('par_df')
                         if not df.empty:
                             df = df[['timepoint',parameter]] 
                         print(df)
@@ -2293,4 +2405,4 @@ def parameterMeasures(measures, parameter):
                             df = df[['timepoint',parameter]] 
                         print(df)
                         test[label] = df
-    return test
+    return test,flag
