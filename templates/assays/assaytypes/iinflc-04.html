@@ -9,7 +9,7 @@
             <h3 class="card-title">Measurements</h3>
           </div>
           <!-- /.card-header -->
-          <div class="card-body">
+          <div class="card-body" id="tabledata">
             <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
               <div class="row">
                 <div class="col-sm-12">
@@ -27,7 +27,7 @@
               </thead>
               <tbody>
                 {% for assay in measures %}
-                <tr class="table-row" data-href="#" class="btn" data-toggle="popover" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
+                <tr class="table-row" data-href="#tabledata" class="btn" data-toggle="popover" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
                     <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender}}</p>
                     <p><b>Genotype</b>: {{assay.mid.genotype}}</p> 
                     <p><b>Date of Birth</b>: {{assay.mid.date}}</p> 

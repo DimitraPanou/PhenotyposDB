@@ -1,5 +1,26 @@
 {% extends 'assays/detail_assay2.html' %}
+{% block measured_values %}
+  Arthritis X-rays<br>
+  - Parameter 1<br>
+  - Parameter 2<br>
+  - Parameter 3<br>
+  - Parameter 4
+{% endblock %}
 
+{% block min_models %}
+ 7M + 7F
+{% endblock %}
+
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>An <b>In Vivo-Optical/X-Ray Imaging </b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
+                    <p> The charts show the results of measuring <b>parameters (1,2,3,4)</b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to control dataset</p>
+                    <p> In this assay we observe {{genotypecount}} genotypes which are <b>{% for gene in genotype %}{% if gene %} gene{% endif %}{% endfor %}</b> .</p>
+{% endblock %}
 {% block assay_content %}
  <!-- /.card -->
     <div class="row">
@@ -9,7 +30,7 @@
             <h3 class="card-title">Measurements</h3>
           </div>
           <!-- /.card-header -->
-          <div class="card-body">
+          <div class="card-body" id="tabledata">
             <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
               <div class="row">
                 <div class="col-sm-12">
@@ -30,7 +51,7 @@
               </thead>
               <tbody>
                 {% for assay in measures %}
-                  <tr class="table-row" data-href="#" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
+                  <tr class="table-row" data-href="#tabledata" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
                     <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender|default_if_none:""}}</p>
                     <p><b>Genotype</b>: {{assay.mid.genotype|default_if_none:""}}</p> 
                     <p><b>Date of Birth</b>: {{assay.mid.date|default_if_none:""}}</p> 
@@ -63,14 +84,4 @@
         </div>
       </div>
     </div>
-{% endblock %}
-
-{% block assaytype_content %}
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p>A <b>Histological</b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
-                    <p> The charts show the results of measuring <b>Alanine aminotransferase</b> in <b>{{females}}
-                    female</b>, <b>{{males}} male</b> mutants compared to <b>362 female</b>, <b>316 male</b> controls.</p> 
-                    <p> The mutants are <b></b> for the <b> Tnfrsf1a<sup>tm2b(EUCOMM)Wtsi</sup></b> allele.</p>
 {% endblock %}

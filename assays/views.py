@@ -265,15 +265,21 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 		[parameters,parameters_names] = get_parameters(self.object)
 		print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
 		print(parameters_names)
+		print(parameters)
 		print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
 
 		mouselist = measures.values('mid').distinct().order_by('mid')
+
+		print('-----------')
+		print(mouselist)
+		print('-----------')
+		
 		mouse_num = measures.values('mid').annotate(dcount=Count('mid')).count()	
 		females = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Female')
 		males = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Male')
 		kwargs['mouselist'] = Mouse.objects.filter(id__in=mouselist)
 		kwargs['total'] = mouse_num
-		kwargs['assayjson']= json.dumps(self.object.id)
+		#kwargs['assayjson']= json.dumps(self.object.id)
 		kwargs['females'] = females.count()
 		kwargs['males'] = males.count()
 		kwargs['parameters'] = zip(parameters,parameters_names)
@@ -285,7 +291,7 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 #		source = parameters[0]
 #		if par:
 #			source = par
-		[test,flag] = parameterMeasures(measures,par)
+		[test,flag,genotype] = parameterMeasures(measures,par)
 
 		series = []
 		for key in test:
@@ -307,6 +313,8 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 				data_dict['data'] = test2.values.tolist()
 				series2.append(data_dict)
 		print(series2)
+		kwargs['genotype'] = genotype
+		kwargs['genotypecount'] = genotype.count()
 		kwargs['flag'] = series
 		kwargs['scarplot'] = [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], [155.8, 53.6], [170.0, 59.0], [159.1, 47.6], [166.0, 69.8], [176.2, 66.8], [160.2, 75.2]]
 		'''series = [{

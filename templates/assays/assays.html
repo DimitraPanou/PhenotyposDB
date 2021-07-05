@@ -67,6 +67,7 @@
           <table class="table table-striped projects">     
               <thead class="bg-newteal">
                   <tr>
+                    <th style="width: 2%"></th>
                       <th style="width: 2%"></th>
                       <th style="width: 8%">
                           Code
@@ -99,7 +100,8 @@
                     <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                   {% else %}
                     <tr>
-                  {% endif %}                 
+                  {% endif %}
+                      <td><input type="checkbox" name="assay_id[]" value="assay.id" id="delete"></td>                 
                       <td>
                         <li class="list-inline-item">
                           <img alt="Avatar" id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="35" height="35">
@@ -163,6 +165,7 @@
                       {% endif %}
                   </tr>
                 {% endfor %}
+                <button type="submit" class="btn btn-danger btn-sm" id="multidelete">Delete</button>
               </tbody>
           </table>
         </div>

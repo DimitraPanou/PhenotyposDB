@@ -2348,25 +2348,21 @@ def get_parameters(assay):
 		42: Fc01._meta.get_fields(),
 		43: Fc03._meta.get_fields(),
 		44: Hpa02._meta.get_fields(),
-		45: Fc04._meta.get_fields(),
-
+		45: Fc04._meta.get_fields()
 	}
-	
 	parameters = []
 	parameters_names = []
 	pars = switcher.get(assay.type.id,"Ivalid")
 	if (pars):
 		for i in range(6,len(pars)-1):
-			if(pars[i].get_internal_type()=='FloatField'):
+			if(pars[i].get_internal_type()=='FloatField' or pars[i].get_internal_type()=='IntegerField'):
+				print("check----------------------------------------------------------------------------")
 				parameters.append(pars[i].name)
 				parameters_names.append(pars[i].verbose_name)
-			elif(pars[i].get_internal_type()=='IntegerField'):
-				parameters.append(pars[i].name)
-				parameters_names.append(pars[i].verbose_name)
-
 	return parameters, parameters_names
 
 def parameterMeasures(measures, parameter):
+    print('Inside Parameter Measures')
     flag = True
     mouselist = measures.values('mid').distinct().order_by('mid')
     gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).distinct()
@@ -2405,4 +2401,5 @@ def parameterMeasures(measures, parameter):
                             df = df[['timepoint',parameter]] 
                         print(df)
                         test[label] = df
-    return test,flag
+    print('Out Parameter Measures')
+    return test,flag,genotype

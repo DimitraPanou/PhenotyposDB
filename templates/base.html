@@ -120,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button" collapsed="False"><i class="fas fa-bars"></i></a>
       </li>
       <li>
         <div class="u-custom-menu u-nav-container">
@@ -536,8 +536,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{% static 'plugins/js/bootstrap_modal_forms/static/js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <!-- Ekko Lightbox -->
 <script src="{% static 'plugins/ekko-lightbox/ekko-lightbox.min.js' %}"></script>
+<script type="text/javascript">
+    $(function () {
+
+    $('[data-widget="pushmenu"]').PushMenu('toggle');
+  })
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("multidelete").click(function(){
+      if(confirm("Are you sure you want to delete these assays?")){
+          var id = [];
+          $(':checkbox:checked').each(function(i){
+            id[i] = $(this).val()
+          })
+          if(id.length===0){
+            alert("please select item to delete")
+           }
+          else{
+            consol.log(id);
+          }
+      }
+    })
+  })
+</script>
 <script>
   $(function () {
+
     $(document).on('click', '[data-toggle="lightbox"]', function(event) {
       event.preventDefault();
       $(this).ekkoLightbox({
