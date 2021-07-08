@@ -21,7 +21,7 @@ def create_mouseHash(data):
 		#print("MOUSE")
 
 		for key in data:
-			if ('ID' in key):
+			if ('Mouse ID' in key):
 				m.mid = data[key][i]			
 			elif ('genotype' in key.lower()):
 				m.genotype = data[key][i]
@@ -48,7 +48,7 @@ def create_mouseHash(data):
 			elif ('report' in key.lower()):
 				m.health_report = data[key][i]
 		if(Mouse.objects.filter(mid=m.mid, genotype=m.genotype,dateofBirth=m.dateofBirth)):
-			print('mphke edw')
+			print('mphke edw {}',m.mid)
 			continue;
 		print("Saving mouse {}".format(m.mid)) 	
 		m.save()
@@ -2375,31 +2375,32 @@ def parameterMeasures(measures, parameter):
         if(genotype.exists()):
             print('genotype not empty')
             for sex in gender:
-                for gene in genotype:
-                    if(gene):
-                        label = sex + " "+gene
-                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
-                        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
-                        df222 = pd.DataFrame(list(parameter_measures.values(parameter)))
-                        print(all(df222))
-                        flag = False
-                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
-                        print('Test dataframe parameter')
-                        #par_df = df[parameter]
-                        #if par_df.empty:
-                        #    print('par_df')
-                        if not df.empty:
-                            df = df[['timepoint',parameter]] 
-                        print(df)
-                        test[label] = df
-                    else:
-                        label = sex
-                        m = Mouse.objects.filter(id__in= mouselist,gender=sex)
-                        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
-                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
-                        if not df.empty:
-                            df = df[['timepoint',parameter]] 
-                        print(df)
-                        test[label] = df
+            	if(sex):
+                    for gene in genotype:
+                        if(gene):
+                            label = sex + " "+gene
+                            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
+                            parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                            df222 = pd.DataFrame(list(parameter_measures.values(parameter)))
+                            print(all(df222))
+                            flag = False
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            print('Test dataframe parameter')
+                            #par_df = df[parameter]
+                            #if par_df.empty:
+                            #    print('par_df')
+                            if not df.empty:
+                                df = df[['timepoint',parameter]] 
+                            print(df)
+                            test[label] = df
+                        else:
+                            label = sex
+                            m = Mouse.objects.filter(id__in= mouselist,gender=sex)
+                            parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            if not df.empty:
+                                df = df[['timepoint',parameter]] 
+                            print(df)
+                            test[label] = df
     print('Out Parameter Measures')
     return test,flag,genotype

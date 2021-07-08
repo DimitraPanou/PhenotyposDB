@@ -1,12 +1,38 @@
 {% extends 'assays/detail_assay2.html' %}
 
+{% block measured_values %}
+<div>
+Sodium<br>
+Potassium<br>
+Cloride<br>
+Phosphorus<br>
+Calcium<br> 
+Magnesium<br><br>
+<b style="color:gray">CONDITION INDICATION</b><br>
+Homeostasis (water imbalance), impaired renal function, diarrhea
+</div>
+{% endblock %}
+
+{% block min_models %}
+ 3M + 3F
+{% endblock %}
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>A Biochemical phenotypic assay was performed on <b>{{total}} mice</b>.
+                    The charts show the results of measuring the<b> parameters sodium, potassium, chloride, phoshorus, calcium and magnesium </b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset. In this assay we observe {{genotypecount}} type(s) of genotypes which are <b>{% for gene in genotype %}{% if gene %} {{gene}} {% endif %}{% endfor %}</b> .</p>
+{% endblock %}
+
 {% block assay_content %}
  <!-- /.card -->
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Measurements</h3>
+            <h3 class="card-title" id="Measurements">Measurements</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body" id="tabledata">

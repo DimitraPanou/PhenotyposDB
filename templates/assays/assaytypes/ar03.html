@@ -16,8 +16,8 @@
                     <p></p>
                     <p>An <b>In Vivo-Optical/X-Ray Imaging </b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
                     <p> The charts show the results of measuring <b>parameters sum intensity, net intensity</b> in <b>{{females}}
-                    female</b>, <b>{{males}} male</b> mutants compared to control dataset</p>
-                    <p> In this assay we observe {{genotypecount}} genotypes which are <b>{% for gene in genotype %}{% if gene %} gene{% endif %}{% endfor %}</b> .</p>
+                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset</p>
+                    <p> In this assay we observe {{genotypecount}} genotypes which are <b>{% for gene in genotype %}{% if gene %} {{gene}}{% endif %}{% endfor %}</b> .</p>
 {% endblock %}
 
 {% block assay_content %}
@@ -26,7 +26,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Measurements</h3>
+            <h3 class="card-title" id="Measurements">Measurements</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body" id ="tabledata">
