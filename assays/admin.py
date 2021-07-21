@@ -9,7 +9,7 @@ from import_export.admin import ImportExportModelAdmin
 
 @admin.register(Atype)
 class AtypeAdmin(ImportExportModelAdmin):
-	list_display = ('code', 'name', 'facility','unit','staff','publication_date','version')
+	list_display = ('code', 'name', 'facilitylong','service_type','staff','publication_date','version')
 	pass
 
 class ImageInline(admin.TabularInline):
@@ -17,7 +17,7 @@ class ImageInline(admin.TabularInline):
 
 @admin.register(Assay)
 class AssayAdmin(ImportExportModelAdmin):
-	list_display = ('code', 'name','type','version','staff','measurement_day','scientist','assayqc','rawdata_file','comments')
+	list_display = ('code', 'name','type','version','staff','measurement_day','scientist_in_charge','assayqc','rawdata_file','comments')
 	inlines = [
         ImageInline
     ]

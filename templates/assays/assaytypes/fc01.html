@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Sample Source</th>
                   <th>Live/Fixed Aquis</th>
@@ -30,6 +30,7 @@
                   <th>% NK cells (M)</th>
                   <th>% B cells (M)</th>
                   <th>% T cells (M)</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -59,6 +60,7 @@
                     <td>{{ assay.nk_cells_per|default_if_none:"" }}</td>
                     <td>{{ assay.b_cells_per|default_if_none:"" }}</td>
                     <td>{{ assay.t_cells_per|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

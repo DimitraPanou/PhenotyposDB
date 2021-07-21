@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Sample Source</th>
                   <th>Live/Fixed Aquis</th>
@@ -31,7 +31,8 @@
                   <th>% MZB cells</th>
                   <th>% B2 Mature cells</th>
                   <th>% T2 cells</th>
-                  <th>% T3 and follicular cells</th>                  
+                  <th>% T3 and follicular cells</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>                  
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -63,6 +64,7 @@
                     <td>{{ assay.b2_mature_cells_per|default_if_none:"" }}</td>
                     <td>{{ assay.t2_cells_per|default_if_none:"" }}</td>
                     <td>{{ assay.t3_cells_per|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

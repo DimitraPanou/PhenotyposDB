@@ -18,13 +18,13 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Sample Source</th>
                   <th>Amylase (U/liter)</th>
                   <th>Lipase (U/liter)</th>
                   <th>Glucose (mmol/liter)</th>
-                  <th>Age</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>

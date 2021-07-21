@@ -19,7 +19,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Total distance travelled in the whole arena (m)</th>
                   <th>Time spent in the peripheral zone (s) </th>
@@ -28,7 +28,7 @@
                   <th>Time spent in the central  zone (s) </th>
                   <th>Distance travelled in the central zone (m)</th>
                   <th>Average speed in the central zone (m/s)</th>
-                  <th>Age</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>

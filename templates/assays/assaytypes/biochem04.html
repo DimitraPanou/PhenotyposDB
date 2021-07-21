@@ -18,13 +18,13 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Sample Source</th>
                   <th>Urea (mmol/liter)</th>
                   <th>Uric Acid (mmol/liter)</th>
                   <th>Creatinine (mmol/liter)</th>
-                  <th>Age</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>

@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Sample ID</th>
                   <th>Sample Source</th>
@@ -50,6 +50,7 @@
                   <th># Apoptotic Epithelial</th>
                   <th># Necrotic Epithelial</th>
                   <th># Live Epithelial</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -99,6 +100,7 @@
                     <td>{{ assay.apoptotic_epithelial_num|default_if_none:"" }}</td>
                     <td>{{ assay.necrotic_epithelial_num|default_if_none:"" }}</td>
                     <td>{{ assay.live_epithelial_num|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

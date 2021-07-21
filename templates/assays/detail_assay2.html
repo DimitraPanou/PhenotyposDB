@@ -24,24 +24,27 @@
         
         </div>
     </div>
+
 </div>
 
 <div class="key-financials" style="text-align:center;">
     <table width="100%">
         <thead>
             <tr>
+                <th>Facility</th>
                 <th>Testing Protocol</th>
                 <th ng-show="details.coin.price_change_1D_percent" class="">Measured Values</th>
                 <!----><th ng-if="(!_.isNull(details.coin.price_change_7D_percent))">Minimum animals</th><!---->
                        <th ng-if="details.coin.volume_24_usd">Total animals</th>
                 <!----><th ng-if="details.coin.last_market_cap_usd">Mouse life stage</th><!---->
                 <!----><th ng-if="details.coin.supply">Duration time</th><!---->
-                <!----><th ng-if="coinQuickLinks.length" class="hidden-xs">Links</th><!---->
+                <!--<th ng-if="coinQuickLinks.length" class="hidden-xs">Links</th>-->
                        <th><a class="btn btn-outline-secondary btn-lg mt-3 mb-1" href="{% url 'assay-update' object.id %}"><i class="ti-pencil" aria-hidden="true"></i></a></th>
             </tr>
         </thead>
         <tbody>
             <tr>
+                <td>{{object.type.facilitylong}}</td>
                 <td><i ng-class="{ 'change-up fal fa-long-arrow-up': details.coin.price_change_1D_percent >= 0, 'change-down fal fa-long-arrow-down': details.coin.price_change_1D_percent < 0 }" class="change-up fal fa-long-arrow-up"></i><span class="underscore-tooltip" id="header-price"><button type="button" class="btn-xs btn-dark" data-toggle="modal" data-target="#modal-default">
       {{object.type.name}}
     </button></span></td>
@@ -51,19 +54,20 @@
                 <!----><td ng-if="details.coin.volume_24_usd">Adult</td><!---->
                 <!----><td ng-if="::details.total_score">
                     <a ui-sref="{ 'view' : 'analysis', 'subview' : null }" uib-tooltip="Click to see the full analysis" tooltip-append-to-body="true" href="/coins/cardano/analysis">
-                        {{object.duration|default_if_none:""}}/{{object.timesteps_in|default_if_none:""}}
+                        {{object.duration|default_if_none:"TBD"}}/{{object.timesteps_in|default_if_none:"TBD"}}
                     </a>
                 </td><!---->
-                <!----><td ng-if="coinQuickLinks.length" class="hidden-xs">
+                <!---->
+                <!--<td ng-if="coinQuickLinks.length" class="hidden-xs">
                     <div class="links">
-                        <!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Website" uib-tooltip="Website" href="https://www.cardano.org/en/home/" target="_blank">
+                        <a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Website" uib-tooltip="Website" href="https://www.cardano.org/en/home/" target="_blank">
                             <i class="fa-fw fal fa-globe" aria-hidden="true"></i>
-                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Twitter" uib-tooltip="Twitter" href="https://twitter.com/Cardano" target="_blank">
+                         </a><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Twitter" uib-tooltip="Twitter" href="https://twitter.com/Cardano" target="_blank">
                             <i class="fa-fw fab fa-twitter-square" aria-hidden="true"></i>
-                         </a><!----><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Telegram" uib-tooltip="Telegram" href="https://t.me/CardanoAnnouncements" target="_blank">
-                            <i class="fa-fw fab fa-telegram" aria-hidden="true"></i><!---->
+                         </a><a ng-repeat="lnk in coinQuickLinks" analytics-on="" analytics-event="Click" analytics-category="Coin header" analytics-label="Telegram" uib-tooltip="Telegram" href="https://t.me/CardanoAnnouncements" target="_blank">
+                            <i class="fa-fw fab fa-telegram" aria-hidden="true"></i>
                     </div>
-                </td>
+                </td>-->
                 <td></td><!---->
             </tr>
         </tbody>
@@ -76,7 +80,7 @@
 <hr>
    <div class="p-1 pb-2 pl-3" id="protocolTextContainer" style="visibility:visible">
    <div class="row">     
-        <a href="#Info" class="u-btn u-button-style u-palette-2-base u-btn-1"> Experiment Info </a>
+        <a href="#Info" class="u-btn u-button-style u-palette-2-base u-btn-1"> Experimental Design </a>
         <a href="#Measurements" class="u-btn u-button-style u-palette-2-base u-btn-1"> Measurements </a>
         <a href="#Analysis" class="u-btn u-button-style u-palette-2-base u-btn-1"> Analysis </a>
   </div>
@@ -86,7 +90,7 @@
     
     {% endblock %}
   <br>
-  <div id="Info"><h3>Experiment Info</h3></div>
+  <div id="Info"><h3>General Experimental Design</h3></div>
   <br>
   <div class="row">
           <!-- Left col -->
@@ -126,9 +130,9 @@
                         <p class="text-muted">Date Created: {{ assay.created_at }}</p>
                         <p class="text-muted">Date Modified: {{ assay.updated_at }}</p>                
                         <hr>
-                        <strong><i class="far fa-file-alt mr-1"></i> Comments</strong>
+                        <strong><i class="fas fa-pencil-alt mr-1"></i> Comments</strong>
                         <p class="text-muted">{{ assay.comments|default_if_none:"" }}</p>
-                        <h5 class="mt-5 text-muted">Project files</h5>
+                        <strong><i class="fa fa-paperclip mr-1"></i> Project Files</strong>
                         <ul class="list-unstyled">
                           <li>
                             <a href="{{assay.rawdata_file.url}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-excel"></i> Raw Data</a>
@@ -139,13 +143,15 @@
                           </li>
                           {% endif %}
                         </ul>
+                        <strong><i class="far fa-file-alt mr-1"></i> References</strong>
+                        <p class="text-muted">{{ assay.type.references|default_if_none:"" }}</p>
                         
                   </div>
 
-                  <div class="card-pane-right bg-newteal pt-2 pb-2 pl-4 pr-4">
+                  <div class="card-pane-right bg-newteal pt-2 pl-4 pr-4">
                     <div class="description-block mb-4">
-                      <span class="description-text"><i class="fas fa-calendar mr-1"></i> Unit </span>
-                      <div class="sparkbar pad" data-color="#fff">{{assay.type.unit}}</div>
+                      <span class="description-text"><i class="fas fa-building mr-1"></i> Facility </span>
+                      <div class="sparkbar pad" data-color="#fff">{{assay.type.facilitylong}}</div>
                       <h5 class="description-header"></h5>
                     </div>
                     <!-- /.description-block -->
@@ -181,8 +187,9 @@
               </div>
 
               <!-- /.card-header -->
-              <div class="card-body table-responsive table-valign-middle p-0">
-                    <table id="example3" class="table table-dark">     
+              <div class="card-body table-responsive table-align-middle p-2">
+                    <table id="example3" class="table table-dark" style="font-size: 12px; text-align: center; justify-content: center;
+">     
                         <thead>
                             <tr>
                                 <th style="width: 20%">
@@ -216,13 +223,17 @@
                         </thead>
                         <tbody>
                           {% for m in mouselist %}
-                              <tr>
-                                <td >
+                              <tr><!--
+                                <td><div id="photo" style="text-align: center">
+  <img style="width:28px; vertical-align:middle;" src="{% static 'dist/img/mouse4.png' %}" alt="">
+  <span style="vertical-align:middle;">Take a photo</span>
+</div></td>-->
+                                <td>
                                   <div class="row">
                                     <div class="col-4">
-                                    <img class="img-circle img-size-32 mr-2" src="{% static 'dist/img/mouse4.png' %}">
+                                    <img class="img-circle img-size-32" style="vertical-align:left" src="{% static 'dist/img/mouse4.png' %}">
                                   </div>
-                                  <div class="col-8"><b>  {{ m.mid }}</b></div>
+                                  <div class="col-8" style="vertical-align:middle"><b>  {{ m.mid }}</b></div>
                                   </div>
                                 </td>
                                 <td style="font-family:Verdana;font-weight:bold;">

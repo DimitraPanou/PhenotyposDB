@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Slide #</th>
                   <th>Leukocyte Density Field 1</th>
@@ -35,6 +35,7 @@
                   <th>Extent Field Avg</th>                  
                   <th>Inflammation score</th>
                   <th>Abscesses</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -69,7 +70,8 @@
                     <td>{{ assay.extent_3|default_if_none:"" }}</td>
                     <td>{{ assay.extent_avg|default_if_none:"" }}</td>
                     <td>{{ assay.inflammation_score|default_if_none:"" }}</td>
-                    <td>{{ assay.abscesses|default_if_none:"" }}</td>                                       
+                    <td>{{ assay.abscesses|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>                                       
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

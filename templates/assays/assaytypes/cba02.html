@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Dilution Factor</th>
                   <th>IgG1 ng/ml</th>
@@ -27,6 +27,7 @@
                   <th>IgA ng/ml</th>
                   <th>IgM ng/ml</th>
                   <th>IgG2b ng/ml</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -54,6 +55,7 @@
                     <td>{{ assay.iga|default_if_none:"" }}</td>
                     <td>{{ assay.igm|default_if_none:"" }}</td>
                     <td>{{ assay.igg2b|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

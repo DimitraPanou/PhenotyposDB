@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Dilution Factor</th>
                   <th>IL-6 pg/ml</th>
@@ -27,6 +27,7 @@
                   <th>IL-17A pg/ml</th>
                   <th>IFN-γ pg/ml</th>
                   <th>TNF-α pg/ml</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -54,6 +55,7 @@
                     <td>{{ assay.il_seventeen|default_if_none:"" }}</td>
                     <td>{{ assay.ifn_gamma|default_if_none:"" }}</td>
                     <td>{{ assay.tnf_alpha|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

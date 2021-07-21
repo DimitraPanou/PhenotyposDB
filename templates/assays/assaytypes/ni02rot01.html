@@ -20,14 +20,14 @@
                   <tr>
                     <th>Mouse ID</th>
                     <th>Mouse Genotype</th>        
-                    <th>Timepoint</th>        
+                    <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                     <th>Measurement Date</th>
                     <th>Individual latency to fall (s) trial 1</th> 
                     <th>Individual latency to fall (s) trial 2</th>
                     <th>Mean latency to fall (s)</th>
                     <th>Speed at fall (rpm) trial 1</th>
                     <th>Speed at fall (rpm) trial 2</th>
-                    <th>Age (days)</th>
+                    <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                     <th>Comments</th>       
                 </tr>
               </thead>

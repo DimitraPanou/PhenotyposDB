@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>mg feacal mass</th>
                   <th>Protein Concentration</th>
@@ -30,7 +30,8 @@
                   <th>Firmicutes  signal % of total bacterial signal</th>
                   <th>Bacteroidetes signal % of total bacterial signal</th>
                   <th>Firmicutes to Bacteroidetes ratio</th> 
-                  <th>Proteobacteria  signal % of total bacterial signal</th>  
+                  <th>Proteobacteria  signal % of total bacterial signal</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>  
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -61,6 +62,7 @@
                     <td>{{ assay.bacteroidetes_per|default_if_none:"" }}</td>
                     <td>{{ assay.firm_bac_ratio|default_if_none:"" }}</td>
                     <td>{{ assay.proteobacteria_per|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Sample ID</th>                  
                   <th>Sample Source</th>
@@ -42,7 +42,8 @@
                   <th># Ly6ClowMono</th>
                   <th># B cells </th>
                   <th># CD4 cells </th>
-                  <th># CD8 cells </th>                  
+                  <th># CD8 cells </th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>                  
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -84,7 +85,8 @@
                     <td>{{ assay.ly6clowmono_num|default_if_none:"" }}</td>
                     <td>{{ assay.b_cells_num|default_if_none:"" }}</td>
                     <td>{{ assay.cd4_t_num|default_if_none:"" }}</td>
-                    <td>{{ assay.cd8_t_num|default_if_none:"" }}</td>                    
+                    <td>{{ assay.cd8_t_num|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>                    
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

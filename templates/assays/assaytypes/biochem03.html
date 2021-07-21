@@ -1,5 +1,30 @@
 {% extends 'assays/detail_assay2.html' %}
 
+{% block measured_values %}
+<div>
+ALT (Alanine Aminotransferase)<br>
+AST (Aspartate Aminotransferase)<br>
+ALP (Alkaline Phosphatase)<br>
+Total & Direct Bilirubin<br>
+<br>
+<b style="color:gray">CONDITION INDICATION</b><br>
+Liver Failure
+</div>
+{% endblock %}
+
+{% block min_models %}
+ 7M + 7F
+{% endblock %}
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>A Biochemical phenotypic assay was performed on <b>{{total}} mice</b>.
+                    The charts show the results of measuring the<b> parameters sodium, potassium, chloride, phoshorus, calcium and magnesium </b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset. In this assay we observe {{genotypecount}} type(s) of genotypes which are <b>{% for gene in genotype %}{% if gene %} {{gene}} {% endif %}{% endfor %}</b> .</p>
+{% endblock %}
+
 {% block assay_content %}
  <!-- /.card -->
     <div class="row">
@@ -18,7 +43,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Sample Source</th>
                   <th>ALT (U/liter)</th>
@@ -26,7 +51,7 @@
                   <th>ALP (U/liter)</th>
                   <th>Total Bilirubin (μmol/liter)</th>
                   <th>Direct Bilirubin(μmol/liter)</th>
-                  <th>Age</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>

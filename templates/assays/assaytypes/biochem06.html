@@ -19,7 +19,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Sample Source</th>
                   <th>Cholesterol (mmol/liter)</th>
@@ -27,7 +27,7 @@
                   <th>LDL-cholesterol (mmol/liter)</th>
                   <th>Triglycerides (mmol/liter)</th>
                   <th>NEFA (mmol/liter)</th>
-                  <th>Age</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>

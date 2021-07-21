@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Thickening of the colon</th>
                   <th>Changes of the vascular pattern</th>
@@ -33,6 +33,7 @@
                   <th>Number of tumors-Size 5</th>
                   <th>Total tumor number</th>
                   <th>Tumor Load</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -66,6 +67,7 @@
                     <td>{{ assay.num_tumor_size_5|default_if_none:"" }}</td>
                     <td>{{ assay.total_tumor_num|default_if_none:"" }}</td>
                     <td>{{ assay.tumor_load|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

@@ -45,11 +45,12 @@
                       <tr>
                         <th>Mouse ID</th>
                         <th>Mouse Genotype</th>        
-                        <th>Timepoint</th>        
+                        <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                         <th>Measurement Date</th>
                         <th>Synovitis</th>
                         <th>Cartilage Destruction</th>
                         <th>Bone Erosion</th>
+                        <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                         <th>Comments</th>                  
                       </tr>
                     </thead>
@@ -73,6 +74,7 @@
                           <td>{{ assay.synovitis|default_if_none:"" }}</td>
                           <td>{{ assay.cartilage_destruction|default_if_none:"" }}</td>
                           <td>{{ assay.bone_erosion|default_if_none:"" }}</td>
+                          <td>{{ assay.age|default_if_none:"" }}</td>
                           <td>{{ assay.comment|default_if_none:"" }}</td>
                         </tr>
                       {% endfor %}

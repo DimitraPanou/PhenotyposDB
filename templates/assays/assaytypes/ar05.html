@@ -47,13 +47,14 @@
                       <tr>
                         <th>Mouse ID</th>
                         <th>Mouse Genotype</th>        
-                        <th>Timepoint</th>        
+                        <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                         <th>Measurement Date</th>
                         <th>BV/TV</th>
                         <th>BS/TV</th>
                         <th>Trabecular Thickness</th>
                         <th>Trabecular Number</th>
                         <th>Trabecular Seperation</th>
+                        <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                         <th>Comments</th>                  
                       </tr>
                     </thead>
@@ -79,6 +80,7 @@
                           <td>{{ assay.trabecular_thickness|default_if_none:"" }}</td>
                           <td>{{ assay.trabecular_number|default_if_none:"" }}</td>
                           <td>{{ assay.trabecular_seperation|default_if_none:"" }}</td>
+                          <td>{{ assay.age|default_if_none:"" }}</td>
                           <td>{{ assay.comment|default_if_none:"" }}</td>
                         </tr>
                       {% endfor %}

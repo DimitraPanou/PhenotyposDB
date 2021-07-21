@@ -8,14 +8,14 @@ class AssayForm(forms.ModelForm):
     class Meta:
         model = Assay
         exclude = ('author',)
-        fields = ('code', 'name','type','version','staff','measurement_day','mouse_age','duration','timesteps_in','scientist','assayqc','rawdata_file','comments')
+        fields = ('code', 'name','type','version','staff','measurement_day','mouse_age','duration','timesteps_in','scientist_in_charge','assayqc','rawdata_file','comments')
         widgets = {
         'name': forms.TextInput(attrs={'class':'input'}),
         'rawdata_file': forms.FileInput(attrs={'class':'dropify'}),
         'measurement_day': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date','useCurrent': True}),
         'type': forms.Select(attrs={'class':'form-control select2'}),
         'timesteps_in': forms.Select(attrs={'class':'form-control select2'}),
-        'scientist': forms.Select(attrs={'class':'form-control select2'}),
+        'scientist_in_charge': forms.Select(attrs={'class':'form-control select2'}),
         'mouse_age': forms.Select(attrs={'class':'form-control select2'})
     	}
     def __init__(self, user, *args, **kwargs):
@@ -31,7 +31,6 @@ class AssayForm(forms.ModelForm):
 #        form = super(AssayForm, self).save(*args, **kwargs)
 #        return form
 
-
 '''class ChoiceForm(forms.Form):
     Countries = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                           choices=OPTIONS)
@@ -40,13 +39,13 @@ class Assay2Form(forms.ModelForm):
     class Meta:
         model = Assay
         exclude = ('author',)
-        fields = ('code', 'name','version','staff','measurement_day','mouse_age','duration','timesteps_in','scientist','assayqc','rawdata_file','comments')
+        fields = ('code', 'name','version','staff','measurement_day','mouse_age','duration','timesteps_in','scientist_in_charge','assayqc','rawdata_file','comments')
         widgets = {
         'name': forms.TextInput(attrs={'class':'input'}),
         'rawdata_file': forms.FileInput(attrs={'class':'dropify'}),
         'measurement_day': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date','useCurrent': True}),
         'timesteps_in': forms.Select(attrs={'class':'form-control select2'}),
-        'scientist': forms.Select(attrs={'class':'form-control select2'}),
+        'scientist_in_charge': forms.Select(attrs={'class':'form-control select2'}),
         'mouse_age': forms.Select(attrs={'class':'form-control select2'})
         }
 
@@ -54,7 +53,7 @@ class Assay2Form(forms.ModelForm):
 class AtypeForm(forms.ModelForm):
     class Meta:
         model = Atype
-        fields = ('code', 'name', 'facility','facilitylong','unit','staff','publication_date','version')
+        fields = ('code', 'name','facilitylong','service_type','staff','publication_date','version')
         widgets = {
         'publication_date': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date','useCurrent': True}),
     	}
@@ -68,9 +67,8 @@ class AtypeForm(forms.ModelForm):
                 Column('name', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
-            'facility',
             'facilitylong',
-            'unit',
+            'service_type',
             Row(
                 Column('staff', css_class='form-group col-md-6 mb-0'),
                 Column('publication_date', css_class='form-group col-md-4 mb-0'),

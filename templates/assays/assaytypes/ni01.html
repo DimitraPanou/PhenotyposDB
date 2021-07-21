@@ -17,10 +17,11 @@
                 <thead class="thead-light">
                 <tr>
                   <th>Mouse ID</th>
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Age</th>
                   <th>Measurement Date</th>
                   <th>Clinical Score</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -43,6 +44,7 @@
                     <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.measurement_date|default_if_none:"" }}</td>
                     <td>{{ assay.clinical_score|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comments|default_if_none:"" }}</td>
                   </tr>
                   </tr>

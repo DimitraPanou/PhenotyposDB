@@ -48,11 +48,12 @@
                       <tr>
                         <th>Mouse ID</th>
                         <th>Mouse Genotype</th>        
-                        <th>Timepoint</th>        
+                        <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                         <th>Measurement Date</th>
                         <th>sum intensity</th>
                         <th>net intensity</th>
                         <th>mean intensity</th>
+                        <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                         <th>Comments</th>                  
                       </tr>
                     </thead>
@@ -76,6 +77,7 @@
                           <td>{{ assay.sum_intensity|default_if_none:"" }}</td>
                           <td>{{ assay.net_intensity|default_if_none:"" }}</td>
                           <td>{{ assay.mean_intensity|default_if_none:"" }}</td>
+                          <td>{{ assay.age|default_if_none:"" }}</td>
                           <td>{{ assay.comment|default_if_none:"" }}</td>
                         </tr>
                       {% endfor %}

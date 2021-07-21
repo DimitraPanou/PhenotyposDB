@@ -47,9 +47,10 @@ Clinical score
                       <tr>
                         <th>Mouse ID</th>
                         <th>Mouse Genotype</th>        
-                        <th>Timepoint</th>        
+                        <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                         <th>Measurement Date</th>
                         <th>Clinical mean Score</th>
+                        <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                         <th>Comments</th>                  
                       </tr>
                     </thead>
@@ -71,6 +72,7 @@ Clinical score
                           <td>{{ assay.timepoint|default_if_none:"" }}</td>
                           <td>{{ assay.measurement_date|default_if_none:"" }}</td>
                           <td>{{ assay.clinical_score|default_if_none:"" }}</td>
+                          <td>{{ assay.age|default_if_none:"" }}</td>
                           <td>{{ assay.comment|default_if_none:"" }}</td>
                         </tr>
                       {% endfor %}

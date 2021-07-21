@@ -17,13 +17,14 @@
                 <thead class="thead-light">
                 <tr>
                   <th>Mouse ID</th>
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Age</th>
                   <th>Measurement Date</th>
                   <th>sum Intensity</th>
                   <th>net Intensity</th>
                   <th>mean Intensity</th>
                   <th>Acquisition Settings</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -48,6 +49,7 @@
                     <td>{{ assay.net_intensity|default_if_none:"" }}</td>
                     <td>{{ assay.mean_intensity|default_if_none:"" }}</td>
                     <td>{{ assay.acquisition_settings|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comments|default_if_none:"" }}</td>
                   </tr>
                 {% endfor %}

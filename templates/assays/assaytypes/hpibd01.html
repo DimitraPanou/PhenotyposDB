@@ -18,7 +18,7 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Mouse Genotype</th>        
-                  <th>Timepoint</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                   <th>Measurement Date</th>
                   <th>Colon Length</th>
                   <th>Histology No</th>
@@ -29,6 +29,7 @@
                   <th>Total Colitis Score</th>
                   <th>No of tumors (macroscopic)</th>
                   <th>Tumor size (diameter in mm)</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -58,6 +59,7 @@
                     <td>{{ assay.total_colitis_score|default_if_none:"" }}</td>
                     <td>{{ assay.tumor_num|default_if_none:"" }}</td>
                     <td>{{ assay.tumor_size|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
                   </tr>

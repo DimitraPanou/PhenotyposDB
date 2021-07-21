@@ -18,11 +18,10 @@
   <table class='table sortable table-bordered table-condensed table-striped table-hover'>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Code</th>
         <th>Name</th>
         <th>Facility</th>
-        <th>Unit</th>
+        <th>Service Type</th>
         <th>Staff</th>
         <th>Publication Date</th>
         <th>Version</th>
@@ -32,11 +31,10 @@
       {% for type in list_assays %}
         <tr class="table-row" data-href="{% url 'assaytype-detail' type.id %}">
           <!--<td>{{ assay.assayid }}</td>-->
-          <td>{{ type.id }}</td>
           <td>{{ type.code }}</td>
           <td>{{ type.name }}</td>
-          <td>{{ type.facility }}</td>
-          <td>{{ type.unit }}</td>
+          <td>{{ type.facilitylong }}</td>
+          <td>{{ type.service_type }}</td>
           <td>{{ type.staff }}</td>
           <td>{{ type.publication_date }}</td>
           <td>{{ type.version }}</td>
