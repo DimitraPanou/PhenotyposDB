@@ -1,5 +1,31 @@
 {% extends 'assays/detail_assay2.html' %}
 
+{% block measured_values %}
+<div>
+Cholesterol<br>
+HDL<br>
+LDL<br>
+Triglycerides<br>
+NEFA<br> 
+<br>
+<b style="color:gray">CONDITION INDICATION</b><br>
+Lipid Metabolism Abnormalities 
+</div>
+{% endblock %}
+
+{% block min_models %}
+ 7M + 7F
+{% endblock %}
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>A Biochemical phenotypic assay was performed on <b>{{total}} mice</b>.
+                    The charts show the results of measuring the<b> parameters Total Cholesterol, HDL-Cholesterol, LDL-Cholesterol and Triglycerides </b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset. In this assay we observe {{genotypecount}} type(s) of genotypes which are <b>{% for gene in genotype %}{% if gene %} gene{% endif %}{% endfor %}</b> .</p>
+{% endblock %}
+
 {% block assay_content %}
  <!-- /.card -->
     <div class="row">

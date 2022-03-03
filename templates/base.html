@@ -355,7 +355,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                   </li>
                 </ul>  
-                {% endif %}               
+                {% endif %}
+                <ul class="nav nav-treeview">
+                  <li class="nav-header">REPORTS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'build-report'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>Build a Report</p>
+                    </a>
+                  </li>
+                </ul>                
               </li>
             </ul>
           </nav>

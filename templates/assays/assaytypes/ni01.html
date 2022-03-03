@@ -1,5 +1,24 @@
 {% extends 'assays/detail_assay2.html' %}
 
+{% block measured_values %}
+<div>
+Clinical Score
+</div>
+{% endblock %}
+
+{% block min_models %}
+  8M
+{% endblock %}
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>A Clinical score monitoring assay was performed on <b>{{total}} mice</b>.
+                    The charts show the results of measuring the<b> weight and clinicla score </b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset. In this assay we observe {{genotypecount}} type(s) of genotypes which are <b>{% for gene in genotype %}{% if gene %} {{gene}} {% endif %}{% endfor %}</b> .</p>
+{% endblock %}
+
 {% block assay_content %}
  <!-- /.card -->
     <div class="row">

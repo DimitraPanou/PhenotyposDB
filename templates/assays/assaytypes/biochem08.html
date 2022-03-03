@@ -1,12 +1,10 @@
 {% extends 'assays/detail_assay2.html' %}
 {% block measured_values %}
 <div>
-Sodium<br>
-Potassium<br>
-Cloride<br>
-Phosphorus<br>
-Calcium<br> 
-Magnesium<br><br>
+Lactate Dehydrogenase (LDH)<br>
+Creatinine Kinase (CK)<br>
+Potassium (K)<br>
+<br>
 <b style="color:gray">CONDITION INDICATION</b><br>
 Cancer, skeletal/heart muscle/liver/kidney/lung damage
 </div>
@@ -21,8 +19,8 @@ Cancer, skeletal/heart muscle/liver/kidney/lung damage
                     <p></p>
                     <p></p>
                     <p>A Biochemical phenotypic assay was performed on <b>{{total}} mice</b>.
-                    The charts show the results of measuring the<b> parameters sodium, potassium, chloride, phoshorus, calcium and magnesium </b> in <b>{{females}}
-                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset. In this assay we observe {{genotypecount}} type(s) of genotypes which are <b>{% for gene in genotype %}{% if gene %} 
+                    The charts show the results of measuring the<b> parameters Lactate Dehydrogenase (LDH), Creatinine Kinase (CK) and Potassium (K).</b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset. In this assay we observe {{genotypecount}} type(s) of genotypes which are <b>{% for gene in genotype %}{% if gene %} gene{% endif %}{% endfor %}</b> .</p>
 {% endblock %}
 {% block assay_content %}
  <!-- /.card -->
@@ -48,7 +46,8 @@ Cancer, skeletal/heart muscle/liver/kidney/lung damage
                   <th>LDL (U/liter)</th>
                   <th>Creatinine kinase (U/liter)</th>
                   <th>Potassium (U/liter)</th>
-                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>                  <th>Comment</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th> 
+                  <th>Comment</th>
                 </tr>
               </thead>
               <tbody>

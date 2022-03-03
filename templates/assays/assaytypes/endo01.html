@@ -84,11 +84,9 @@
 {% endblock %}
 
 {% block measured_values %}
-  Arthritis X-rays
-  - Parameter 1<br>
-  - Parameter 2<br>
-  - Parameter 3<br>
-  - Parameter 4<br>
+  Number of tumors-Size <br>
+  Total tumor number<br>
+  Tumor Load<br>
 {% endblock %}
 
 {% block min_models %}
@@ -99,11 +97,143 @@
                     <p></p>
                     <p></p>
                     <p></p>
-                    <p>An <b>In Vivo-Optical/X-Ray Imaging </b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
-                    <p> The charts show the results of measuring <b>parameters (1,2,3,4)</b> in <b>{{females}}
+                    <p>An <b>Endoscopic</b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
+                    <p> The charts show the results of measuring <b>tumor load</b> in <b>{{females}}
                     female</b>, <b>{{males}} male</b> mutants compared to control dataset</p> 
-                    <p> The mutants are {% for gene in genotype %}gene{% endfor %}
-
-                      <b></b> for the <b> Tnfrsf1a<sup>tm2b(EUCOMM)Wtsi</sup></b> allele.</p>
+                    <p> The mutants are {% for gene in genotype %}gene{% endfor %}.</p>
                     }
 {% endblock %}
+
+{% block info_content %}
+<div id="Scoring"><div class="row"><div class="col-md-7"><h3>Endoscopic Colitis Score</h3></div><div class="col-md-5"><h3>Endoscopic scoring of tumor development</h3></div></div></div> 
+    <div class="row">
+          <!-- Left col -->
+      <div class="col-md-7">
+            <div class="card">
+              <div class="card-header border-0" style="justify-content: center;">
+                <h3 class="card-title">Murine endoscopic index of colitis severity (MEICS)</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-valign-middle">
+                      <thead>
+                          <tr>
+                              <th> </th>
+                              <th>0</th>
+                              <th>1</th>
+                              <th>2</th>
+                              <th>3</th>
+                              <th><b>Total</b></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                            <tr>
+                              <td><b>Thickening of the colon</b></td>
+                              <td>Transparent</td>
+                              <td>Moderate</td>
+                              <td>Marked</td>
+                              <td>Non-transparent</td>
+                              <td>0-3</td>
+                          </tr>
+                          <tr>
+                              <td><b>Changes of the vascular pattern</b></td>
+                              <td>Normal</td>
+                              <td>Moderate</td>
+                              <td>Marked</td>
+                              <td>Bleeding</td>
+                              <td>0-3</td>
+                          </tr>
+                            <tr>
+                              <td><b>Fibrin visible</b></td>
+                              <td>None</td>
+                              <td> </td>
+                              <td>Marked</td>
+                              <td>Extreme</td>
+                              <td>0-3</td>
+                          </tr>
+                            <tr>
+                              <td><b>Granularity of the mucosal surface</b></td>
+                              <td>None</td>
+                              <td>Moderate</td>
+                              <td>Marked</td>
+                              <td>Extreme</td>
+                              <td>0-3</td>
+                          </tr>
+                            <tr>
+                              <td><b>Stool consistency</b></td>
+                              <td>Normal+solid</td>
+                              <td> </td>
+                              <td>Marked</td>
+                              <td>Spread</td>
+                              <td>0-3</td>
+                          </tr>
+                          <tr>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                              <td><b>Overall:0-15</b></td>
+                          </tr>                                     
+                      </tbody>
+                </table>
+              </div>
+            </div>
+      </div>
+
+      <div class="col-md-5">
+            <div class="card">
+              <div class="card-header border-0" style="justify-content: center;">
+                <h3 class="card-title"> Endoscopic scoring of tumor development</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-valign-middle">
+                      <thead>
+                          <tr>
+                              <th>Tumor size</th>
+                              <th>Score</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                            <tr>
+                              <td>Just detectable</td>
+                              <td>1</td>
+                          </tr>
+                          <tr>
+                              <td>1/8</td>
+                              <td>2</td>
+                          </tr>
+                            <tr>
+                              <td>1/4</td>
+                              <td>3</td>
+                          </tr>
+                            <tr>
+                              <td>1/2</td>
+                              <td>4</td>
+                          </tr>
+                            <tr>
+                              <td>≥1/2</td>
+                              <td>5</td>
+                          </tr>                                   
+                      </tbody>
+                </table>
+              </div>
+            </div>
+      </div>
+    </div>
+{% endblock%}

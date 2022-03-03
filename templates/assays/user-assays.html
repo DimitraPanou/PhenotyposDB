@@ -66,7 +66,7 @@
 			              </thead>
 			              <tbody>
 			                {% for assay in list_assays %}
-			                  {% if assay.author == user or  assay.scientist == user%}
+			                  {% if assay.author == user or  assay.scientist_in_charge == user%}
 			                    <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
 			                  {% else %}
 			                    <tr>
@@ -90,9 +90,9 @@
 			                              <li class="list-inline-item">
 			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
 			                              </li>
-			                            {% if assay.scientist %}
+			                            {% if assay.scientist_in_charge %}
 			                              <li class="list-inline-item">
-			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist_in_charge.profile.image.url }}">
 			                              </li>
 			                            {% endif %}
 			                          </ul>
@@ -102,7 +102,7 @@
 			                      <td>{{ assay.duration }}</td>
 			                      <td>{{ assay.measurement_day }}</td>
 			                      <td>{{ assay.created_at }}</td>
-			                      {% if assay.author == user or assay.scientist == user%}
+			                      {% if assay.author == user or assay.scientist_in_charge == user%}
 			                        <td class="project-actions text-right">
 			                            <a class="btn btn-info btn-sm" href="{% url 'assay-detail' assay.id %}">
 			                                <i class="fas fa-eye">
@@ -160,7 +160,7 @@
 			              </thead>
 			              <tbody>
 			                {% for assay in user_assays %}
-			                  {% if assay.author == user or  assay.scientist == user%}
+			                  {% if assay.author == user or  assay.scientist_in_charge == user%}
 			                    <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
 			                  {% else %}
 			                    <tr>
@@ -184,16 +184,16 @@
 			                              <li class="list-inline-item">
 			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
 			                              </li>
-			                            {% if assay.scientist %}
+			                            {% if assay.scientist_in_charge %}
 			                              <li class="list-inline-item">
-			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist_in_charge.profile.image.url }}">
 			                              </li>
 			                            {% endif %}
 			                          </ul>
 			                      </td>
 			                      <td>{{ assay.staff }}</td>
 			                      <td>{{ assay.created_at }}</td>
-			                      {% if assay.author == user or assay.scientist == user%}
+			                      {% if assay.author == user or assay.scientist_in_charge == user%}
 			                        <td class="project-actions text-right">
 			                            <a class="btn btn-info btn-sm" href="{% url 'assay-detail' assay.id %}">
 			                                <i class="fas fa-eye">
@@ -252,7 +252,7 @@
 			              </thead>
 			              <tbody>
 			                {% for assay in access_assays %}
-			                  {% if assay.author == user or  assay.scientist == user%}
+			                  {% if assay.author == user or  assay.scientist_in_charge == user%}
 			                    <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
 			                  {% else %}
 			                    <tr>
@@ -276,16 +276,16 @@
 			                              <li class="list-inline-item">
 			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
 			                              </li>
-			                            {% if assay.scientist %}
+			                            {% if assay.scientist_in_charge %}
 			                              <li class="list-inline-item">
-			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}">
+			                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist_in_charge.profile.image.url }}">
 			                              </li>
 			                            {% endif %}
 			                          </ul>
 			                      </td>
 			                      <td>{{ assay.staff }}</td>
 			                      <td>{{ assay.created_at }}</td>
-			                      {% if assay.author == user or assay.scientist == user%}
+			                      {% if assay.author == user or assay.scientist_in_charge == user%}
 			                        <td class="project-actions text-right">
 			                            <a class="btn btn-info btn-sm" href="{% url 'assay-detail' assay.id %}">
 			                                <i class="fas fa-eye">

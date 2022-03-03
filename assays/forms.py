@@ -2,7 +2,7 @@ from django import forms
 #from .models import Assays
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from .models import Atype, Assay, AssociatedImage
+from .models import Atype, Assay, AssociatedImage, Report
 
 class AssayForm(forms.ModelForm):
     class Meta:
@@ -90,3 +90,15 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = AssociatedImage
         fields = ['title','image','caption']
+
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['name','introduction','summary','reportassay']
+        widgets = {
+            'name': forms.TextInput(attrs={'class':'input'}),
+            'reportassay': forms.Select(attrs={'class':'form-control select2'}),
+            }
+    def __init__(self, user, *args, **kwargs):
+        super(ReportForm,self).__init__(*args, **kwargs)
+        self.fields['reportassay'].queryset = Assay.objects.all()

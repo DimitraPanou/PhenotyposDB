@@ -33,10 +33,10 @@
     </div>
   </div>
 </div>
-{% endif %} 
-  <div class="row">
+{% endif %}
+<div class="row">
     {% if object.experimental_design %}
-    <div class="col-lg-4 d-flex align-items-stretch">
+    <div class="col-md-12 d-flex align-items-stretch">
         <div class="card">
         <div class="card-header">
           <h5>Experimental Design</h5>
@@ -48,9 +48,11 @@
         </div>
       </div>
     </div>
-    {% endif %} 
+    {% endif %}
+</div>
+  <div class="row">
     {% if object.equipment %}
-    <div class="col-lg-4 d-flex align-items-stretch">
+    <div class="col-lg-6 d-flex align-items-stretch">
         <div class="card">
         <div class="card-header">
           <h5>Equipment</h5>
@@ -64,7 +66,7 @@
     </div>
   {% endif %}    
     {% if object.supplies %}
-    <div class="col-lg-4 d-flex align-items-stretch">
+    <div class="col-lg-6 d-flex align-items-stretch">
         <div class="card">
         <div class="card-header">
           <h5>Supplies</h5>
@@ -94,6 +96,7 @@
     </div>
   </div>
   {% endif %}
+<!--
     <div class="row">
     {% if object.troubleshooting %}
     <div class="col-lg-4 d-flex align-items-stretch">
@@ -137,6 +140,55 @@
       </div>
     </div>
     {% endif %}   
+  </div>
+-->
+    <div class="row">
+    {% if object.troubleshooting %}
+      <div class="col-md-12">
+        <div class="card">
+        <div class="card-header">
+          <h5>troubleshooting</h5>
+        </div>
+        <div class="card-body">
+        <p>
+          {{object.troubleshooting|safe}}
+        </p>
+        </div>
+      </div>
+      </div>
+    {% endif %}  
+  </div>
+    <div class="row">
+    {% if object.appendix %}
+      <div class="col-md-12">
+        <div class="card">
+        <div class="card-header">
+          <h5>Appendix</h5>
+        </div>
+        <div class="card-body">
+        <p>
+          {{object.appendix|safe}}
+        </p>
+        </div>
+      </div>
+      </div>
+    {% endif %}  
+  </div>
+  <div class="row">
+    {% if object.references %}
+      <div class="col-md-12">
+        <div class="card">
+        <div class="card-header">
+          <h5>References</h5>
+        </div>
+        <div class="card-body">
+        <p>
+          {{object.references|safe}}
+        </p>
+        </div>
+      </div>
+      </div>
+    {% endif %}  
   </div>
 </div>
 

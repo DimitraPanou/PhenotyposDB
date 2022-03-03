@@ -20,7 +20,7 @@ from users.decorators import allowed_users
 
 from django.urls import reverse_lazy
 #from .forms import AssayForm
-from .forms import AssayForm, Assay2Form, AtypeForm, AtypeExtraForm, ImageForm
+from .forms import AssayForm, Assay2Form, AtypeForm, AtypeExtraForm, ImageForm, ReportForm
 from .models import Assay, Atype, Mouse
 from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
@@ -88,6 +88,25 @@ def add_assay(request, *args, **kargs):
         'form': form
     })
 
+
+@allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
+def add_report(request, *args, **kargs):
+    if request.method == 'POST':
+        form = ReportForm(request.user,request.POST, request.FILES)
+        if form.is_valid():
+            test = form.save()
+            #for filename, file in request.FILES.items():
+            #    name = request.FILES[filename].url
+                #print(name)
+            if(handle_uploaded_file(test)==-1):
+                    html = "<html><body>Problem with the file.</body></html>"
+                    return HttpResponse(html)
+            return redirect('assays')
+    else:
+        form = ReportForm(request.user)
+    return render(request, 'assays/reportassay.html', {
+        'form': form
+    })
 @allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
 def uploadImage(request, pk):
 	if request.method == 'POST':
@@ -203,11 +222,27 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 		return returnTemplateName(self.object.type)
 		#else:
 		#	return render(request, "error404.html")
+	def render_pdf_view(self,request, pk):
+		template_path = 'user_printer.html'
+		assayname="report"+".pdf"
+		context = {'myvar': 'this is your template context','object': self.object}
+		# Create a Django response object, and specify content_type as pdf
+		response = HttpResponse(content_type='application/pdf')
+		response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+		# find the template and render it.
+		template = get_template(template_path)
+		html = template.render(context)
+		# create a pdf
+		pisa_status = pisa.CreatePDF(
+			html, dest=response)
+		if pisa_status.err:
+			return HttpResponse('We had some errors <pre>' + html + '</pre>')
+		return response
 
 	def dispatch(self, request, *args, **kwargs):
 		user_obj = self.request.user
 		assay = self.get_object()
-		if not (assay.author == user_obj or assay.scientist== user_obj or user_obj.groups =='Admin'):
+		if not (assay.author == user_obj or assay.scientist_in_charge== user_obj or user_obj.groups =='Admin'):
 			return render(request,"error404.html")
 		return super().dispatch(request,*args,**kwargs)
 
@@ -269,7 +304,6 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 		print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
 
 		mouselist = measures.values('mid').distinct().order_by('mid')
-
 		print('-----------')
 		print(mouselist)
 		print('-----------')
@@ -396,7 +430,7 @@ class UserAssaysListView(LoginRequiredMixin,ListView):
 	def get_queryset(self):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
 		a= Assay.objects.filter(author=user).order_by('measurement_day')
-		b= Assay.objects.filter(scientist=user).order_by('measurement_day')		
+		b= Assay.objects.filter(scientist_in_charge=user).order_by('measurement_day')		
 		return a|b
 	def get_context_data(self, **kwargs):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
@@ -406,8 +440,8 @@ class UserAssaysListView(LoginRequiredMixin,ListView):
 		#for assay in a:
 		#	measures = switcher.get(assay.object.type.id,"Ivalid")
 		#	a_measurements.append(len(measures))
-		b= Assay.objects.filter(scientist=user).order_by('measurement_day')	
-		kwargs['access_assays'] = Assay.objects.filter(scientist=user).order_by('measurement_day')
+		b= Assay.objects.filter(scientist_in_charge=user).order_by('measurement_day')	
+		kwargs['access_assays'] = Assay.objects.filter(scientist_in_charge=user).order_by('measurement_day')
 		kwargs['user_assays'] = Assay.objects.filter(author=user).order_by('measurement_day')
 		kwargs['all'] = len(a) + len(b)
 		kwargs['a'] = len(a)
@@ -423,7 +457,7 @@ class GroupAssaysListView(LoginRequiredMixin,ListView):
 
 	def get_queryset(self):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
-		return Assay.objects.filter(scientist=user).order_by('measurement_day')
+		return Assay.objects.filter(scientist_in_charge=user).order_by('measurement_day')
 
 	def get_context_data(self, **kwargs):
 		kwargs['flag2'] = 1
@@ -450,6 +484,7 @@ class AtypeListView(ListView):
 	model = Atype
 	template_name = 'assays/assaytypes.html'
 	context_object_name = 'list_assays'
+	ordering = ['code']
 
 '''
 class AtypeCreateView(LoginRequiredMixin,CreateView):

@@ -10,6 +10,13 @@ class Facility(models.Model):
     details = RichTextField(blank=True, null=True)
     def __str__(self):
         return u'{0}'.format(self.name)
+class Report(models.Model):
+    name = models.CharField(max_length=256, blank=True, null=True)
+    introduction = RichTextField(blank=True, null=True)
+    summary = RichTextField(blank=True, null=True)
+    reportassay = models.ForeignKey('Assay', models.DO_NOTHING)
+    def __str__(self):
+        return u'{0}'.format(self.name)
 #Atype
 class Atype(models.Model):
     code = models.CharField(max_length=16)
@@ -32,7 +39,7 @@ class Atype(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return u'{0} ({1})'.format(self.code, self.facilitylong.name)
+        return u'{0}'.format(self.code)
 
     #def get_absolute_url(self):
     #    return reverse('assaytype-detail', kwargs={'pk': self.id})

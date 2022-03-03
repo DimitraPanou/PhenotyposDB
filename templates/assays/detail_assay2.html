@@ -78,7 +78,7 @@
 </div>
 </div>
 <hr>
-   <div class="p-1 pb-2 pl-3" id="protocolTextContainer" style="visibility:visible">
+   <div class="p-1 pb-0 pt-1 pl-4" id="protocolTextContainer" style="visibility:visible">
    <div class="row">     
         <a href="#Info" class="u-btn u-button-style u-palette-2-base u-btn-1"> Experimental Design </a>
         <a href="#Measurements" class="u-btn u-button-style u-palette-2-base u-btn-1"> Measurements </a>
@@ -127,8 +127,7 @@
                         <p class="text-muted">{{ assay.type.purpose|default_if_none:""|safe }}</p>
                         <hr>
                         <strong><i class="fas fa-calendar mr-1"></i> Dates</strong>
-                        <p class="text-muted">Date Created: {{ assay.created_at }}</p>
-                        <p class="text-muted">Date Modified: {{ assay.updated_at }}</p>                
+                        <p class="text-muted" style="font-size: 13px;"><b>Date Created:</b> {{ assay.created_at }} <br><b>Date Modified:</b> {{ assay.updated_at }}</p>
                         <hr>
                         <strong><i class="fas fa-pencil-alt mr-1"></i> Comments</strong>
                         <p class="text-muted">{{ assay.comments|default_if_none:"" }}</p>
@@ -144,7 +143,7 @@
                           {% endif %}
                         </ul>
                         <strong><i class="far fa-file-alt mr-1"></i> References</strong>
-                        <p class="text-muted">{{ assay.type.references|default_if_none:"" }}</p>
+                        <p class="text-muted">{{ assay.type.references|safe|default_if_none:"" }}</p>
                         
                   </div>
 
@@ -159,9 +158,9 @@
                       <span class="description-text">PI</span>
                       <h5 class="description-header">Author</h5>
                       <div class="sparkbar pad" data-color="#fff"><img alt="Avatar" class="img-circle elevation-2" width="60px" src="{{ assay.author.profile.image.url }}"></div>
-                      {% if assay.scientist %}
+                      {% if assay.scientist_in_charge %}
                         <h5 class="description-header">Scientist in charge</h5>
-                        <div class="sparkbar pad" data-color="#fff"><img alt="Avatar" class="img-circle elevation-2" width="60px" src="{{ assay.scientist.profile.image.url }}"></div>
+                        <div class="sparkbar pad" data-color="#fff"><img alt="Avatar" class="img-circle elevation-2" width="60px" src="{{ assay.scientist_in_charge.profile.image.url }}"></div>
                       {% endif %}
                     </div>
                   </div><!-- /.card-pane-right -->
@@ -187,35 +186,34 @@
               </div>
 
               <!-- /.card-header -->
-              <div class="card-body table-responsive table-align-middle p-2">
-                    <table id="example3" class="table table-dark" style="font-size: 12px; text-align: center; justify-content: center;
-">     
+              <div class="card-body table-responsive p-0 pb-2" style="height: 500px;">
+                    <table class="table table-head-fixed table-dark" style="font-size: 12px; text-align: center; justify-content: center;">     
                         <thead>
                             <tr>
-                                <th style="width: 20%">
+                                <th>
                                     ID
                                 </th>
-                                <th style="width: 6%">
+                                <th>
                                     Gender
                                 </th>
-                                <th style="width: 6%">
+                                <th>
                                     Age ({{object.mouse_age}})
                                 </th>
-                                <th style="width: 10%">
+                                <th>
                                     Genotype
                                 </th>
-                                <th style="width: 10%">
+                                <th>
                                     Induced
                                      <span data-tip="The number of active units of the asset multiplied by the price of one unit" class="btn" data-toggle="popover" title='The number of active units of the asset multiplied by the price of one unit'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                   
                                 </th>
-                                <th style="width: 10%">
+                                <th>
                                     Treated
                                 </th>
-                                <th style="width: 10%">
+                                <th>
                                     Other Mouse Information
                                     <span data-tip="cage number, mouse number, ear marking" class="btn" data-toggle="popover" title='Cage number, mouse number, ear marking'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                    
                                 </th>
-                                <th style="width: 8%">
+                                <th>
                                     Environmental data
                                     <span data-tip="housing, water, light cycles, temperature" class="btn" data-toggle="popover" title='Housing, water, light cycles, temperature'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                    
                                 </th>                                

@@ -1,5 +1,24 @@
 {% extends 'assays/detail_assay2.html' %}
+{% block measured_values %}
+<div>
+CEA<br>
+MMP9<br>
+TIMP1
+</div>
+{% endblock %}
 
+{% block min_models %}
+ 7M + 7F
+{% endblock %}
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>An MBA Immunoglobulin analysis was performed on <b>{{total}} mice</b>.
+                    The charts show the results of measuring the<b> parameters CEA, MMP9 and TIMP1</b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset. In this assay we observe {{genotypecount}} type(s) of genotypes which are <b>{% for gene in genotype %}{% if gene %} gene{% endif %}{% endfor %}</b> .</p>
+{% endblock %}
 {% block assay_content %}
  <!-- /.card -->
     <div class="row">
@@ -63,14 +82,4 @@
         </div>
       </div>
     </div>
-{% endblock %}
-
-{% block assaytype_content %}
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p>A <b>Histological</b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
-                    <p> The charts show the results of measuring <b>Alanine aminotransferase</b> in <b>{{females}}
-                    female</b>, <b>{{males}} male</b> mutants compared to <b>362 female</b>, <b>316 male</b> controls.</p> 
-                    <p> The mutants are <b></b> for the <b> Tnfrsf1a<sup>tm2b(EUCOMM)Wtsi</sup></b> allele.</p>
 {% endblock %}

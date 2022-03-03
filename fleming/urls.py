@@ -31,6 +31,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home_view, name='home'),
     path('chart',chart_view, name='chart'),
+    path('assays/<int:pk>/pdf',render_pdf_view, name='pdf'),
+
     #Assays
     #path('assays/', include('assays.urls', namespace="assays")),
     ###########
@@ -47,6 +49,7 @@ urlpatterns = [
 	path('assays/update/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
 	path('assays/<int:pk>/', AssaysDetailView.as_view(), name='assay-detail'),
 	path('assays/charts/<int:pk>/', AssaysDetailView2.as_view(), name='assay-detail2'),
+	path('assays/report/', add_report, name='build-report'),
 	#path('assays/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
 #
 	#path('assays/delete/<int:pk>/', assay_delete, name='assay_delete'),

@@ -18,6 +18,7 @@ class AssayFilter(django_filters.FilterSet):
 	name = CharFilter(field_name='name', lookup_expr='contains')
 	author = ModelChoiceFilter(field_name='author',queryset=User.objects.all(), widget=forms.Select(attrs={'class': 'form-control select2'}))
 	scientist_in_charge = ModelChoiceFilter(field_name='scientist_in_charge',queryset=User.objects.all(),widget=forms.Select(attrs={'class': 'form-control select2'}))
+	type = ModelChoiceFilter(field_name='type',queryset=Atype.objects.all(),widget=forms.Select(attrs={'class': 'form-control select2'}))
 
 	class Meta:
 		model = Assay
