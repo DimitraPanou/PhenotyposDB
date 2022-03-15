@@ -32,7 +32,6 @@
                       {{ u_form|crispy }}
 
               <legend class="border-bottom mb-4">Profile Info</legend>
-              {{ p_form.facility|as_crispy_field }}
               {{ p_form.first_name|as_crispy_field }}
               {{ p_form.last_name|as_crispy_field}}
               <div class= "form-row">
@@ -77,7 +76,6 @@
     </div>
 </div>
 </div>
-<a href="{% url 'test' %}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
 </div>
 </div>
 </div>

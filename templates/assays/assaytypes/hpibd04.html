@@ -1,0 +1,862 @@
+{% extends 'assays/detail_assay2.html' %}
+
+
+{% block assay_content %}
+ <!-- /.card -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title" id="Measurements">Measurements</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body" id="tabledata">
+            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table id="example1" class="table table-bordered table-hover dataTable" aria-describedby="example1_info">
+                <thead class="thead-light">
+                <tr>
+                  <th>Mouse ID</th>
+                  <th>Mouse Genotype</th>        
+                  <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
+                  <th>Measurement Date</th>
+                  <th>Slide #</th>
+                  <th>Leukocyte Density Field 1</th>
+                  <th>Leukocyte Density Field 2</th>
+                  <th>Leukocyte Density Field 3</th>
+                  <th>Leukocyte Density Field Avg</th>
+                  <th>Level Field 1</th>
+                  <th>Level Field 2</th>
+                  <th>Level Field 3</th>
+                  <th>Level Field Avg</th>
+                  <th>Extent Field 1</th>
+                  <th>Extent Field 2</th>
+                  <th>Extent Field 3</th>
+                  <th>Extent Field Avg</th>                  
+                  <th>Inflammation score</th>
+                  <th>Abscesses</th>
+                  <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
+                  <th>Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for assay in measures %}
+                  <tr class="table-row" data-href="#tabledata" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
+                    <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender|default_if_none:""}}</p>
+                    <p><b>Genotype</b>: {{assay.mid.genotype|default_if_none:""}}</p> 
+                    <p><b>Date of Birth</b>: {{assay.mid.date|default_if_none:""}}</p> 
+                    <p><b>Age</b>: {{assay.mid.age|default_if_none:""}} </p> 
+                    <p><b>Induced</b>: {{assay.mid.induced|default_if_none:""}}</p>     
+                    <p><b>Treated</b>: {{assay.mid.treated|default_if_none:""}}</p> 
+                    <p><b>Diet</b>: {{assay.mid.diet|default_if_none:""}}</p> 
+                    <p><b>Other Mouse Information</b>: {{assay.mid.mouse_info|default_if_none:""}}</p>
+                    <p><b>Other environmental data</b>: {{assay.mid.other|default_if_none:""}}</p></div>'>
+                    <!--<td>{{ assay.assayid }}</td>-->
+                    <td>{{ assay.mid|default_if_none:"" }}</td>
+                    <td>{{ assay.mid.genotype|default_if_none:"" }}</td>          
+                    <td>{{ assay.timepoint|default_if_none:"" }}</td>
+                    <td>{{ assay.measurement_date|default_if_none:"" }}</td>
+                    <td>{{ assay.slide_number|default_if_none:"" }}</td>
+                    <td>{{ assay.leukocyte_density_1|default_if_none:"" }}</td>
+                    <td>{{ assay.leukocyte_density_2|default_if_none:"" }}</td>
+                    <td>{{ assay.leukocyte_density_3|default_if_none:"" }}</td>
+                    <td>{{ assay.leukocyte_density_avg|default_if_none:"" }}</td>
+                    <td>{{ assay.level_1|default_if_none:"" }}</td>
+                    <td>{{ assay.level_2|default_if_none:"" }}</td>
+                    <td>{{ assay.level_3|default_if_none:"" }}</td>
+                    <td>{{ assay.level_avg|default_if_none:"" }}</td>
+                    <td>{{ assay.extent_1|default_if_none:"" }}</td>
+                    <td>{{ assay.extent_2|default_if_none:"" }}</td>
+                    <td>{{ assay.extent_3|default_if_none:"" }}</td>
+                    <td>{{ assay.extent_avg|default_if_none:"" }}</td>
+                    <td>{{ assay.inflammation_score|default_if_none:"" }}</td>
+                    <td>{{ assay.abscesses|default_if_none:"" }}</td>
+                    <td>{{ assay.age|default_if_none:"" }}</td>                                       
+                    <td>{{ assay.comment|default_if_none:"" }}</td>
+                  </tr>
+                  </tr>
+                {% endfor %}
+              </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>A <b>Histological</b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
+                    <p> The charts show the results of measuring <b>Alanine aminotransferase</b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to <b>362 female</b>, <b>316 male</b> controls.</p> 
+                    <p> The mutants are <b></b> for the <b> Tnfrsf1a<sup>tm2b(EUCOMM)Wtsi</sup></b> allele.</p>
+{% endblock %}
+
+{% block info_content %}
+<div id="Scoring"><div class="row"></div></div> 
+    <div class="row">
+          <!-- Left col -->
+      <div class="col-md-6">
+            <div class="card">
+              <div class="card-header border-0" style="justify-content: center;">
+                <h3 class="card-title">Panel FC-01 Antibody cocktail</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-valign-middle">
+                      <thead>
+                          <tr>
+                              <th>Antibody target</th>
+                              <th>Fluorochrome</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                            <tr>
+                              <td>CD45</td>
+                              <td>Alexa Fluor® 700 </td>
+                          </tr>
+                            <tr>
+                              <td>LIVE DEAD</td>
+                              <td>Zombie NIR</td>
+                          </tr>
+                          <tr>
+                              <td>CD5</td>
+                              <td>Brilliant Violet 510</td>
+                          </tr>
+                          <tr>
+                              <td>CD19</td>
+                              <td>Brilliant Violet 711</td>
+                          </tr>                          
+                          <tr>
+                              <td>NK1.1</td>
+                              <td>Brilliant Violet 605</td>
+                          </tr>
+                          <tr>
+                              <td>CD11b</td>
+                              <td>FITC</td>
+                          </tr>                          
+                          <tr>
+                              <td>Ly6G</td>
+                              <td>PerCP/Cy5.5</td>
+                          </tr>
+                           <tr>
+                              <td>CD11c</td>
+                              <td>Brilliant Violet 650</td>
+                          </tr> 
+                              <td>Siglec F</td>
+                              <td>Brilliant Violet 421</td>
+                          </tr>
+                          <tr>                              
+                          <td>Ly6C</td>
+                              <td>APC</td>
+                          </tr>
+                          <tr>
+                              <td>F4/80</td>
+                              <td>PE/Cy7</td>
+                          </tr>
+                          <tr>
+                              <td>MHCII</td>
+                              <td>Brilliant Violet 785</td>
+                          </tr>     
+                          <tr>
+                              <td>CD137/SiglecH</td>
+                              <td>PE</td>
+                          </tr>                                    
+                      </tbody>
+                </table>
+              </div>
+            </div>
+      </div>
+      <div class="col-md-12">
+            <div class="card">
+              <div class="card-header border-0" style="justify-content: center;">
+                <h3 class="card-title">Panel FC-01 Antibody cocktail</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-bordered table-hover dataTable">
+                 <tr style='height:52.6pt'>
+                  <td valign=top style='border:none;border-bottom:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:52.6pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>Group No</span></p>
+                  </td>
+                  <td valign=top style='border:none;border-bottom:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:52.6pt'>
+                  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;text-align:
+                  justify;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>Genotype</span></p>
+                  </td>
+                  <td valign=top style='border:none;border-bottom:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:52.6pt'>
+                  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;text-align:
+                  justify;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>Treatment</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;border:none;border-bottom:
+                  solid #7F7F7F 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:52.6pt'>
+                  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;text-align:
+                  justify;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>Dose (Bacterial cells)</span></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;border:none;border-bottom:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:52.6pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>Dose volume (ìl)</span></p>
+                  </td>
+                  <td width=126 colspan=2 valign=top style='width:94.5pt;border:none;
+                  border-bottom:solid #7F7F7F 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:52.6pt'>
+                  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;text-align:
+                  justify;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>Dose frequency</span></p>
+                  </td>
+                  <td width=90 valign=top style='width:67.5pt;border:none;border-bottom:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:52.6pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>End point</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;border:none;border-bottom:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:52.6pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>No of Animals</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>1</span></b></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Test</span></i></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>C. rodentium</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;background:#F2F2F2;padding:
+                  0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3x10</span><sup><span style='font-size:6.5pt;font-family:"Calibri Light",sans-serif;
+                  color:black'>9</span></sup></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;background:#F2F2F2;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 6</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>6</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>2</span></b></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Test</span></i></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>C. rodentium</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3x10</span><sup><span style='font-size:6.5pt;font-family:"Calibri Light",sans-serif;
+                  color:black'>9</span></sup></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 12</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>6</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>3</span></b></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Test</span></i></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>C. rodentium</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;background:#F2F2F2;padding:
+                  0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3x10</span><sup><span style='font-size:6.5pt;font-family:"Calibri Light",sans-serif;
+                  color:black'>9</span></sup></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;background:#F2F2F2;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 25</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>6</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>4</span></b></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Test</span></i></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>PBS</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>-</span></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 6</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>5</span></b></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Test</span></i></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>PBS</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;background:#F2F2F2;padding:
+                  0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>-</span></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;background:#F2F2F2;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 12</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>6</span></b></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Test</span></i></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>PBS</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>-</span></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 25</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>9</span></b></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Control</span></i></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>C. rodentium</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;background:#F2F2F2;padding:
+                  0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3x10</span><sup><span style='font-size:6.5pt;font-family:"Calibri Light",sans-serif;
+                  color:black'>9</span></sup></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;background:#F2F2F2;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 6</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>6</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>10</span></b></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Control</span></i></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>C. rodentium</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3x10</span><sup><span style='font-size:6.5pt;font-family:"Calibri Light",sans-serif;
+                  color:black'>9</span></sup></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 12</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>6</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>11</span></b></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Control</span></i></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>C. rodentium</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;background:#F2F2F2;padding:
+                  0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3x10</span><sup><span style='font-size:6.5pt;font-family:"Calibri Light",sans-serif;
+                  color:black'>9</span></sup></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;background:#F2F2F2;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 25</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>6</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>12</span></b></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Control</span></i></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>PBS</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>-</span></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 6</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>13</span></b></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Control</span></i></p>
+                  </td>
+                  <td valign=top style='background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>PBS</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;background:#F2F2F2;padding:
+                  0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>-</span></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;background:#F2F2F2;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 12</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;background:#F2F2F2;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3</span></p>
+                  </td>
+                 </tr>
+                 <tr style='height:12.75pt'>
+                  <td valign=top style='border:none;border-right:solid #7F7F7F 1.0pt;
+                  padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><b><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;text-transform:uppercase'>14</span></b></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><i><span style='font-family:"Calibri Light",sans-serif;
+                  color:black;background:white'>Control</span></i></p>
+                  </td>
+                  <td valign=top style='padding:0in 5.4pt 0in 5.4pt;height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>PBS</span></p>
+                  </td>
+                  <td width=166 valign=top style='width:124.55pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>-</span></p>
+                  </td>
+                  <td width=144 valign=top style='width:1.5in;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>200</span></p>
+                  </td>
+                  <td width=114 valign=top style='width:85.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Once</span></p>
+                  </td>
+                  <td width=102 colspan=2 valign=top style='width:76.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>Day 25</span></p>
+                  </td>
+                  <td width=126 valign=top style='width:94.5pt;padding:0in 5.4pt 0in 5.4pt;
+                  height:12.75pt'>
+                  <p class=MsoNormal align=center style='margin-bottom:0in;margin-bottom:.0001pt;
+                  text-align:center;line-height:normal'><span style='font-family:"Calibri Light",sans-serif;
+                  color:black'>3</span></p>
+                  </td>
+                 </tr>
+                 <tr height=0>
+                  <td width=58 style='border:none'></td>
+                  <td width=78 style='border:none'></td>
+                  <td width=88 style='border:none'></td>
+                  <td width=166 style='border:none'></td>
+                  <td width=144 style='border:none'></td>
+                  <td width=114 style='border:none'></td>
+                  <td width=12 style='border:none'></td>
+                  <td width=90 style='border:none'></td>
+                  <td width=126 style='border:none'></td>
+                 </tr>
+                </table>    
+              </div>
+            </div>
+      </div>
+    </div>
+    
+    
+  
+{% endblock%}

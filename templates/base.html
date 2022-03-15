@@ -120,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button" collapsed="False"><i class="fas fa-bars"></i></a>
       </li>
       <li>
         <div class="u-custom-menu u-nav-container">
@@ -132,8 +132,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <li><a href="{% url 'assays' %}" class="dropdown-item">All Assays</a></li>
                             {% if user.is_authenticated %}
                             <li><a href="{% url 'add_assay' %}" class="dropdown-item">Add Assay</a></li>
-                            <li><a href="{% url 'atypes' %}" class="dropdown-item">All Types </a></li>
-                            <li><a href="{% url 'add_atype' %}" class="dropdown-item">Add Type</a></li>
+                            <li><a href="{% url 'atypes' %}" class="dropdown-item">SOPs </a></li>
+                            <li><a href="{% url 'add_atype' %}" class="dropdown-item">Add SOP</a></li>
                             {% endif %}
                           </ul>
             </li>
@@ -141,8 +141,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                 <li><a href="{% url 'pipelines' %}" class="dropdown-item">All Pipelines</a></li>
                 {% if user.is_authenticated %}
+                {% if user.groups.all.0.name == "Admin" %}
                 <li><a href="{% url 'add-pipeline' %}" class="dropdown-item">Add Pipeline</a></li>
-                {% endif %}  
+                <li><a href="{% url 'pipelinetypes' %}" class="dropdown-item">Protocols</a></li>
+                <li><a href="{% url 'add_pipelinetype' %}" class="dropdown-item">Add Protocol</a></li>
+                {% endif %}
+                {% if user.groups.all.0.name == "Scientific staff" %}
+                <li><a href="{% url 'add-pipeline' %}" class="dropdown-item">Add Pipeline</a></li>
+                <li><a href="{% url 'pipelinetypes' %}" class="dropdown-item">Protocols</a></li>
+                <li><a href="{% url 'add_pipelinetype' %}" class="dropdown-item">Add Protocol</a></li>
+                {% endif %}
+                {% endif %} 
               </ul>
             </li>
                   <li class="u-nav-item">
@@ -308,8 +317,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                   <li class="nav-item">
                     <a href="{% url 'group-assays' user.username %}" class="nav-link">
-                      <i class="fas fa-th nav-icon"></i>
-                      <p>Group</p>
+                      <i class="fa fa-group nav-icon"></i>
+                      <p>Facility</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'add_atype'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>New SOP</p>
                     </a>
                   </li>
                 </ul>
@@ -317,12 +332,39 @@ scratch. This page gets rid of all links and provides the needed markup only.
            <li class="nav-header">PIPELINES</li>
                   <li class="nav-item">
                     <a href="{% url 'user-pipelines' user.username %}" class="nav-link">
-                      <i class="fas fa-circle nav-icon"></i>
+                      <i class="fas fa-sitemap nav-icon"></i>
                       <p>My Pipelines</p>
                     </a>
                   </li>
+                   {% if user.groups.all.0.name == "Admin" %}
+                  <li class="nav-item">
+                    <a href="{% url 'add_pipelinetype'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>New Protocol</p>
+                    </a>
+                  </li>
+                  {% endif %}                 
                 </ul>
-
+                {% if user.groups.all.0.name == "Admin" %}
+                <ul class="nav nav-treeview">
+                  <li class="nav-header">USERS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'users_all'%}" class="nav-link">
+                      <i class="fas fa-cog nav-icon"></i>
+                      <p>Users</p>
+                    </a>
+                  </li>
+                </ul>  
+                {% endif %}
+                <ul class="nav nav-treeview">
+                  <li class="nav-header">REPORTS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'build-report'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>Build a Report</p>
+                    </a>
+                  </li>
+                </ul>                
               </li>
             </ul>
           </nav>
@@ -503,8 +545,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{% static 'plugins/js/bootstrap_modal_forms/static/js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <!-- Ekko Lightbox -->
 <script src="{% static 'plugins/ekko-lightbox/ekko-lightbox.min.js' %}"></script>
+<script type="text/javascript">
+    $(function () {
+
+    $('[data-widget="pushmenu"]').PushMenu('toggle');
+  })
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("multidelete").click(function(){
+      if(confirm("Are you sure you want to delete these assays?")){
+          var id = [];
+          $(':checkbox:checked').each(function(i){
+            id[i] = $(this).val()
+          })
+          if(id.length===0){
+            alert("please select item to delete")
+           }
+          else{
+            consol.log(id);
+          }
+      }
+    })
+  })
+</script>
 <script>
   $(function () {
+
     $(document).on('click', '[data-toggle="lightbox"]', function(event) {
       event.preventDefault();
       $(this).ekkoLightbox({
@@ -595,6 +662,292 @@ scratch. This page gets rid of all links and provides the needed markup only.
   $("#pdfExport").on("click", function() {
     $(".buttons-pdf").trigger("click");
  });
+</script><script type="text/javascript">
+  var series2 = {{series2|safe}};
+
+  Highcharts.chart('containerline', {
+    colors: ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
+    title: {
+        text: '{{title|safe}} by Gender & Genotype'
+    },
+
+    subtitle: {
+        text: 'Average {{title|safe}} by Timepoint'
+    },
+
+    yAxis: {
+        title: {
+            text: '{{title|safe}}'
+        }
+    },
+
+    xAxis: {
+        title: {
+          enabled: true,
+          text: 'Timepoint in {{object.timesteps_in}}' 
+        }
+    },
+
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+      plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 2010
+        },
+        area: {
+          fillColor: {
+            linearGradient: {
+              x1: 0,
+              y1: 0,
+              x2: 0,
+              y2: 1
+            },
+            stops: [
+              [0, Highcharts.getOptions().colors[7]],
+              [1, Highcharts.color(Highcharts.getOptions().colors[7]).setOpacity(0).get('rgba')],
+              [2, Highcharts.getOptions().colors[1]],
+              [3, Highcharts.color(Highcharts.getOptions().colors[1]).setOpacity(0).get('rgba')]
+            ]
+          },
+          marker: {
+            radius: 2
+          },
+          lineWidth: 1,
+          states: {
+            hover: {
+              lineWidth: 1
+            }
+          },
+          threshold: null
+        }
+      },
+
+    series: series2,
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
+
+/*
+var data = {
+    2016: [
+        ['South Korea', 0],
+        ['Japan', 0],
+        ['Australia', 0],
+        ['Germany', 17],
+        ['Russia', 19],
+        ['China', 26],
+        ['Great Britain', 27],
+        ['United States', 46]
+    ],
+    2012: [
+        ['South Korea', 13],
+        ['Japan', 0],
+        ['Australia', 0],
+        ['Germany', 0],
+        ['Russia', 24],
+        ['China', 38],
+        ['Great Britain', 29],
+        ['United States', 46]
+    ],
+    2008: [
+        ['South Korea', 0],
+        ['Japan', 0],
+        ['Australia', 0],
+        ['Germany', 16],
+        ['Russia', 22],
+        ['China', 51],
+        ['Great Britain', 19],
+        ['United States', 36]
+    ],
+    2004: [
+        ['South Korea', 0],
+        ['Japan', 16],
+        ['Australia', 17],
+        ['Germany', 0],
+        ['Russia', 27],
+        ['China', 32],
+        ['Great Britain', 0],
+        ['United States', 37]
+    ],
+    2000: [
+        ['South Korea', 0],
+        ['Japan', 0],
+        ['Australia', 16],
+        ['Germany', 13],
+        ['Russia', 32],
+        ['China', 28],
+        ['Great Britain', 0],
+        ['United States', 36]
+    ]
+};
+
+var countries = [{
+    name: 'South Korea',
+    flag: 197582,
+    color: 'rgb(201, 36, 39)'
+}, {
+    name: 'Japan',
+    flag: 197604,
+    color: 'rgb(201, 36, 39)'
+}, {
+    name: 'Australia',
+    flag: 197507,
+    color: 'rgb(0, 82, 180)'
+}, {
+    name: 'Germany',
+    flag: 197571,
+    color: 'rgb(0, 0, 0)'
+}, {
+    name: 'Russia',
+    flag: 197408,
+    color: 'rgb(240, 240, 240)'
+}, {
+    name: 'China',
+    flag: 197375,
+    color: 'rgb(255, 217, 68)'
+}, {
+    name: 'Great Britain',
+    flag: 197374,
+    color: 'rgb(0, 82, 180)'
+}, {
+    name: 'United States',
+    flag: 197484,
+    color: 'rgb(215, 0, 38)'
+}];
+
+
+function getData(data) {
+    return data.map(function (country, i) {
+        return {
+            name: country[0],
+            y: country[1],
+            color: countries[i].color
+        };
+    });
+}
+
+var chart = Highcharts.chart('containercolumn', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Summer Olympics 2016 - Top 5 countries by Gold medals',
+        align: 'left'
+    },
+    subtitle: {
+        text: 'Comparing to results from Summer Olympics 2012 - Source: <a href="https://en.wikipedia.org/wiki/2016_Summer_Olympics_medal_table">Wikipedia</a>',
+        align: 'left'
+    },
+    plotOptions: {
+        series: {
+            grouping: false,
+            borderWidth: 0
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        shared: true,
+        headerFormat: '<span style="font-size: 15px">{point.point.name}</span><br/>',
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y} medals</b><br/>'
+    },
+    xAxis: {
+        type: 'category',
+        max: 4,
+        labels: {
+            useHTML: true,
+            animate: true,
+            formatter: function () {
+                var value = this.value,
+                    output;
+
+                countries.forEach(function (country) {
+                    if (country.name === value) {
+                        output = country.flag;
+                    }
+                });
+
+                return '<span><img src="https://image.flaticon.com/icons/svg/197/' + output + '.svg" style="width: 40px; height: 40px;"/><br></span>';
+            }
+        }
+    },
+    yAxis: [{
+        title: {
+            text: 'Gold medals'
+        },
+        showFirstLabel: false
+    }],
+    series: [{
+        name: '2016',
+        id: 'main',
+        dataSorting: {
+            enabled: true,
+            matchByName: true
+        },
+        dataLabels: [{
+            enabled: true,
+            inside: true,
+            style: {
+                fontSize: '16px'
+            }
+        }],
+        data: getData(data[2016]).slice()
+    }],
+    exporting: {
+        allowHTML: true
+    }
+});
+
+var years = [2016, 2012, 2008, 2004, 2000];
+
+years.forEach(function (year) {
+    var btn = document.getElementById(year);
+
+    btn.addEventListener('click', function () {
+
+        document.querySelectorAll('.buttons button.active').forEach(function (active) {
+            active.className = '';
+        });
+        btn.className = 'active';
+
+        chart.update({
+            title: {
+                text: 'Summer Olympics ' + year + ' - Top 5 countries by Gold medals'
+            },
+            subtitle: {
+                text: 'Comparing to results from Summer Olympics ' + (year - 4) + ' - Source: <a href="https://en.wikipedia.org/wiki/' + (year) + '_Summer_Olympics_medal_table">Wikipedia</a>'
+            },
+            series: [{
+                name: year,
+                data: getData(data[year]).slice()
+            }]
+        }, true, false, {
+            duration: 800
+        });
+    });
+});
+*/
 </script>
 <script type="text/javascript">
     var scarplot = {{scarplot|safe}};
@@ -608,10 +961,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         zoomType: 'xy'
       },
       title: {
-        text: 'Height Versus Weight of 507 Individuals by Gender'
+        text: '{{title|safe}} - Timestep by Gender & Genotype'
       },
       subtitle: {
-        text: 'Source: Heinz  2003'
+        text: 'Timepoint in {{object.timesteps_in}}'
       },
       xAxis: {
         title: {
@@ -624,7 +977,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       },
       yAxis: {
         title: {
-          text: 'Weight (kg)'
+          text: '{{title|safe}}'
         }
       },
       legend: {
@@ -671,7 +1024,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         },
 
         title: {
-            text: 'Highcharts Box Plot Example'
+            text: 'Box Plot of {{title|safe}} - Timestep by Gender & Genotype'
         },
 
         legend: {
@@ -679,9 +1032,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         },
 
         xAxis: {
-            categories: ['1', '2', '3', '4', '5'],
+            categories: ['6', '24'],
             title: {
-                text: 'Experiment No.'
+                text: 'Timestep'
             }
         },
 
@@ -689,7 +1042,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             title: {
                 text: 'Observations'
             },
-            plotLines: [{
+/*            plotLines: [{
                 value: 932,
                 color: 'red',
                 width: 1,
@@ -700,12 +1053,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         color: 'gray'
                     }
                 }
-            }]
+            }]*/
         },
 
         series: [{
             name: 'Observations',
-            data: series['data'],
+            /*data: series2['data'],*/
+                data: [
+            [760, 801, 848, 895, 965],
+            [834, 836, 864, 882, 910]
+    ],
             tooltip: {
                 headerFormat: '<em>Experiment No {point.key}</em><br/>'
             }
@@ -713,19 +1070,56 @@ scratch. This page gets rid of all links and provides the needed markup only.
             name: 'Outliers',
             color: Highcharts.getOptions().colors[0],
             type: 'scatter',
-            data: [ // x, y positions where 0 is the first category
+            data: 
+            [ // x, y positions where 0 is the first category
+                [-0.1, 760],
+                [-0.12, 801],
+                [-0.13, 848],
+                [-0.14, 895],
+                [-0, 965],
                 [0, 644],
-                [4, 718],
-                [4, 951],
-                [4, 969]
+                [0.8, 718],
+                [0.7, 951],
+                [0.6, 969]
             ],
             marker: {
                 fillColor: 'white',
                 lineWidth: 1,
-                lineColor: Highcharts.getOptions().colors[0]
+                lineColor: Highcharts.getOptions().colors[5]
             },
             tooltip: {
                 pointFormat: 'Observation: {point.y}'
+            }
+        },
+        {
+            name: 'Observations',
+            /*data: series2['data'],*/
+                data: [
+            [73, 80, 84, 89, 96],
+            [840, 830, 860, 880, 910]
+    ],
+            tooltip: {
+                headerFormat: '<em>Experiment No {point.key}</em><br/>'
+            }
+        }, {
+            name: 'Outliers',
+            color: Highcharts.getOptions().colors[1],
+            type: 'scatter',
+            data: [ // x, y positions where 0 is the first category
+                [1.1, 840],
+                [1.3, 830],
+                [1, 860],
+                [1, 895],
+                [1, 880],
+                [1, 910]
+            ],
+            marker: {
+                fillColor: 'white',
+                lineWidth: 1,
+                lineColor: Highcharts.getOptions().colors[1]
+            },
+            tooltip: {
+                pointFormat: 'Test: {point.y}'
             }
         }]
 

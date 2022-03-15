@@ -7,7 +7,14 @@ from ckeditor.fields import RichTextField
 
 class Facility(models.Model):
     name = models.CharField(max_length=256, blank=True, null=True)
-    details = models.TextField(blank=True, null=True)
+    details = RichTextField(blank=True, null=True)
+    def __str__(self):
+        return u'{0}'.format(self.name)
+class Report(models.Model):
+    name = models.CharField(max_length=256, blank=True, null=True)
+    introduction = RichTextField(blank=True, null=True)
+    summary = RichTextField(blank=True, null=True)
+    reportassay = models.ForeignKey('Assay', models.DO_NOTHING)
     def __str__(self):
         return u'{0}'.format(self.name)
 #Atype
@@ -16,7 +23,7 @@ class Atype(models.Model):
     name = models.CharField(max_length=256, blank=True, null=True)
     facility = models.CharField(max_length=16, blank=True, null=True)
     facilitylong = models.ForeignKey('Facility', models.DO_NOTHING, db_column ="facilitylong")
-    unit = models.CharField(max_length=32, blank=True, null=True)
+    service_type = models.CharField(max_length=32, blank=True, null=True)
     staff = models.CharField(max_length=256, blank=True, null=True)
     publication_date = models.DateField(blank=True, null=True)
     version = models.IntegerField(blank=True, null=True)
@@ -32,7 +39,7 @@ class Atype(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return u'{0} ({1})'.format(self.code, self.facilitylong.name)
+        return u'{0}'.format(self.code)
 
     #def get_absolute_url(self):
     #    return reverse('assaytype-detail', kwargs={'pk': self.id})
@@ -56,13 +63,14 @@ class Assay(models.Model):
     staff = models.CharField(max_length=128, blank=True, null=True)
     comments = models.TextField(blank=True, null=True)
     measurement_day = models.DateField(blank=True, null=True)
-    rawdata_file = models.FileField(upload_to='assays/xlsx/')
+    rawdata_file = models.FileField(upload_to='assays/xlsx/',blank=True, null=True)
     assayqc = models.CharField(db_column='assayQC', max_length=256, blank=True, null=True)  # Field name made lowercase.
     type = models.ForeignKey('Atype', models.DO_NOTHING, db_column='type')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='author',default=1, related_name='created_by_user')
     pipeline = models.ForeignKey(Pipeline, on_delete=models.DO_NOTHING, related_name='assays',blank=True, null=True)
     updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING, related_name='updated_by_user',blank=True, null=True)
-    scientist = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='scientist', related_name='scientists',related_query_name='scientist',blank=True, null=True)
+    scientist_in_charge = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='scientist_in_charge', related_name='scientists',related_query_name='scientist_in_charge',blank=True, null=True)
+    members = models.ManyToManyField(User,db_column='members', related_name='members',related_query_name='members',blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     mouse_age = models.CharField(
@@ -77,13 +85,14 @@ class Assay(models.Model):
         default='days',
     )
 
-
-
     def get_absolute_url(self):
         return reverse('assay-detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return u'{0}\t\t{1}'.format(self.name, self.code)
+
+    def get_members(self):
+        return u"\n".join([str(p) for p in self.members.all()])
 
 class AssociatedImage(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='associated_images')  # Field name made lowercase.
@@ -477,6 +486,58 @@ class Biochem08(models.Model):
         managed = True
         db_table = 'BIOCHEM-08'
 
+class Fc01(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='fc01s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    live_aquis = models.CharField(max_length=64, blank=True, null=True)
+    total_cell_count = models.FloatField(blank=True, null=True)
+    neu_per = models.FloatField(blank=True, null=True)
+    eos_per = models.FloatField(blank=True, null=True)
+    mon_per = models.FloatField(blank=True, null=True)
+    recent_emigrant_monocytes_per = models.FloatField(blank=True, null=True)
+    inflammatory_monocytes_per = models.FloatField(blank=True, null=True)
+    steady_state_monocytes_per = models.FloatField(blank=True, null=True)
+    nk_cells_per = models.FloatField(blank=True, null=True)
+    b_cells_per = models.FloatField(blank=True, null=True)
+    t_cells_per = models.FloatField(blank=True, null=True)
+    b1b_cells_per = models.FloatField(blank=True, null=True)
+    b2b_cells_per = models.FloatField(blank=True, null=True)
+    dcs_per = models.FloatField(blank=True, null=True)
+    cds_per = models.FloatField(blank=True, null=True)
+    cds_cd11_per = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+    pdcs_per = models.FloatField(blank=True, null=True)
+    macrophages_per = models.FloatField(blank=True, null=True)
+    class Meta:
+        managed = True
+        db_table = 'FC-01'
+
+class Fc03(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='fc03s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    sample_source = models.CharField(max_length=64, blank=True, null=True)
+    live_aquis = models.CharField(max_length=64, blank=True, null=True)
+    total_cell_count = models.FloatField(blank=True, null=True)
+    total_b_cells = models.FloatField(blank=True, null=True)
+    b1b_cells_per = models.FloatField(blank=True, null=True)
+    b2b_cells_per = models.FloatField(blank=True, null=True)
+    b2b_immature_cells_per = models.FloatField(blank=True, null=True)
+    t1_cells_per = models.FloatField(blank=True, null=True)
+    mzb_cells_per = models.FloatField(blank=True, null=True)
+    b2_mature_cells_per = models.FloatField(blank=True, null=True)
+    t2_cells_per = models.FloatField(blank=True, null=True)
+    t3_cells_per = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+    class Meta:
+        managed = True
+        db_table = 'FC-03'
 
 class Fc04(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE,related_name='fc04s')  # Field name made lowercase.
@@ -484,6 +545,7 @@ class Fc04(models.Model):
     timepoint = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     measurement_date = models.DateField(blank=True, null=True)
+    sample_id = models.CharField(max_length=64, blank=True, null=True)
     sample_source = models.CharField(max_length=64, blank=True, null=True)
     live_aquis = models.CharField(max_length=64, blank=True, null=True)
     total_cell_count = models.FloatField(blank=True, null=True)
@@ -680,6 +742,22 @@ class Cba02(models.Model):
         managed = True
         db_table = 'CBA-02'
 
+class Cba03(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='cba03s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    parameter1 = models.FloatField(blank=True, null=True)
+    parameter2 = models.FloatField(blank=True, null=True)
+    parameter3 = models.FloatField(blank=True, null=True)
+    parameter4 = models.TextField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'CBA-03'
+
 class Hpibd01(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='hpibd01s')  # Field name made lowercase.
     mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
@@ -798,7 +876,7 @@ class Ar03(models.Model):
     timepoint = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     measurement_date = models.DateField(blank=True, null=True)
-    sum_intensity_fl = models.FloatField(blank=True, null=True)
+    sum_intensity_fl = models.FloatField(verbose_name ="sum intensity (FL)", blank=True, null=True)
     net_intensity_fl = models.FloatField(blank=True, null=True)
     sum_intensity_hl = models.FloatField(blank=True, null=True)
     net_intensity_hl = models.FloatField(blank=True, null=True)
@@ -856,6 +934,71 @@ class Ar06(models.Model):
     class Meta:
         managed = True
         db_table = 'AR-06'
+
+class Ar07(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='ar07s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    weight = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'AR-07'
+
+class Hpa02(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='hpa02s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    synovitis = models.FloatField(blank=True, null=True)
+    cartilage_destruction = models.FloatField(blank=True, null=True)
+    bone_erosion = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'HPA-02'
+
+#############################################
+#              IOAKIMIDIS                   #
+#############################################
+
+class GI05(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='gi05s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    fecal_cfus = models.FloatField(blank=True, null=True)
+    spleen_cfus = models.FloatField(blank=True, null=True)
+    spleen_weight = models.FloatField(blank=True, null=True)
+    body_weight= models.FloatField(blank=True, null=True)
+    spleen_body_ratio = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'GI-05'
+
+class GI06(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='gi06s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    firmicutes = models.FloatField(blank=True, null=True)
+    bacteroidetes = models.FloatField(blank=True, null=True)
+    proteobacteria = models.FloatField(blank=True, null=True)
+    firmicutes_bacteroidetes_ratio = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'GI-06'
 
 class Mouse(models.Model):
     GENDER = (

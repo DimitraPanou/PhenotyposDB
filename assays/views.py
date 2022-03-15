@@ -1,7 +1,7 @@
 # Create your views here.
 import json
 from django.shortcuts import render, redirect,get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import (
     ListView,
@@ -17,19 +17,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from users.decorators import allowed_users
-
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 #from .forms import AssayForm
-from .forms import AssayForm, Assay2Form, AtypeForm, AtypeExtraForm, ImageForm
+from .forms import AssayForm, Assay2Form, AtypeForm, AtypeExtraForm, ImageForm, ReportForm
 from .models import Assay, Atype, Mouse
 from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic import FormView
 
 from .functions import handle_uploaded_file, returnTemplateName, get_parameters, parameterMeasures
-from .filters import AssayFilter
+from .filters import AssayFilter, MouseFilter
 from django.db.models import Count
-
+from django.http import HttpResponseRedirect
 ####################
 #    Assays        #
 ####################
@@ -39,8 +39,12 @@ def assayslist(request):
 	myFilter = AssayFilter(request.GET)
 	assays = myFilter.qs 
 	for assay in assays:
-		print(len(returnMeasurements(assay)))
+		#print(len(returnMeasurements(assay)))
 		assay.counter = len(returnMeasurements(assay))
+		assay.listmembers = assay.get_members()
+		#for m in assay.members:
+		#	print(m.profile.first_name)
+		#	print(m.profile.image.url)
 	context = {'list_assays':assays,
 	'myFilter':myFilter}
 	return render(request, 'assays/assays.html',context)
@@ -72,6 +76,9 @@ def add_assay(request, *args, **kargs):
         form = AssayForm(request.user,request.POST, request.FILES)
         if form.is_valid():
             form.instance.author = request.user
+            form.instance.members.add(request.user)
+            if(form.instance.scientist_in_charge):
+            	form.instance.members.add(form.instance.scientist_in_charge)
             print(request.user.profile.first_name)
             test = form.save()
             #for filename, file in request.FILES.items():
@@ -88,31 +95,52 @@ def add_assay(request, *args, **kargs):
         'form': form
     })
 
+
+@allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
+def add_report(request, *args, **kargs):
+    if request.method == 'POST':
+        form = ReportForm(request.user,request.POST, request.FILES)
+        if form.is_valid():
+            test = form.save()
+            #for filename, file in request.FILES.items():
+            #    name = request.FILES[filename].url
+                #print(name)
+            if(handle_uploaded_file(test)==-1):
+                    html = "<html><body>Problem with the file.</body></html>"
+                    return HttpResponse(html)
+            return redirect('assays')
+    else:
+        form = ReportForm(request.user)
+    return render(request, 'assays/reportassay.html', {
+        'form': form
+    })
 @allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
 def uploadImage(request, pk):
-	#assay = get_object_or_404(Assay, pk=pk)
 	if request.method == 'POST':
 		form = ImageForm(request.POST, request.FILES)
 		if form.is_valid():
-			#form.instance.assayid = assay
+			assay = Assay.objects.get(id=pk)
+			form.instance.assayid = assay
 			test = form.save()
-			if(handle_uploaded_file(test)==-1):
+			'''if(handle_uploaded_file(test)==-1):
 				html = "<html><body>Problem with the file.</body></html>"
-				return HttpResponse(html)
-			return redirect('uploadImage')
-			#return(reverse_lazy('assaytype-detail', kwargs={'pk': self.assay.id}))
-		else:
-			form = ImageForm()
+				return HttpResponse(html)'''
+			#return redirect('uploadImage')
+			return HttpResponseRedirect('/assays/%d/'%assay.id)
+			#return(redirect('assay-detail', args=(assay.id)))
+			#reverse_lazy('assay-update',args=(self.object.id,))
+	else:
+		form = ImageForm()
 	return render(request, 'assays/imageupload.html', {'imageform':form})
 
 @allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
 def updateAssay(request, pk):
 	assay = Assay.objects.get(id=pk)
-	form = AssayForm(request.user,request.FILES, instance=assay)
+	form = Assay2Form(request.user,request.FILES, instance=assay)
 
 	if request.method == 'POST':
-		form = AssayForm(request.user,request.POST, request.FILES, instance=assay)
-		if form.is_valid():
+		form = Assay2Form(request.user,request.POST, instance=assay)
+		if form.is_valid(self.request.user,form):
 			form.instance.updated_by = self.request.user
 			form.save()
 			return redirect('assays')
@@ -126,9 +154,18 @@ class AssaysUpdateView(LoginRequiredMixin,UpdateView):
 	form_class = Assay2Form
 	success_url = '/assays/'
 
+	def get_success_url(self, **kwargs):
+		return reverse_lazy('assay-update',args=(self.object.id,))
+
 	def form_valid(self, form):
-		form.instance.updated_by = self.request.user
-		return super().form_valid(self.request.user,form)
+		test = form.save(commit=False)
+		test.updated_by = self.request.user
+		print(test.updated_by)
+		print("Edw")
+		print(test.members)
+		#form.instance.updated_by = self.request.user
+		test.save()
+		return redirect('assays')
 
 class AssaysDeleteView(DeleteView):
 	model = Assay
@@ -141,15 +178,9 @@ class AssaysDeleteView(DeleteView):
 	#assay.delete()
 	return redirect('assays')
 '''
-class AssaysDetailView(DetailView):
+class AssaysDetailView2(LoginRequiredMixin,DetailView):
 	model = Assay
-	#template_name = 'assays/assaytypes/iinflc-04.html'
-	#template_name = returnTemplateName(self.object)
-
-	def get_template_names(self):
-		print(self.object.type)
-		#return ['assays/assaytypes/ni01.html','assays/assaytypes/iinflc-04.html']
-		return returnTemplateName(self.object.type)
+	template_name = 'assays/detail_assay3.html'
 
 	def get_context_data(self, **kwargs):
 		switcher ={
@@ -188,39 +219,164 @@ class AssaysDetailView(DetailView):
 			37: self.get_object().ar04s.annotate(),
 			38: self.get_object().ar05s.annotate(),
 			39: self.get_object().ar06s.annotate(),
+			40: self.get_object().ar07s.annotate(),
+			41: self.get_object().cba03s.annotate(),
+			42: self.get_object().fc01s.annotate(),
+			43: self.get_object().fc03s.annotate(),
+			44: self.get_object().hpa02s.annotate(),
+			45: self.get_object().fc04s.annotate(),
+		}
+		measures = switcher.get(self.object.type.id,"Ivalid")
+		kwargs['measures'] = measures
+		mouselist = measures.values('mid').distinct().order_by('mid')
+		kwargs['mouselist'] = Mouse.objects.filter(id__in=mouselist)
+		return super().get_context_data(**kwargs)
+
+class AssaysDetailView(LoginRequiredMixin,DetailView):
+	model = Assay
+	def get_template_names(self):
+		print(self.object.type)
+		#if test_func(self):
+		#return ['assays/assaytypes/ni01.html','assays/assaytypes/iinflc-04.html']
+		return returnTemplateName(self.object.type)
+		#else:
+		#	return render(request, "error404.html")
+	def render_pdf_view(self,request, pk):
+		template_path = 'user_printer.html'
+		assayname="report"+".pdf"
+		context = {'myvar': 'this is your template context','object': self.object}
+		# Create a Django response object, and specify content_type as pdf
+		response = HttpResponse(content_type='application/pdf')
+		response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+		# find the template and render it.
+		template = get_template(template_path)
+		html = template.render(context)
+		# create a pdf
+		pisa_status = pisa.CreatePDF(
+			html, dest=response)
+		if pisa_status.err:
+			return HttpResponse('We had some errors <pre>' + html + '</pre>')
+		return response
+
+	def dispatch(self, request, *args, **kwargs):
+		user_obj = self.request.user
+		assay = self.get_object()
+		if not (assay.author == user_obj or assay.scientist_in_charge== user_obj or user_obj.groups =='Admin'):
+			return render(request,"error404.html")
+		return super().dispatch(request,*args,**kwargs)
+
+	def get_context_data(self, **kwargs):
+		switcher ={
+			4: self.get_object().iinflc03s.annotate(),
+			5: self.get_object().iinflc04s.annotate(),
+			6: self.get_object().iinflc02s.annotate(),
+			7: self.get_object().ni01s.annotate(),
+			8: self.get_object().ni02rot01s.annotate(),
+			9: self.get_object().ni02ofd01s.annotate(),
+			10: self.get_object().ni02grs01s.annotate(),
+			11: self.get_object().hem01s.annotate(),
+			12: self.get_object().hpibd02s.annotate(),
+			13: self.get_object().biochem01s.annotate(),
+			14: self.get_object().biochem02s.annotate(),
+			15: self.get_object().biochem03s.annotate(),
+			16: self.get_object().biochem04s.annotate(),
+			17: self.get_object().biochem05s.annotate(),
+			18: self.get_object().biochem06s.annotate(),
+			19: self.get_object().biochem07s.annotate(),
+			20: self.get_object().biochem08s.annotate(),
+			22: self.get_object().hpni01s.annotate(),
+			23: self.get_object().fc08s.annotate(),
+			24: self.get_object().ar02s.annotate(),
+			25: self.get_object().iinflc05s.annotate(),
+			26: self.get_object().iinflc06s.annotate(),	
+			27: self.get_object().fc07s.annotate(),
+			28: self.get_object().pr02s.annotate(),
+			29: self.get_object().cba01s.annotate(),								
+			30: self.get_object().cba02s.annotate(),
+			31: self.get_object().hpibd03s.annotate(),
+			32: self.get_object().hpibd01s.annotate(),
+			33: self.get_object().hpibd04s.annotate(),
+			34: self.get_object().endo01s.annotate(),
+			35: self.get_object().iinflc01s.annotate(),
+			36: self.get_object().ar03s.annotate(),
+			37: self.get_object().ar04s.annotate(),
+			38: self.get_object().ar05s.annotate(),
+			39: self.get_object().ar06s.annotate(),
+			40: self.get_object().ar07s.annotate(),
+			41: self.get_object().cba03s.annotate(),
+			42: self.get_object().fc01s.annotate(),
+			43: self.get_object().fc03s.annotate(),
+			44: self.get_object().hpa02s.annotate(),
+			45: self.get_object().fc04s.annotate(),
 		}
 		# mouselist = i4.values('mid').distinct().order_by('mid')
 		# objects = Mouse.objects.filter(id__in=mouselist)
 		#images = self.get_object().associated_images.annotate()
-		par = None
-		if(	self.request.GET.get('parameterName')):
-			par = self.request.GET.get('parameterName')
+
 		#	kwargs['par']=request.POST.get('parameterName')
+		'''form = ImageForm(self.request.POST, self.request.FILES or None)
+		if form.is_valid():
+			form.instance.assayid = self
+			test = form.save()
+		else:
+			form = ImageForm()
+		kwargs['imageform']= form
+		'''
 		measures = switcher.get(self.object.type.id,"Ivalid")
 		kwargs['measures'] = measures
-		parameters = get_parameters(self.object)
+		[parameters,parameters_names] = get_parameters(self.object)
+		print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+		print(parameters_names)
+		print(parameters)
+		print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+
 		mouselist = measures.values('mid').distinct().order_by('mid')
+		print('-----------')
+		print(mouselist)
+		print('-----------')
+		
 		mouse_num = measures.values('mid').annotate(dcount=Count('mid')).count()	
 		females = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Female')
 		males = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Male')
 		kwargs['mouselist'] = Mouse.objects.filter(id__in=mouselist)
 		kwargs['total'] = mouse_num
-		kwargs['assayjson']= json.dumps(self.object.id)
+		#kwargs['assayjson']= json.dumps(self.object.id)
 		kwargs['females'] = females.count()
 		kwargs['males'] = males.count()
-		kwargs['parameters'] = parameters
+		kwargs['parameters'] = zip(parameters,parameters_names)
+		par = parameters[0]
+		if(	self.request.GET.get('parameterName')):
+			par = self.request.GET.get('parameterName')
 		kwargs['par'] = par
-		source = parameters[0]
-		if par:
-			source = par
-		test = parameterMeasures(measures,parameters[0])
+		kwargs['title'] = par.replace("_"," ").title()
+#		source = parameters[0]
+#		if par:
+#			source = par
+		[test,flag,genotype] = parameterMeasures(measures,par)
+
 		series = []
 		for key in test:
 			data_dict = {}
 			data_dict['name'] = key
 			data_dict['data'] = test[key].values.tolist()
-			print(data_dict)
 			series.append(data_dict)
+		print('&&&&&&&&&&&&')
+		print(test)
+		series2 = []
+		for key in test:
+			if(len(test[key])):
+				test2 = test[key].groupby('timepoint').mean().reset_index()
+				print('sdsdsdsdsdsdssdsdsds')
+				print(test2)
+				data_dict = {}
+				data_dict['name'] = key
+				data_dict['type'] ='area'
+				data_dict['data'] = test2.values.tolist()
+				series2.append(data_dict)
+		print(series2)
+		kwargs['genotype'] = genotype
+		kwargs['genotypecount'] = genotype.count()
+		kwargs['flag'] = series
 		kwargs['scarplot'] = [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], [155.8, 53.6], [170.0, 59.0], [159.1, 47.6], [166.0, 69.8], [176.2, 66.8], [160.2, 75.2]]
 		'''series = [{
 		'name': 'Female',
@@ -235,7 +391,10 @@ class AssaysDetailView(DetailView):
 		}
 		]'''
 		kwargs['series'] = series
+		if(series2):
+			kwargs['series2'] = series2
 		return super().get_context_data(**kwargs)
+
 
 def returnMeasurements(assay):
 	measures = 0
@@ -275,6 +434,12 @@ def returnMeasurements(assay):
 		37: assay.ar04s.annotate(),
 		38: assay.ar05s.annotate(),
 		39: assay.ar06s.annotate(),
+		40: assay.ar07s.annotate(),
+		41: assay.cba03s.annotate(),
+		42: assay.fc01s.annotate(),
+		43: assay.fc03s.annotate(),
+		44: assay.hpa02s.annotate(),
+		45: assay.fc04s.annotate(),
 	}
 	measures = switcher.get(assay.type.id,"Ivalid")
 	return measures
@@ -292,7 +457,7 @@ class UserAssaysListView(LoginRequiredMixin,ListView):
 	def get_queryset(self):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
 		a= Assay.objects.filter(author=user).order_by('measurement_day')
-		b= Assay.objects.filter(scientist=user).order_by('measurement_day')		
+		b= Assay.objects.filter(scientist_in_charge=user).order_by('measurement_day')		
 		return a|b
 	def get_context_data(self, **kwargs):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
@@ -302,8 +467,8 @@ class UserAssaysListView(LoginRequiredMixin,ListView):
 		#for assay in a:
 		#	measures = switcher.get(assay.object.type.id,"Ivalid")
 		#	a_measurements.append(len(measures))
-		b= Assay.objects.filter(scientist=user).order_by('measurement_day')	
-		kwargs['access_assays'] = Assay.objects.filter(scientist=user).order_by('measurement_day')
+		b= Assay.objects.filter(scientist_in_charge=user).order_by('measurement_day')	
+		kwargs['access_assays'] = Assay.objects.filter(scientist_in_charge=user).order_by('measurement_day')
 		kwargs['user_assays'] = Assay.objects.filter(author=user).order_by('measurement_day')
 		kwargs['all'] = len(a) + len(b)
 		kwargs['a'] = len(a)
@@ -319,7 +484,7 @@ class GroupAssaysListView(LoginRequiredMixin,ListView):
 
 	def get_queryset(self):
 		user = get_object_or_404(User,username=self.kwargs.get('username'))
-		return Assay.objects.filter(scientist=user).order_by('measurement_day')
+		return Assay.objects.filter(scientist_in_charge=user).order_by('measurement_day')
 
 	def get_context_data(self, **kwargs):
 		kwargs['flag2'] = 1
@@ -346,6 +511,7 @@ class AtypeListView(ListView):
 	model = Atype
 	template_name = 'assays/assaytypes.html'
 	context_object_name = 'list_assays'
+	ordering = ['code']
 
 '''
 class AtypeCreateView(LoginRequiredMixin,CreateView):
@@ -397,6 +563,14 @@ class Atype2UpdateView(UpdateView):
 	def get_success_url(self):
 		return(reverse_lazy('assaytype-detail', kwargs={'pk': self.object.id}))
 
+
+def getmouselist(request):
+	myFilter = MouseFilter(request.GET)
+	mouselist = myFilter.qs 
+	context = {'mouselist':mouselist,
+	'myFilter':myFilter}
+	return render(request, 'assays/mouselist.html',context)
+
 '''
 	def post(self,request,pk,*args,**kwargs):
 		obj = get_object_or_404(Atype, id=pk)
@@ -410,4 +584,15 @@ class Atype2UpdateView(UpdateView):
 	data = []
 	assay = Assay.objects
 	queryset = 
+'''
+	#template_name = 'assays/assaytypes/iinflc-04.html'
+	#template_name = returnTemplateName(self.object)
+
+'''	def test_func(self):
+		assay = self.get_object()
+		user_obj = self.request.user
+		if (assay.author == user_obj or assay.scientist== user_obj or user_obj.groups =='Admin'):
+			print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+			return True
+		return False
 '''

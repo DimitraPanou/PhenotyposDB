@@ -1,0 +1,24 @@
+{
+  "name": "debug-mode",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "jspdf": "^2.2.0",
+    "squareicon": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DimitraPanou/old_app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DimitraPanou/old_app/issues"
+  },
+  "homepage": "https://github.com/DimitraPanou/old_app#readme",
+  "description": ""
+}

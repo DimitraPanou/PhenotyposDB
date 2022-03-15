@@ -3,58 +3,45 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <h2>New Pipeline</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Add Pipeline</button>
-  </form>
-{% endblock %}
-
-{% block sidebar_content %}
-
-    <!-- /.sidebar -->
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-       <li class="nav-header">ASSAYS</li>
-              <li class="nav-item">
-                <a href="{% url 'user-assays' user.username %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>My Assays</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'user-assays' user.username %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Group</p>
-                </a>
-              </li>
-            </ul>
-            <ul class="nav nav-treeview">
-       <li class="nav-header">PIPELINES</li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fa-flask nav-icon"></i>
-                  <p>My Pipelines</p>
-                </a>
-              </li>
-            </ul>
-
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-
+  <div class="container main-content">
+  <div class="card">
+  <div class="card-body">
+  <div class="flexbox flex-wrap">
+  <div class="img-thumbnail display-4 align-self-center mr-3">
+  <i class="ti-write"></i>
+  </div>
+  <div class="flex-grow align-self-center">
+  <h1>Publish your Pipeline</h1>
+  <p>List your Pipeline on PhenotyposDB by providing all relevant information in the application
+  form.</p>
+  </div>
+  </div>
+  </div>
+  </div>
+  <div class="row align-items-center">
+    <div class="col">
+    <div class="card card-default">
+            <div class="card-header text-center">
+              <h3 class="card-title" style="font-size:14px; text-transform: uppercase !important; letter-spacing: .5px;">Pipeline General Information</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+             <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary btn btn-bold btn-round btn-w-xl btn-primary float-right">Add Pipeline</button>
+             </form>
+            </div>
+     </div>
+  </div>
+</div>
+</div>
 {% endblock %}

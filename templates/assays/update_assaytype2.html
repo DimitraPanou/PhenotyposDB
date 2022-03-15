@@ -3,7 +3,20 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h1>Update: {{object.id }} - {{ object.code }}</h1>
+  <div class="container main-content">
+	<div class="card">
+	<div class="card-body">
+	<div class="flexbox flex-wrap">
+	<div class="img-thumbnail display-4 align-self-center mr-3">
+	<i class="ti-write"></i>
+	</div>
+	<div class="flex-grow align-self-center">
+	<h1>Update: {{object.id }} - {{ object.code }}</h1>
+	<p>Updade SOP Info</p>
+	</div>
+	</div>
+	</div>
+	</div>
 
 <form action='.' method='POST'>{% csrf_token %}
 {{ form.media }}
@@ -13,7 +26,7 @@
 
 </form>
 
-
+</div>
 
 
 {% endblock %}

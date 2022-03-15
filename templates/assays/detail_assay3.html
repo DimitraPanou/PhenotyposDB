@@ -1,0 +1,76 @@
+
+{% extends 'base4.html' %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+
+              <div class="card-body table-responsive p-0" style="display: none;">
+                    <table id="example5" class="table table-dark">     
+                        <thead>
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Gender
+                                </th>
+                                <th>
+                                    Age ({{object.mouse_age}})
+                                </th>
+                                <th>
+                                    Genotype
+                                </th>
+                                <th>
+                                    Induced
+                                     <span data-tip="The number of active units of the asset multiplied by the price of one unit" class="btn" data-toggle="popover" title='The number of active units of the asset multiplied by the price of one unit'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                   
+                                </th>
+                                <th>
+                                    Treated
+                                </th>
+                                <th>
+                                    Other Mouse Information
+                                    <span data-tip="cage number, mouse number, ear marking" class="btn" data-toggle="popover" title='Cage number, mouse number, ear marking'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                    
+                                </th>
+                                <th>
+                                    Environmental data
+                                    <span data-tip="housing, water, light cycles, temperature" class="btn" data-toggle="popover" title='Housing, water, light cycles, temperature'><svg width="20" viewBox="0 0 18 18" fill="none" class="svg-icon" area-label="question-mark icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.918 10.7481H10.018V10.5941C10.018 10.0201 10.214 9.55809 10.816 8.99809C11.824 8.06009 12.104 7.45809 12.104 6.57609C12.104 5.48409 11.432 4.00009 9.136 4.00009C6.812 3.98609 6.07 5.58209 6 6.75809H7.974C8.044 6.08609 8.31 5.54009 9.108 5.54009C9.78 5.54009 10.088 5.97409 10.088 6.50609C10.088 6.99609 9.906 7.41609 9.332 7.93409C8.296 8.85809 7.918 9.55809 7.918 10.4821V10.7481ZM7.918 13.7861H10.018V11.4621H7.918V13.7861Z" fill="#FCC117"></path><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#FCC117"></path></svg></span>                                    
+                                </th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for m in mouselist %}
+                              <tr>
+                                <td>
+                                  <span>
+                                  <img class="img-circle img-size-32 mr-2" src="{% static 'dist/img/mouse4.png' %}">
+                                  <strong>  {{ m.mid }}</strong>
+                                  </span>
+                                </td>
+                                <td>{{ m.gender|default_if_none:"" }}</td>                                
+                                <td>{{ m.age|default_if_none:"" }}</td>
+                                <td>{{ m.genotype|default_if_none:"" }}</td>
+                                <td>{{ m.induced|default_if_none:"" }}</td>
+                                <td>{{ m.treated|default_if_none:"" }}</td>
+                                <td>{{ m.mouse_info|default_if_none:"" }}</td>
+                                <td>{{ m.other|default_if_none:"" }}</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+              </div>
+              <!-- /.card-body -->
+<div id="container1" style="width:100%; height:300px;"></div>
+
+                  
+
+  {% endif %}  
+
+
+{% endblock %}
+
+
+
+

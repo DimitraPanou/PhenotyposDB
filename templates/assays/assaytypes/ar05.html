@@ -1,0 +1,97 @@
+{% extends 'assays/detail_assay2.html' %}
+
+{% block measured_values %}
+  Bone μCT <br>
+  - BV/TV, BS/TV <br>
+  - Trabecular thickness, number, seperation
+{% endblock %}
+
+{% block min_models %}
+ 7M + 7F
+{% endblock %}
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>A <b>μCT </b> phenotypic assay was performed on <b>{{total}} mice</b>.</p>
+                    <p> The charts show the results of measuring <b>parameters BV/TV, BS/TV, Trabecular thickness/number/seperation </b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared the to control dataset</p>
+                    <p> In this assay we observe {{genotypecount}} genotypes which are <b>{% for gene in genotype %}{% if gene %} {{gene}}{% endif %}{% endfor %}</b> .</p>
+{% endblock %}
+
+{% block assay_content %}
+ <!-- /.card -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title" id="Measurements">Measurements</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body" id="tabledata">
+            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <!--
+                <div class="row">
+                  <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length" id="example1_length">
+                      <label> Show <select name="example1_length" aria-controls="example1" class="custom-select custom-select-md form-control form-control-md"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries </label>
+                    </div>
+                  </div>
+                </div>
+              -->
+              <div class="row">
+                <div class="col-sm-12">
+                  <table id="example1" class="table table-bordered table-hover dataTable" aria-describedby="example1_info">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Mouse ID</th>
+                        <th>Mouse Genotype</th>        
+                        <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
+                        <th>Measurement Date</th>
+                        <th>BV/TV</th>
+                        <th>BS/TV</th>
+                        <th>Trabecular Thickness</th>
+                        <th>Trabecular Number</th>
+                        <th>Trabecular Seperation</th>
+                        <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
+                        <th>Comments</th>                  
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for assay in measures %}
+                      <tr class="table-row" data-href="#tabledata" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"><h5><b>Mouse {{assay.mid}}</h5>' data-content='
+                        <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender|default_if_none:""}}</p>
+                        <p><b>Genotype</b>: {{assay.mid.genotype|default_if_none:""}}</p> 
+                        <p><b>Date of Birth</b>: {{assay.mid.date|default_if_none:""}}</p> 
+                        <p><b>Age</b>: {{assay.mid.age|default_if_none:""}} </p> 
+                        <p><b>Induced</b>: {{assay.mid.induced|default_if_none:""}}</p>     
+                        <p><b>Treated</b>: {{assay.mid.treated|default_if_none:""}}</p> 
+                        <p><b>Diet</b>: {{assay.mid.diet|default_if_none:""}}</p> 
+                        <p><b>Other Mouse Information</b>: {{assay.mid.mouse_info|default_if_none:""}}</p>
+                        <p><b>Other environmental data</b>: {{assay.mid.other|default_if_none:""}}</p></div>'>                    <!--<td>{{ assay.assayid }}</td>-->       
+                          <!--<td>{{ assay.assayid }}</td>-->
+                          <td>{{ assay.mid }}</td>
+                          <td>{{ assay.mid.genotype|default_if_none:"" }}</td>          
+                          <td>{{ assay.timepoint|default_if_none:"" }}</td>
+                          <td>{{ assay.measurement_date|default_if_none:"" }}</td>
+                          <td>{{ assay.bvtv|default_if_none:"" }}</td>
+                          <td>{{ assay.bstv|default_if_none:"" }}</td>
+                          <td>{{ assay.trabecular_thickness|default_if_none:"" }}</td>
+                          <td>{{ assay.trabecular_number|default_if_none:"" }}</td>
+                          <td>{{ assay.trabecular_seperation|default_if_none:"" }}</td>
+                          <td>{{ assay.age|default_if_none:"" }}</td>
+                          <td>{{ assay.comment|default_if_none:"" }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+

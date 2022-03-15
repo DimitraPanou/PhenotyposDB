@@ -3,12 +3,22 @@
 {% block content %}
 
   {% block content_header %}
-    <h2>{{object.code}}</h2>
-    <p>
-      {{object.name}}
-    </p>
-    <a class="btn btn-secondary btn-lg mt-1 mb-1 ti-pencil" href="{% url 'assaytype-detail-update' object.id %}"></a>
-
+  <div class="container">
+    <div class="card">
+      <div class="card-body">
+        <div class="flexbox flex-wrap">
+        <div class="img-thumbnail display-4 align-self-center mr-3">
+        <i class="ti-write"></i>
+        </div>
+        <div class="flex-grow align-self-center">
+        <h1>{{object.code}}</h1>
+        <p>{{object.name}}</p>
+        </div>
+        <p><a class="btn btn-white btn-lg mt-1 mb-1 ti-pencil" href="{% url 'assaytype-detail-update' object.id %}"></a></p>
+        </div>
+      </div>
+    </div>
+</div>
   {% endblock %}
 
 <br>
@@ -19,16 +29,14 @@
     <h5>Purpose:</h5>
     <hr>
     <div class="card card-body">
-    <p>
       {{object.purpose|safe}}
-    </p>
     </div>
   </div>
 </div>
-{% endif %} 
-  <div class="row">
+{% endif %}
+<div class="row">
     {% if object.experimental_design %}
-    <div class="col-lg-4 d-flex align-items-stretch">
+    <div class="col-md-12 d-flex align-items-stretch">
         <div class="card">
         <div class="card-header">
           <h5>Experimental Design</h5>
@@ -40,9 +48,11 @@
         </div>
       </div>
     </div>
-    {% endif %} 
+    {% endif %}
+</div>
+  <div class="row">
     {% if object.equipment %}
-    <div class="col-lg-4 d-flex align-items-stretch">
+    <div class="col-lg-6 d-flex align-items-stretch">
         <div class="card">
         <div class="card-header">
           <h5>Equipment</h5>
@@ -56,7 +66,7 @@
     </div>
   {% endif %}    
     {% if object.supplies %}
-    <div class="col-lg-4 d-flex align-items-stretch">
+    <div class="col-lg-6 d-flex align-items-stretch">
         <div class="card">
         <div class="card-header">
           <h5>Supplies</h5>
@@ -86,6 +96,7 @@
     </div>
   </div>
   {% endif %}
+<!--
     <div class="row">
     {% if object.troubleshooting %}
     <div class="col-lg-4 d-flex align-items-stretch">
@@ -129,6 +140,55 @@
       </div>
     </div>
     {% endif %}   
+  </div>
+-->
+    <div class="row">
+    {% if object.troubleshooting %}
+      <div class="col-md-12">
+        <div class="card">
+        <div class="card-header">
+          <h5>troubleshooting</h5>
+        </div>
+        <div class="card-body">
+        <p>
+          {{object.troubleshooting|safe}}
+        </p>
+        </div>
+      </div>
+      </div>
+    {% endif %}  
+  </div>
+    <div class="row">
+    {% if object.appendix %}
+      <div class="col-md-12">
+        <div class="card">
+        <div class="card-header">
+          <h5>Appendix</h5>
+        </div>
+        <div class="card-body">
+        <p>
+          {{object.appendix|safe}}
+        </p>
+        </div>
+      </div>
+      </div>
+    {% endif %}  
+  </div>
+  <div class="row">
+    {% if object.references %}
+      <div class="col-md-12">
+        <div class="card">
+        <div class="card-header">
+          <h5>References</h5>
+        </div>
+        <div class="card-body">
+        <p>
+          {{object.references|safe}}
+        </p>
+        </div>
+      </div>
+      </div>
+    {% endif %}  
   </div>
 </div>
 

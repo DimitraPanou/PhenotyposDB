@@ -15,10 +15,10 @@
       <div class="col-12">
         <div class="card card-dark">
           <div class="card-header">
-            <h3 class="card-title">Data</h3>
+            <h3 class="card-title" id="Measurements">Data</h3>
           </div>
           <!-- /.card-header -->
-          <div class="card-body">
+          <div class="card-body" id="tabledata">
             <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
               <div class="row">
                 <div class="col-sm-12">
@@ -27,7 +27,7 @@
                 <tr>
                     <th>Mouse ID</th>
                     <th>Mouse Genotype</th>        
-                    <th>Timepoint ({{object.timesteps_in}})</th>        
+                    <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                     <th>Measurement Date</th>
                     <th>Inflammation score small intestine</th>
                     <th>Epithelial damage small intestine</th>
@@ -48,13 +48,13 @@
                     <th>Lumen exfoliation large intestine</th>        
                     <th>Crypt damage  large intestine</th>                  
                     <th>Endothelial cell activation large intestine</th>                  
-                    <th>Age (days)</th>
+                    <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                     <th>Comments</th>
                 </tr>
               </thead>
               <tbody>
                 {% for assay in measures %}
-                  <tr class="table-row" data-href="#" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<div class="row"><div class="col-md-3"><img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"></div><div class="col-md-9"><h5><b>Mouse {{assay.mid}}</h5></div></div' data-content='
+                  <tr class="table-row" data-href="#tabledata" class="btn" data-toggle="popover" data-img="../../static/dist/img/phenLogo.png" title='<div class="row"><div class="col-md-3"><img src="../../static/dist/img/phenLogo.png" class="img-circle mr-sm-5" alt="Sample Image" width="40" height="40"></div><div class="col-md-9"><h5><b>Mouse {{assay.mid}}</h5></div></div' data-content='
                     <div class="media"></div><div class="media-body"><p><b>Gender</b>: {{assay.mid.gender|default_if_none:""}}</p>
                     <p><b>Genotype</b>: {{assay.mid.genotype|default_if_none:""}}</p> 
                     <p><b>Date of Birth</b>: {{assay.mid.date|default_if_none:""}}</p> 

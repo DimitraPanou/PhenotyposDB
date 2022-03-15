@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% block content_header %}
+      <h2 class="text-center">Mouse List</h2>
+    <hr>
+    {% endblock %}
+  <div class="row">
+    <div class="col-xs-3">
+      <div class="card bg-light">
+        <div class= "card-header text-center">
+          <h4>Filter</h4>
+        </div>
+      <div class="card-body">
+        
+        <form method="get">
+          {% csrf_token %}
+          {{myFilter.form|crispy}}
+
+          <button class="btn btn-secondary btn-block" type="submit">Filter</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+    <div class="col"> 
+        <div class="card-body table-responsive p-0">
+          <table class="table table-striped projects">     
+              <thead class="bg-newteal">
+                  <tr>
+                      <th style="width: 8%">
+                          ID
+                      </th>
+                      <th style="width: 8%">
+                          Strain
+                      </th>                   
+                      <th style="width: 8%" class="text-center">
+                          Tail Number
+                      </th>                      
+                      <th style="width: 12%">
+                          Genotype
+                      </th>
+                      <th style="width: 8%">
+                          Induced/Non Induced
+                      </th>
+                      <th style="width: 8%">
+                          Treated/Non Treated
+                      </th>                                                                 
+                      <th style="width: 8%">
+                          Gender
+                      </th>                      
+                      <th style="width: 8%">
+                          Age
+                      </th>
+                      <th style="width: 8%">
+                          Date of Birth
+                      </th>
+                      <th style="width: 8%">
+                          Diet
+                      </th>
+                      <th style="width: 8%">
+                          Mouse Information
+                      </th>
+                        <th style="width: 8%">
+                          Other Environmental Parameters
+                        </th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for mouse in mouselist %}
+                    <tr>               
+                      <td>{{ mouse.mid }}</td>
+                      <td>{{ mouse.strain }}</td>
+                      <td>{{ mouse.tail_num }}</td>
+                      <td>{{ mouse.genotype }}</td>
+                      <td>{{ mouse.induced }}</td>
+                      <td>{{ mouse.treated }}</td>
+                      <td>{{ mouse.gender }}</td>
+                      <td>{{ mouse.age }}</td>
+                      <td>{{ mouse.dateofBirth }}</td>
+                      <td>{{ mouse.diet }}</td>
+                      <td>{{ mouse.mouse_info }}</td>
+                      <td>{{ mouse.other }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+        <!-- /.card-body -->
+{% endblock %}
+
+
+
+
+

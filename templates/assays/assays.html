@@ -64,84 +64,109 @@
   </div>
     <div class="col"> 
         <div class="card-body table-responsive p-0">
-          <table class="table table-striped projects">     
-              <thead class="bg-newteal">
+          <!--<table class="table table-striped projects">-->
+          <table id="example2" class="table projects dataTable">     
+              <thead class="bg-teal disabled" style="top: 0px;">
                   <tr>
-                      <th style="width: 2%"></th>
-                      <th style="width: 8%">
+                    <th>#</th>
+                      <th>
                           Code
                       </th>
-                      <th style="width: 8%">
+                      <th>
                           Name
                       </th>                   
-                      <th style="width: 8%" class="text-center">
+                      <th>
                           Status
+                      </th>
+                      <th>
+                          Facility
                       </th>                      
-                      <th style="width: 12%">
-                          Members
+                      <th>
+                          Project Members
                       </th>
-                      <th style="width: 8%">
-                          Staff
+                      <th>
+                          Author
                       </th>
-                      <th style="width: 8%">
+                      <th>
                           Initiation Date
                       </th>                                                                 
-                      <th style="width: 8%">
+                      <th>
                           Created at
                       </th>
-                        <th style="width: 18%">
-                        </th>
+                        <th>
                   </tr>
               </thead>
               <tbody>
                 {% for assay in list_assays %}
-                  {% if assay.author == user or  assay.scientist == user%}
+                  {% if assay.author == user or assay.scientist_in_charge == user or groups.all.0.name == "Admin"%}
                     <tr class="table-row"data-href="{% url 'assay-detail' assay.id %}">
                   {% else %}
                     <tr>
-                  {% endif %}                 
+                  {% endif %}
+                      <td data="rank"></td>                 
                       <td>
                         <li class="list-inline-item">
-                          <img alt="Avatar" id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="35" height="35">
+                          <img alt="Avatar" id="{{assay.id}}" class="squareicon user-image img-circle elevation-2" width="25" height="25">
                         </li>
+                        <li class="list-inline-item"><span> {{ assay.type }}</span></li>
                       </td>
-                      <td>{{ assay.type }}</td>
-                      <td>{{ assay.name }}</td>
+                      <td>{{ assay.name|default_if_none:"-" }}</td>
                       <td class="project-state">
                         {% if assay.counter %}
                           <span class="badge bg-cool">Success</span>
                         {% else %}
                           <span class="badge badge-warning">Pending</span>
-                          <span class="badge badge-cancel">No entries</span>
                         {% endif %}
-                      </td> 
+                      </td>
+                      <td>
+                        {% if assay.type.facilitylong.id == 1%}
+                          <h3 class="badge bg-teal">{{ assay.type.facilitylong|default_if_none:"-" }}</h3>        
+                        {% elif assay.type.facilitylong.id == 2 %}
+                          <h3 class="badge bg-navy">{{ assay.type.facilitylong|default_if_none:"-" }}</h3>
+                        {% elif assay.type.facilitylong.id == 3 %}
+                          <h3 class="badge badge-secondary">{{ assay.type.facilitylong|default_if_none:"-" }}</h3>
+                        {% elif assay.type.facilitylong.id == 4 %}
+                          <h3 class="badge bg-dark">{{ assay.type.facilitylong|default_if_none:"-" }}</h3>
+                        {% else %}
+                          <h3 class="badge bg-olive">{{ assay.type.facilitylong|default_if_none:"-" }}</h3>
+                        {% endif %}
+                      </td>
                       <td>
                           <ul class="list-inline">
+                             <!--{% for m in assay.listmembers %}
                               <li class="list-inline-item">
-                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
+                                  <img alt="avatar" class="avatar" src="{{ m.profile.image.url }}">
                               </li>
-                            {% if assay.scientist %}
+                              {% endfor %}-->
                               <li class="list-inline-item">
-                                  <img alt="Avatar" class="table-avatar" src="{{ assay.scientist.profile.image.url }}">
+                                  <img alt="avatar" class="avatar" src="{{ assay.author.profile.image.url }}">
+                              </li>
+                            {% if assay.scientist_in_charge|default_if_none:"" %}
+                              <li class="list-inline-item">
+                                  <img alt="avatar" class="avatar" src="{{ assay.scientist_in_charge.profile.image.url }}">
                               </li>
                             {% endif %}
                           </ul>
                       </td>
-                      <td>{{ assay.staff }}</td>
-                       <td>{{ assay.measurement_day }}</td>
+                      <td>
+                              <li class="list-inline-item">
+                                  <img alt="Avatar" class="table-avatar" src="{{ assay.author.profile.image.url }}">
+                              </li>
+                      </td>
+                       <td>{{ assay.measurement_day|default_if_none:"-" }}</td>
                       <td>{{ assay.created_at }}</td>
-                      {% if assay.author == user or assay.scientist == user%}
+                      {% if assay.author == user or assay.scientist_in_charge == user%}
                         <td class="project-actions text-right">
-                            <a class="btn bg-newteal btn-sm" href="{% url 'assay-detail' assay.id %}">
+                            <a class="btn bg-newteal btn-xs" href="{% url 'assay-detail' assay.id %}">
                                 <i class="fas fa-eye">
                                 </i>
                             </a>
 
-                            <a class="btn bg-newteal btn-sm" href="{% url 'assay-update' assay.id %}">
+                            <a class="btn bg-newteal btn-xs" href="{% url 'assay-update' assay.id %}">
                                 <i class="fas fa-pencil-alt">
                                 </i>
                             </a>
-                            <a class="btn btn-danger btn-sm" href="{% url 'assay-delete' assay.id %}">
+                            <a class="btn btn-danger btn-xs" href="{% url 'assay-delete' assay.id %}">
                                 <i class="fas fa-trash">
                                 </i>
                             </a>
