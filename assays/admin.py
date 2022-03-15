@@ -17,7 +17,8 @@ class ImageInline(admin.TabularInline):
 
 @admin.register(Assay)
 class AssayAdmin(ImportExportModelAdmin):
-	list_display = ('code', 'name','type','version','staff','measurement_day','scientist_in_charge','assayqc','rawdata_file','comments')
+	fields = ['code','name','type','version','staff','measurement_day','scientist_in_charge','members','assayqc','rawdata_file','comments']
+	list_display = ('code','name','type','version','staff','measurement_day','scientist_in_charge','get_members','assayqc','rawdata_file','comments')
 	inlines = [
         ImageInline
     ]

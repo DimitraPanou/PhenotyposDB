@@ -31,7 +31,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home_view, name='home'),
     path('chart',chart_view, name='chart'),
-    path('assays/<int:pk>/pdf',render_pdf_view, name='pdf'),
 
     #Assays
     #path('assays/', include('assays.urls', namespace="assays")),
@@ -44,18 +43,20 @@ urlpatterns = [
 	path('assays/<str:username>/lab',FacilityAssaysListView.as_view(),name='lab-assays'),
 
 	path('assays/add/',add_assay,name='add_assay'),
-#
 #	path('assays/add/',AssaysCreateView.as_view(),name='add_assay'),
 	path('assays/update/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
 	path('assays/<int:pk>/', AssaysDetailView.as_view(), name='assay-detail'),
 	path('assays/charts/<int:pk>/', AssaysDetailView2.as_view(), name='assay-detail2'),
 	path('assays/report/', add_report, name='build-report'),
 	#path('assays/<int:pk>/', AssaysUpdateView.as_view(), name='assay-update'),
-#
 	#path('assays/delete/<int:pk>/', assay_delete, name='assay_delete'),
 	path('assays/<int:pk>/delete/', AssaysDeleteView.as_view(), name='assay-delete'),
+	path('assays/<int:pk>/pdf',render_pdf_view, name='pdf'),
+	path('assays/<int:pk>/add-images/', uploadImage, name='uploadImage'),
 	#path('assays/<int:pk>/delete/', assay_delete, name='assay-delete'),
-#
+	######################################
+	##             types                ##
+	######################################
 	path('assays/types/',AtypeListView.as_view(),name='atypes'),
 #
 	path('assays/types/<int:pk>/', AtypeDetailView.as_view(), name='assaytype-detail'),
@@ -67,7 +68,6 @@ urlpatterns = [
 	path('assays/types/update/<int:pk>/', AtypeUpdateView.as_view(), name='assaytype-update'),
 #
 	path('assays/types/<int:pk>/delete/', AtypeDeleteView.as_view(), name='assaytype-delete'),
-	path('assays/<int:pk>/addimages', uploadImage, name='uploadImage'),
 
 	#path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
 
@@ -95,7 +95,6 @@ urlpatterns = [
 	####################################
 	path('register', register, name='register'),
 	path('userprofile', profile, name='profile'),
-	#path('profile', profile, name='profile'),
 	path('test', test, name='test'),
 	path('login', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
 	path('logout', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),

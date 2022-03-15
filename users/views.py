@@ -53,8 +53,9 @@ def profile(request):
 @allowed_users(allowed_roles=['Admin'])
 def editUser(request,pk):
     user1 = User.objects.get(id=pk)
-    u_form = UserUpdateForm(request.POST, instance=user1)
-    p_form = UserProfileUpdateForm(request.POST,request.FILES, instance=user1.profile)
+    print(user1, user1.id, user1.profile, pk)
+    u_form = UserUpdateForm(instance=user1)
+    p_form = UserProfileUpdateForm(instance=user1.profile)
     if request.method == 'POST':
         u_form = UserUpdateForm(instance=user1)    
         p_form = UserProfileUpdateForm(request.POST,
@@ -64,7 +65,7 @@ def editUser(request,pk):
             messages.success(request, 'Your account has been updated!')
             u_form.save()
             p_form.save()
-            return redirect('edit-user',pk=user1.id)
+            return redirect('edit-user',pk=pk)
         else:
             messages.error(request,'Please correct the error below.')    
     context = {
@@ -72,7 +73,6 @@ def editUser(request,pk):
         'u_form': u_form,
         'p_form': p_form
     }
-
     return render(request, 'users/edit-profile.html', context)
 
 @allowed_users(allowed_roles=['Admin'])

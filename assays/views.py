@@ -17,7 +17,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from users.decorators import allowed_users
-
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 #from .forms import AssayForm
 from .forms import AssayForm, Assay2Form, AtypeForm, AtypeExtraForm, ImageForm, ReportForm
@@ -29,7 +29,7 @@ from django.views.generic import FormView
 from .functions import handle_uploaded_file, returnTemplateName, get_parameters, parameterMeasures
 from .filters import AssayFilter, MouseFilter
 from django.db.models import Count
-
+from django.http import HttpResponseRedirect
 ####################
 #    Assays        #
 ####################
@@ -39,8 +39,12 @@ def assayslist(request):
 	myFilter = AssayFilter(request.GET)
 	assays = myFilter.qs 
 	for assay in assays:
-		print(len(returnMeasurements(assay)))
+		#print(len(returnMeasurements(assay)))
 		assay.counter = len(returnMeasurements(assay))
+		assay.listmembers = assay.get_members()
+		#for m in assay.members:
+		#	print(m.profile.first_name)
+		#	print(m.profile.image.url)
 	context = {'list_assays':assays,
 	'myFilter':myFilter}
 	return render(request, 'assays/assays.html',context)
@@ -72,6 +76,9 @@ def add_assay(request, *args, **kargs):
         form = AssayForm(request.user,request.POST, request.FILES)
         if form.is_valid():
             form.instance.author = request.user
+            form.instance.members.add(request.user)
+            if(form.instance.scientist_in_charge):
+            	form.instance.members.add(form.instance.scientist_in_charge)
             print(request.user.profile.first_name)
             test = form.save()
             #for filename, file in request.FILES.items():
@@ -112,25 +119,28 @@ def uploadImage(request, pk):
 	if request.method == 'POST':
 		form = ImageForm(request.POST, request.FILES)
 		if form.is_valid():
-			#form.instance.assayid = assay
+			assay = Assay.objects.get(id=pk)
+			form.instance.assayid = assay
 			test = form.save()
-			if(handle_uploaded_file(test)==-1):
+			'''if(handle_uploaded_file(test)==-1):
 				html = "<html><body>Problem with the file.</body></html>"
-				return HttpResponse(html)
-			return redirect('uploadImage')
-			#return(reverse_lazy('assaytype-detail', kwargs={'pk': self.assay.id}))
-		else:
-			form = ImageForm()
+				return HttpResponse(html)'''
+			#return redirect('uploadImage')
+			return HttpResponseRedirect('/assays/%d/'%assay.id)
+			#return(redirect('assay-detail', args=(assay.id)))
+			#reverse_lazy('assay-update',args=(self.object.id,))
+	else:
+		form = ImageForm()
 	return render(request, 'assays/imageupload.html', {'imageform':form})
 
 @allowed_users(allowed_roles=['Admin','Scientific staff','Lab member'])
 def updateAssay(request, pk):
 	assay = Assay.objects.get(id=pk)
-	form = AssayForm(request.user,request.FILES, instance=assay)
+	form = Assay2Form(request.user,request.FILES, instance=assay)
 
 	if request.method == 'POST':
-		form = AssayForm(request.user,request.POST, request.FILES, instance=assay)
-		if form.is_valid():
+		form = Assay2Form(request.user,request.POST, instance=assay)
+		if form.is_valid(self.request.user,form):
 			form.instance.updated_by = self.request.user
 			form.save()
 			return redirect('assays')
@@ -144,9 +154,18 @@ class AssaysUpdateView(LoginRequiredMixin,UpdateView):
 	form_class = Assay2Form
 	success_url = '/assays/'
 
+	def get_success_url(self, **kwargs):
+		return reverse_lazy('assay-update',args=(self.object.id,))
+
 	def form_valid(self, form):
-		form.instance.updated_by = self.request.user
-		return super().form_valid(self.request.user,form)
+		test = form.save(commit=False)
+		test.updated_by = self.request.user
+		print(test.updated_by)
+		print("Edw")
+		print(test.members)
+		#form.instance.updated_by = self.request.user
+		test.save()
+		return redirect('assays')
 
 class AssaysDeleteView(DeleteView):
 	model = Assay
@@ -159,7 +178,7 @@ class AssaysDeleteView(DeleteView):
 	#assay.delete()
 	return redirect('assays')
 '''
-class AssaysDetailView2(DetailView):
+class AssaysDetailView2(LoginRequiredMixin,DetailView):
 	model = Assay
 	template_name = 'assays/detail_assay3.html'
 
@@ -295,6 +314,14 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 		#images = self.get_object().associated_images.annotate()
 
 		#	kwargs['par']=request.POST.get('parameterName')
+		'''form = ImageForm(self.request.POST, self.request.FILES or None)
+		if form.is_valid():
+			form.instance.assayid = self
+			test = form.save()
+		else:
+			form = ImageForm()
+		kwargs['imageform']= form
+		'''
 		measures = switcher.get(self.object.type.id,"Ivalid")
 		kwargs['measures'] = measures
 		[parameters,parameters_names] = get_parameters(self.object)

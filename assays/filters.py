@@ -23,7 +23,7 @@ class AssayFilter(django_filters.FilterSet):
 	class Meta:
 		model = Assay
 		fields = '__all__'
-		exclude = ['code','measurement_day','version', 'comments','rawdata_file','assayqc','pipeline','updated_by','created_at','updated_at','mouse_age','duration','timesteps_in']
+		exclude = ['code','measurement_day','version', 'comments','rawdata_file','assayqc','pipeline','updated_by','members','created_at','updated_at','mouse_age','duration','timesteps_in']
 
 class MouseFilter(django_filters.FilterSet):
 	gender = ModelChoiceFilter(field_name='gender',queryset=Mouse.objects.all())

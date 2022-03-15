@@ -70,6 +70,7 @@ class Assay(models.Model):
     pipeline = models.ForeignKey(Pipeline, on_delete=models.DO_NOTHING, related_name='assays',blank=True, null=True)
     updated_by = models.ForeignKey(User,on_delete=models.DO_NOTHING, related_name='updated_by_user',blank=True, null=True)
     scientist_in_charge = models.ForeignKey(User, on_delete=models.DO_NOTHING,db_column='scientist_in_charge', related_name='scientists',related_query_name='scientist_in_charge',blank=True, null=True)
+    members = models.ManyToManyField(User,db_column='members', related_name='members',related_query_name='members',blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     mouse_age = models.CharField(
@@ -84,13 +85,14 @@ class Assay(models.Model):
         default='days',
     )
 
-
-
     def get_absolute_url(self):
         return reverse('assay-detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return u'{0}\t\t{1}'.format(self.name, self.code)
+
+    def get_members(self):
+        return u"\n".join([str(p) for p in self.members.all()])
 
 class AssociatedImage(models.Model):
     assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='associated_images')  # Field name made lowercase.
@@ -961,6 +963,42 @@ class Hpa02(models.Model):
         managed = True
         db_table = 'HPA-02'
 
+#############################################
+#              IOAKIMIDIS                   #
+#############################################
+
+class GI05(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='gi05s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    fecal_cfus = models.FloatField(blank=True, null=True)
+    spleen_cfus = models.FloatField(blank=True, null=True)
+    spleen_weight = models.FloatField(blank=True, null=True)
+    body_weight= models.FloatField(blank=True, null=True)
+    spleen_body_ratio = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'GI-05'
+
+class GI06(models.Model):
+    assayid = models.ForeignKey('Assay', on_delete=models.CASCADE, related_name='gi06s')  # Field name made lowercase.
+    mid = models.ForeignKey('Mouse', on_delete=models.CASCADE, db_column='mid')
+    timepoint = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    measurement_date = models.DateField(blank=True, null=True)
+    firmicutes = models.FloatField(blank=True, null=True)
+    bacteroidetes = models.FloatField(blank=True, null=True)
+    proteobacteria = models.FloatField(blank=True, null=True)
+    firmicutes_bacteroidetes_ratio = models.FloatField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'GI-06'
 
 class Mouse(models.Model):
     GENDER = (

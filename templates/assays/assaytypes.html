@@ -15,9 +15,10 @@
    </div> 
   {% endblock %}
     <h1></h1>
-  <table class='table sortable table-bordered table-condensed table-striped table-hover'>
+  <table id='example2' class='table sortable table-bordered table-condensed table-striped table-hover'>
     <thead>
       <tr>
+        <th>#</th>
         <th>Code</th>
         <th>Name</th>
         <th>Facility</th>
@@ -32,16 +33,29 @@
       {% for type in list_assays %}
         <tr class="table-row" data-href="{% url 'assaytype-detail' type.id %}">
           <!--<td>{{ assay.assayid }}</td>-->
-          <td>{{ type.code }}</td>
-          <td>{{ type.name }}</td>
-          <td>{{ type.facilitylong }}</td>
-          <td>{{ type.service_type }}</td>
-          <td>{{ type.staff }}</td>
-          <td>{{ type.publication_date }}</td>
-          <td>{{ type.version }}</td>
+          <td></td>
+          <td>{{ type.code|default_if_none:"-"}}</td>
+          <td>{{ type.name|default_if_none:"-"}}</td>
           <td>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1 ti-pencil" href="{% url 'assaytype-update' type.id %}"></a>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1 ti-close" href="{% url 'assaytype-delete' type.id %}"></a>
+          {% if type.facilitylong.id == 1%}
+            <h3 class="badge bg-teal">{{ type.facilitylong|default_if_none:"-" }}</h3>        
+          {% elif type.facilitylong.id == 2 %}
+            <h3 class="badge bg-navy">{{ type.facilitylong|default_if_none:"-" }}</h3>
+          {% elif type.facilitylong.id == 3 %}
+            <h3 class="badge badge-secondary">{{ type.facilitylong|default_if_none:"-" }}</h3>
+          {% elif type.facilitylong.id == 4 %}
+            <h3 class="badge bg-dark">{{ type.facilitylong|default_if_none:"-" }}</h3>
+          {% else %}
+            <h3 class="badge bg-olive">{{ type.facilitylong|default_if_none:"-" }}</h3>
+          {% endif %}
+        </td>
+          <td>{{ type.service_type|default_if_none:"-" }}</td>
+          <td>{{ type.staff|default_if_none:"-" }}</td>
+          <td>{{ type.publication_date|default_if_none:"-" }}</td>
+          <td>{{ type.version|default_if_none:"-" }}</td>
+          <td>
+            <a class="btn btn-primary btn-xs mt-1 mb-1 ti-pencil" href="{% url 'assaytype-update' type.id %}"></a>
+            <a class="btn btn-secondary btn-xs mt-1 mb-1 ti-close" href="{% url 'assaytype-delete' type.id %}"></a>
           </td>
 
         </tr>

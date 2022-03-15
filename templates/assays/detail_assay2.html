@@ -388,10 +388,16 @@
                     </div>
                   {% endfor %}
                 </div>
+                <!--<form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ imageform|crispy }}
+                    <button type="submit" class="btn btn-primary btn btn-bold btn-round btn-w-xl btn-primary float-right">Add Image</button>
+                </form>
+            -->
               </div>
               <div class="card-footer">
                 <div class="p-1">
-                  <button type="button" class="btn-sm btn-dark"  data-target="#">Add Images</button>
+                  <a href="{% url 'uploadImage' object.id %}"><button type="button" class="btn-sm btn-dark">Add Image</button></a>
                 </div>
               </div>
             </div>

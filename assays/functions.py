@@ -10,7 +10,7 @@ tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
 				'BIOCHEM-06','BIOCHEM-07','BIOCHEM-08','CBA-01','CBA-02','CBA-03','ENDO-01','FC-01','FC-03','FC-04',
 				'FC-07','FC-08','HEM-01','HPIBD-01','HPIBD-02','HPIBD-03','HPIBD-04','HPA-02','HPNI-01','IINFLC-01',
 				'IINFLC-02','IINFLC-03','IINFLC-04','IINFLC-05','IINFLC-06','NI-01','NI-02-GRS-01','NI-02-OFD-01',
-				'NI-02-ROT-01','PR-02','AR-02','AR-03','AR-04','AR-05','AR-06','AR-07',"info"
+				'NI-02-ROT-01','PR-02','AR-02','AR-03','AR-04','AR-05','AR-06','AR-07','GI-05','GI-06',"info"
 				]
 
 
@@ -2083,6 +2083,82 @@ def data_endo01(data,assay):
 		if(flag):				
 			experiment.save()
 
+def data_gi05(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = GI05()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('spleen weight' in key.lower()):
+					experiment.spleen_weight = data[key][i]
+				elif ('cfus/g spleen' in key.lower()):
+					experiment.spleen_cfus= data[key][i]
+				elif ('sample weight' in key.lower()):
+					experiment.weight= data[key][i]
+				elif ('fecal cfus' in key.lower()):
+					experiment.fecal_cfus= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
+def data_gi06(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = GI06()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' in key):
+					#Return mouse id from mouse table
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					experiment.timepoint= data[key][i]
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('measurement' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d				 
+				elif ('firmicutes' in key.lower()):
+					experiment.firmicutes= data[key][i]
+				elif ('bacteroidetes' in key.lower()):
+					experiment.bacteroidetes= data[key][i]
+				elif ('proteobacteria' in key.lower()):
+					experiment.proteobacteria= data[key][i]
+				elif ('ratio' in key.lower()):
+					experiment.firmicutes_bacteroidetes_ratio= data[key][i]										
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+		if(flag):				
+			experiment.save()
+
 #Returns number of rows & number of columns with data in excel tab  
 def find_edges(sheet):
     row = sheet.max_row
@@ -2234,6 +2310,10 @@ def handle_uploaded_file(assayobject):
 		data_fc04(data,assayobject)
 	if(assayobject.type.code == "HPA-02"):
 		data_hpa02(data,assayobject)
+	if(assayobject.type.code == "GI-05"):
+		data_gi05(data,assayobject)
+	if(assayobject.type.code == "GI-06"):
+		data_gi06(data,assayobject)
 
 def returnTemplateName(assayobject):
 	switcher ={
@@ -2278,33 +2358,11 @@ def returnTemplateName(assayobject):
 		43:'assays/assaytypes/fc03.html',
 		44:'assays/assaytypes/hpa02.html',
 		45:'assays/assaytypes/fc04.html',
+		46:'assays/assaytypes/gi05.html',
+		47:'assays/assaytypes/gi06.html',
 	}
 	return switcher.get(assayobject.id,"Ivalid")
 
-'''
-	switcher ={
-		6: data_iinflc02(data,assayobject),
-		4: data_iinflc03(data,assayobject),
-		5: data_iinflc04(data,assayobject),
-		7: data_ni01(data,assayobject),		
-		8: data_ni02rot01(data,assayobject),		
-		9: data_ni02ofd01(data,assayobject),		
-		10: data_ni02grs01(data,assayobject),		
-		11: data_hem01(data,assayobject),		
-		12: data_hpibd02(data,assayobject),		
-		13: data_biochem01(data,assayobject),		
-		14: data_biochem02(data,assayobject),		
-		15: data_biochem03(data,assayobject),		
-		16: data_biochem04(data,assayobject),		
-		17: data_biochem05(data,assayobject),		
-		18: data_biochem06(data,assayobject),		
-		19: data_biochem07(data,assayobject),		
-		20: data_biochem08(data,assayobject)		
-
-	}
-	switcher.get(assayobject.type.id,"Ivalid")
-
-'''
 
 def get_parameters(assay):
 	switcher ={
@@ -2348,7 +2406,9 @@ def get_parameters(assay):
 		42: Fc01._meta.get_fields(),
 		43: Fc03._meta.get_fields(),
 		44: Hpa02._meta.get_fields(),
-		45: Fc04._meta.get_fields()
+		45: Fc04._meta.get_fields(),
+		46: GI05._meta.get_fields(),
+		47: GI06._meta.get_fields()
 	}
 	parameters = []
 	parameters_names = []
@@ -2369,6 +2429,7 @@ def parameterMeasures(measures, parameter):
     genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).distinct()
     print('gender {} {}',genotype, len(genotype))
     print('sex {}',gender)
+    isnull=False
     test = {}
     if(gender.exists()):
         print('gender not empty')
@@ -2382,10 +2443,23 @@ def parameterMeasures(measures, parameter):
                             m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
                             parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
                             df222 = pd.DataFrame(list(parameter_measures.values(parameter)))
+                            print("Parameter Measures")
                             print(all(df222))
                             flag = False
                             df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
                             print('Test dataframe parameter')
+                            cols_to_check = df.columns
+                            df['is_na'] = df[cols_to_check].isnull().apply(lambda x: all(x), axis=1)
+                            if(df['is_na'].all()==True):
+                            	isnull=True
+                            	break;
+                            '''if df['timepoint'].empty:
+                                print('Empty dataframe')
+                            else:
+                            	print('Not empty dataframe')
+                            	df['timepoint_is'] = map(lambda x: x.isdigit(), df['timepoint'])
+                            	print(df['timepoint_is'].empty)
+                            	'''
                             #par_df = df[parameter]
                             #if par_df.empty:
                             #    print('par_df')
@@ -2402,5 +2476,7 @@ def parameterMeasures(measures, parameter):
                                 df = df[['timepoint',parameter]] 
                             print(df)
                             test[label] = df
+    if(isnull):
+    	test = {}
     print('Out Parameter Measures')
     return test,flag,genotype
