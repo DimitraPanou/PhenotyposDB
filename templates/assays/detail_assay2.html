@@ -20,7 +20,7 @@
         </div>
         <div class="coin-name">
             {{object.type.code}}<br>
-            <small>{{object.name}}</small>
+            <small>{{object.name|default_if_none:""}}</small>
         
         </div>
     </div>
@@ -422,33 +422,34 @@
             <div class="position-relative mb-4">
               <form method="GET" enctype="multipart/form-data">
                           {% csrf_token %}
-                          <select class= "form-control select2" id="parameterName" name="parameterName" onchange="this.form.submit()">
-                            {% for con, name in parameters %}
-                              {% if con == par %}
-                                <option selected="selected" value={{par}}>{{name|safe}}</option>>
-                              {% else %}
-                                <option value={{con}}>{{name|safe}}</option>                          
-                              {% endif %}
-                            {% endfor %}                        
-                            </option>
-                          </select>
-               </form>   
+                          <div class="col-md-3">
+                              <select class= "form-control select2" id="parameterName" name="parameterName" onchange="this.form.submit()">
+                                {% for con, name in parameters %}
+                                  {% if con == par %}
+                                    <option selected="selected" value={{par}}>{{name|safe}}</option>>
+                                  {% else %}
+                                    <option value={{con}}>{{name|safe}}</option>                          
+                                  {% endif %}
+                                {% endfor %}                        
+                                </option>
+                              </select>
+                         </div>
+               </form>
+               <div class="row"></div>
+               <div class="row"></div>
               <div class="row">
-                <div class ="col-md-6">
-           
+                <div class ="col-md-4">
                     <div id="container"></div>
-                    <h3>{{par}}</h3>
                 </div>
-                <div class ="col-md-6">
+                <!--div class ="col-md-6">
                   {% if flag %}
                   <div id="containerboxplot"></div>
                   {% else %}
                   <div> No data </div>
                   {% endif %}
                 </div>
-              </div>
-              <div class="row">
-                <div class ="col-md-12">
+            -->
+                <div class ="col-md-8">
                   {% if flag %}
                   <div id="containerline"></div>
                   {% else %}

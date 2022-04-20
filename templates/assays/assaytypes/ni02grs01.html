@@ -1,6 +1,27 @@
 
 {% extends 'assays/detail_assay2.html' %}
 
+{% block measured_values %}
+  - Forelimbs g force<br>
+  - Forelimbs g force to weight<br>
+  - All limbs g force<br>
+  - All limbs g force to weight<br>
+{% endblock %}
+
+{% block min_models %}
+ 8M  per genotype
+{% endblock %}
+
+{% block assaytype_content %}
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>A <b>grip strength test </b>was performed on <b>{{total}} mice</b>.</p>
+                    <p> The charts show the results of measuring <b>Forelimbs g force, Forelimbs g force to wright, All limbs g force, Forelimbs g force </b> in <b>{{females}}
+                    female</b>, <b>{{males}} male</b> mutants compared to the control dataset</p>
+                    <p> In this assay we observe {{genotypecount}} genotypes which are <b>{% for gene in genotype %}{% if gene %} {{gene}}{% endif %}{% endfor %}</b> .</p>
+{% endblock %}
+
 {% block assay_content %}
  <!-- /.card -->
     <div class="row">
@@ -23,8 +44,10 @@
                     <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
                     <th>Measurement Date</th>
                     <th>Weight</th>
-                    <th>Forelimb mean</th>
-                    <th>Hindlimb mean</th>
+                    <th>Forelimb grip strength measurement mean (gf)</th>
+                    <th>Forelimb and hindlimb grip strength measurement mean (gf)</th>
+                    <th>Forelimb grip strength mean ratio to body weight (gf/g)</th>
+                    <th>Forelimb and hindlimb grip strength mean ratio to body weight (gf/g)</th>
                     <th>Age({{assay.mouse_age|default_if_none:"TBD"}})</th>
                     <th>Comments</th>       
                 </tr>
@@ -49,6 +72,8 @@
                       <td>{{ assay.weight|default_if_none:"" }}</td>
                       <td>{{ assay.forelimb|default_if_none:"" }}</td>
                       <td>{{ assay.hindlimb|default_if_none:"" }}</td>
+                      <td>{{ assay.forelimb_mean_ratio|default_if_none:"" }}</td>
+                      <td>{{ assay.hindlimb_mean_ratio|default_if_none:"" }}</td>
                       <td>{{ assay.age|default_if_none:"" }}</td>
                       <td>{{ assay.comment|default_if_none:"" }}</td>
                   </tr>
@@ -63,4 +88,18 @@
         </div>
       </div>
     </div>
+{% endblock %}
+
+
+{% block chart_content %}
+<div class="card">
+<div class="row">
+  <div class ="col-md-6">
+    <div id='ni02grs1Div'><!-- Plotly chart will be drawn inside this DIV --></div>
+  </div>
+  <div class ="col-md-6">\
+      <div id='ni02grs2Div'><!-- Plotly chart will be drawn inside this DIV --></div>
+  </div>
+</div>
+</div>
 {% endblock %}

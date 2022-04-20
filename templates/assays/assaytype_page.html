@@ -11,8 +11,8 @@
         <i class="ti-write"></i>
         </div>
         <div class="flex-grow align-self-center">
-        <h1>{{object.code}}</h1>
-        <p>{{object.name}}</p>
+        <h1>{{object.code|default_if_none:""}}</h1>
+        <p>{{object.name|default_if_none:""}}</p>
         </div>
         <p><a class="btn btn-white btn-lg mt-1 mb-1 ti-pencil" href="{% url 'assaytype-detail-update' object.id %}"></a></p>
         </div>
@@ -23,173 +23,142 @@
 
 <br>
 <div class="container">
-{% if object.purpose %} 
-<div class="row">
-  <div class="col-md-12">
-    <h5>Purpose:</h5>
-    <hr>
-    <div class="card card-body">
-      {{object.purpose|safe}}
+{% if object.purpose %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Purpose</h3>
+    <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
     </div>
+    <!-- /.card-tools -->
   </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+     {{object.purpose|safe}}
+  </div>
+  <!-- /.card-body -->
 </div>
 {% endif %}
-<div class="row">
-    {% if object.experimental_design %}
-    <div class="col-md-12 d-flex align-items-stretch">
-        <div class="card">
-        <div class="card-header">
-          <h5>Experimental Design</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.experimental_design|safe}}
-        </p>
-        </div>
-      </div>
+{% if object.experimental_design %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Experimental Design</h3>
+    <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
     </div>
-    {% endif %}
+    <!-- /.card-tools -->
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body" style="display: none;">
+     {{object.experimental_design|safe}}
+  </div>
+  <!-- /.card-body -->
 </div>
-  <div class="row">
-    {% if object.equipment %}
-    <div class="col-lg-6 d-flex align-items-stretch">
-        <div class="card">
-        <div class="card-header">
-          <h5>Equipment</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.equipment|safe}}
-        </p>
-        </div>
-      </div>
+{% endif %}
+{% if object.equipment %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Equipment</h3>
+    <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
     </div>
-  {% endif %}    
-    {% if object.supplies %}
-    <div class="col-lg-6 d-flex align-items-stretch">
-        <div class="card">
-        <div class="card-header">
-          <h5>Supplies</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.supplies|safe}}
-        </p>
-        </div>
-      </div>
+    <!-- /.card-tools -->
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body" style="display: none;">
+     {{object.equipment|safe}}
+  </div>
+  <!-- /.card-body -->
+</div>
+{% endif %}
+{% if object.supplies %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Supplies</h3>
+    <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
     </div>
+    <!-- /.card-tools -->
   </div>
-  {% endif %}
-  <div class="row">
-    {% if object.procedures %}
-    <div class="col-lg-12 d-flex align-items-stretch">
-        <div class="card">
-        <div class="card-header">
-          <h5> Procedures</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.procedures|safe}}
-        </p>
-        </div>
-      </div>
+  <!-- /.card-header -->
+  <div class="card-body" style="display: none;">
+     {{object.supplies|safe}}
+  </div>
+  <!-- /.card-body -->
+</div>
+{% endif %}
+{% if object.procedures %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Procedures</h3>
+    <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
     </div>
+    <!-- /.card-tools -->
   </div>
-  {% endif %}
-<!--
-    <div class="row">
-    {% if object.troubleshooting %}
-    <div class="col-lg-4 d-flex align-items-stretch">
-        <div class="card">
-        <div class="card-header">
-          <h5>Troubleshooting</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.troubleshooting|safe}}
-        </p>
-        </div>
-      </div>
+  <!-- /.card-header -->
+  <div class="card-body" style="display: none;">
+     {{object.procedures|safe}}
+  </div>
+  <!-- /.card-body -->
+</div>
+{% endif %}
+{% if object.troubleshooting %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Troubleshooting</h3>
+    <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
     </div>
-    {% endif %}
-    {% if object.appendix %}
-    <div class="col-lg-4 d-flex align-items-stretch">
-        <div class="card">
-        <div class="card-header">
-          <h5>Appendix</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.appendix|safe}}
-        </p>
-        </div>
-      </div>
+    <!-- /.card-tools -->
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body" style="display: none;">
+     {{object.troubleshooting|safe}}
+  </div>
+  <!-- /.card-body -->
+</div>
+{% endif %}
+{% if object.appendix %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Appendix</h3>
+    <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
     </div>
-    {% endif %}
-    {% if object.references %}
-    <div class="col-lg-4 d-flex align-items-stretch">
-        <div class="card">
-        <div class="card-header">
-          <h5>References</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.references|safe}}
-        </p>
-        </div>
-      </div>
+    <!-- /.card-tools -->
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body" style="display: none;">
+     {{object.appendix|safe}}
+  </div>
+  <!-- /.card-body -->
+</div>
+{% endif %}
+{% if object.references %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">References</h3>
+    <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
     </div>
-    {% endif %}   
+    <!-- /.card-tools -->
   </div>
--->
-    <div class="row">
-    {% if object.troubleshooting %}
-      <div class="col-md-12">
-        <div class="card">
-        <div class="card-header">
-          <h5>troubleshooting</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.troubleshooting|safe}}
-        </p>
-        </div>
-      </div>
-      </div>
-    {% endif %}  
+  <!-- /.card-header -->
+  <div class="card-body" style="display: none;">
+     {{object.references|safe}}
   </div>
-    <div class="row">
-    {% if object.appendix %}
-      <div class="col-md-12">
-        <div class="card">
-        <div class="card-header">
-          <h5>Appendix</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.appendix|safe}}
-        </p>
-        </div>
-      </div>
-      </div>
-    {% endif %}  
-  </div>
-  <div class="row">
-    {% if object.references %}
-      <div class="col-md-12">
-        <div class="card">
-        <div class="card-header">
-          <h5>References</h5>
-        </div>
-        <div class="card-body">
-        <p>
-          {{object.references|safe}}
-        </p>
-        </div>
-      </div>
-      </div>
-    {% endif %}  
-  </div>
+  <!-- /.card-body -->
+</div>
+{% endif %}
 </div>
 
 {% endblock %}

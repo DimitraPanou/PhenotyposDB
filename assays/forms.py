@@ -53,7 +53,9 @@ class Assay2Form(forms.ModelForm):
     def save(self, commit=True):
         form = super().save(commit=False)
         print("User members")
-        #print form['members'].value()
+        members = filter(lambda t: t[0] in self.cleaned_data['members'], self.fields['members'].choices)
+        for m in members:
+            print(m)
         #if not form.instance.id:
             #form.instance= Assay.objects.get()
         #form = super(Assay2Form, self).save(*args, **kwargs)

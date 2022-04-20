@@ -3,7 +3,7 @@ import openpyxl
 import pandas as pd
 from openpyxl import Workbook
 import collections
-
+from math import isnan
 from django.shortcuts import get_object_or_404
 from datetime import date
 tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
@@ -12,8 +12,6 @@ tableNames = ['BIOCHEM-01','BIOCHEM-02','BIOCHEM-03','BIOCHEM-04','BIOCHEM-05',
 				'IINFLC-02','IINFLC-03','IINFLC-04','IINFLC-05','IINFLC-06','NI-01','NI-02-GRS-01','NI-02-OFD-01',
 				'NI-02-ROT-01','PR-02','AR-02','AR-03','AR-04','AR-05','AR-06','AR-07','GI-05','GI-06',"info"
 				]
-
-
 
 def create_mouseHash(data):
 	for i in range(len(data["Mouse ID"])):
@@ -467,9 +465,9 @@ def data_ni02grs01(data,assay):
 						experiment.hindlimb_r3 = data[key][i]
 					elif('measurement mean' in key.lower()):
 						experiment.hindlimb = data[key][i]
-					elif('ratio' in key.lower()):
+					else:
 						#print('pass 5: ',data[key][i])
-						experiment.hindlimb_mean_ratio = data[key][i]		
+						experiment.hindlimb_mean_ratio = data[key][i]	
 		if(flag):				
 			experiment.save()
 
@@ -550,6 +548,163 @@ def data_hem01(data,assay):
 					experiment.mchc= data[key][i]	
 				elif ('MCV2' == key):
 					experiment.mcv2= data[key][i]					
+		if(flag):
+			experiment.save()
+
+def data_hem02(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Hem01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' == key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					experiment.timepoint= data[key][i]
+				elif ('measurement date' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+				elif ('sample id' in key.lower()):
+					experiment.sample_id= data[key][i]
+				elif ('wbc' in key.lower()):
+					experiment.wbc_count= data[key][i]		
+				elif ('mon #' in key.lower()):
+					experiment.mononuclear_num= data[key][i]
+				elif ('lym #' in key.lower()):
+					experiment.lymphocytes_num= data[key][i]
+				elif ('% lymphocytes' in key.lower()):
+					experiment.lymphocytes_per= data[key][i]
+				elif ('# monocytes' in key.lower()):
+					if('2' in key.lower()):
+						experiment.monocytes2_num= data[key][i]
+					else:
+						experiment.monocytes_num= data[key][i]
+				elif ('# neutrophils' in key.lower()):
+					experiment.neutrophils_num= data[key][i]
+				elif ('% neutrophils' in key.lower()):
+					experiment.neutrophils_per= data[key][i]
+				elif ('# eosinophils' in key.lower()):
+					experiment.eosinophils_num= data[key][i]
+				elif ('% eosinophils' in key.lower()):
+					experiment.eosinophils_per= data[key][i]
+				elif ('# basophils' in key.lower()):
+					experiment.basophils_num= data[key][i]
+				elif ('% basophils' in key.lower()):
+					experiment.basophils_per= data[key][i]
+				elif ('rbc count' in key.lower()):
+					experiment.rbc_count= data[key][i]
+				elif ('hematocrit' in key.lower()):
+					experiment.ht= data[key][i]
+				elif ('hemoblobin' in key.lower()):
+					experiment.hb= data[key][i]
+				elif ('plt platelet' in key.lower()):
+					experiment.plt_count= data[key][i]
+				elif ('platelet dist' in key.lower()):
+					experiment.platelet_dist_range= data[key][i]
+				elif ('platelet count' in key.lower()):
+					experiment.platelet_count= data[key][i]
+				elif ('average volume' in key.lower()):
+					experiment.avg_vol_platelets= data[key][i]
+				elif ('MCV' == key):
+					experiment.mcv= data[key][i]
+				elif ('RDV' == key):
+					experiment.rdv= data[key][i]
+				elif ('MCHC' == key):
+					experiment.mchc= data[key][i]	
+				elif ('MCV2' == key):
+					experiment.mcv2= data[key][i]					
+		if(flag):
+			experiment.save()
+
+def data_hem01v2(data,assay):
+	for i in range(len(data["Mouse ID"])):
+		flag =1
+		experiment = Hem01()
+		experiment.assayid = assay
+		for key in data:
+			if(flag):
+				if ('Mouse ID' == key):
+					#Return mouse id from mouse table
+					#print(data[key][i])
+					if(data[key][i] is None):
+						flag = 0
+						break; 
+					mouse = Mouse.objects.get(mid=data[key][i])
+					if(mouse): 
+						experiment.mid = mouse
+					else:
+						flag = 0
+						break;			
+				elif ('timepoint' in key.lower()):
+					experiment.timepoint= data[key][i]
+				elif ('measurement date' in key.lower()):
+					d = data[key][i]
+					experiment.measurement_date= d
+				elif ('Age' in key):
+					experiment.age= data[key][i]
+				elif ('comment' in key.lower()):
+					experiment.comment= data[key][i]
+				elif ('sample id' in key.lower()):
+					experiment.sample_id= data[key][i]
+				elif ('wbc' in key.lower()):
+					experiment.wbc_count= data[key][i]		
+				elif ('neu #' in key.lower()):
+					experiment.neutrophils_num= data[key][i]
+				elif ('lym #' in key.lower()):
+					experiment.lymphocytes_num= data[key][i]
+				elif ('mon #' in key.lower()):
+					experiment.monocytes_num= data[key][i]
+				elif ('eos #' in key.lower()):
+					experiment.eosinophils_num= data[key][i]
+				elif ('bas #' in key.lower()):
+					experiment.basophils_num= data[key][i]
+				elif ('neu %' in key.lower()):
+					experiment.neutrophils_per= data[key][i]
+				elif ('lym %' in key.lower()):
+					experiment.lymphocytes_per= data[key][i]
+				elif ('eos %' in key.lower()):
+					experiment.eosinophils_per= data[key][i]
+				elif ('bas %' in key.lower()):
+					experiment.basophils_per= data[key][i]
+				elif ('rbc' in key.lower()):
+					experiment.rbc_count= data[key][i]
+				elif ('HCT' in key):
+					experiment.ht= data[key][i]
+				elif ('HGB' in key):
+					experiment.hb= data[key][i]
+				elif ('MCV' in key):
+					experiment.mcv= data[key][i]
+				elif ('MCH (pg)' == key):
+					experiment.mch= data[key][i]
+				elif ('MCHC' in key):
+					experiment.mchc= data[key][i]	
+				elif ('RDW-CV' in key):
+					experiment.rdwcv= data[key][i]
+				elif ('RDW-SD' in key):
+					experiment.rdwsd= data[key][i]
+				elif ('PLT' in key):
+					experiment.plt= data[key][i]
+				elif ('MPV' in key):
+					experiment.mpv= data[key][i]	
+				elif ('PDW' in key):
+					experiment.pdw= data[key][i]
+				elif ('PCT' in key):
+					experiment.pct= data[key][i]		
 		if(flag):
 			experiment.save()
 
@@ -2239,7 +2394,7 @@ def handle_uploaded_file(assayobject):
 	if(assayobject.type.code == "NI-02-GRS-01"):
 		data_ni02grs01(data,assayobject)
 	if(assayobject.type.code == "HEM-01"):
-		data_hem01(data,assayobject)
+		data_hem01v2(data,assayobject)
 	if(assayobject.type.code == "IINFLC-02"):
 		data_iinflc02(data,assayobject)
 	if(assayobject.type.code == "IINFLC-03"):
@@ -2363,7 +2518,6 @@ def returnTemplateName(assayobject):
 	}
 	return switcher.get(assayobject.id,"Ivalid")
 
-
 def get_parameters(assay):
 	switcher ={
 		4: Iinflc03._meta.get_fields(),
@@ -2422,19 +2576,23 @@ def get_parameters(assay):
 	return parameters, parameters_names
 
 def parameterMeasures(measures, parameter):
-    print('Inside Parameter Measures')
+#    print('Inside Parameter Measures')
     flag = True
     mouselist = measures.values('mid').distinct().order_by('mid')
-    gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).distinct()
-    genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).distinct()
-    print('gender {} {}',genotype, len(genotype))
-    print('sex {}',gender)
+    gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).exclude(gender__isnull=True).distinct()
+    genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).exclude(genotype__isnull=True).distinct()
+    induced = Mouse.objects.filter(id__in=mouselist).values_list('induced', flat=True).exclude(induced__isnull=True).distinct()
+    treated = Mouse.objects.filter(id__in=mouselist).values_list('treated', flat=True).exclude(treated__isnull=True).distinct()
+#    print('gender {} {}',genotype, len(genotype))
+#    print('sex {} {}',gender, len(genotype))
+#    print('induced {} {}',induced, len(induced))
+#    print('treated {} {}',treated, len(treated))
     isnull=False
     test = {}
     if(gender.exists()):
-        print('gender not empty')
+#        print('gender not empty')
         if(genotype.exists()):
-            print('genotype not empty')
+#            print('genotype not empty')
             for sex in gender:
             	if(sex):
                     for gene in genotype:
@@ -2443,11 +2601,11 @@ def parameterMeasures(measures, parameter):
                             m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
                             parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
                             df222 = pd.DataFrame(list(parameter_measures.values(parameter)))
-                            print("Parameter Measures")
-                            print(all(df222))
+#                            print("Parameter Measures")
+#                            print(all(df222))
                             flag = False
                             df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
-                            print('Test dataframe parameter')
+#                            print('Test dataframe parameter')
                             cols_to_check = df.columns
                             df['is_na'] = df[cols_to_check].isnull().apply(lambda x: all(x), axis=1)
                             if(df['is_na'].all()==True):
@@ -2465,7 +2623,7 @@ def parameterMeasures(measures, parameter):
                             #    print('par_df')
                             if not df.empty:
                                 df = df[['timepoint',parameter]] 
-                            print(df)
+#                            print(df)
                             test[label] = df
                         else:
                             label = sex
@@ -2474,9 +2632,1149 @@ def parameterMeasures(measures, parameter):
                             df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
                             if not df.empty:
                                 df = df[['timepoint',parameter]] 
-                            print(df)
+#                            print(df)
                             test[label] = df
     if(isnull):
     	test = {}
-    print('Out Parameter Measures')
+#    print('Out Parameter Measures')
     return test,flag,genotype
+
+def parameterMeasures2(measures, parameter,all):
+    print("Version 2")
+    flag = False
+    mouselist = measures.values('mid').distinct().order_by('mid')
+    gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).exclude(gender__isnull=True).distinct()
+    genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).exclude(genotype__isnull=True).distinct()
+    induced = Mouse.objects.filter(id__in=mouselist).values_list('induced', flat=True).exclude(induced__isnull=True).distinct()
+    treated = Mouse.objects.filter(id__in=mouselist).values_list('treated', flat=True).exclude(treated__isnull=True).distinct()
+#    print('gender {} {}',genotype, len(genotype))
+#    print('sex {} {}',gender, len(genotype))
+#    print('induced {} {}',induced, len(induced))
+#    print('treated {} {}',treated, len(treated))
+
+    gendercount = findlabels(mouselist,1,gender,measures)
+    genotypecount = findlabels(mouselist,2,genotype,measures)
+    inducedcount = findlabels(mouselist,3,induced,measures)
+    treatedcount = findlabels(mouselist,4,treated,measures)
+
+#    print('gendercount {}', genotypecount)
+#    print('sexcount {} ',gendercount)
+#    print('inducedcount {}',inducedcount)
+#    print('treatedcount {}',treatedcount)
+    test = {}
+    if(len(gender)>1 and gendercount == 1):
+        for sex in gender:
+            if(len(genotype)>1 and genotypecount == 1):
+ #               print("First flag")
+                for gene in genotype:
+                    if(len(induced)>1 and inducedcount == 1):
+                        for inducedlabel in induced:
+                            if(len(treated)>1 and treatedcount == 1):
+                                for treatedlabel in treated:
+                                    #To DO
+                                    m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,induced= inducedlabel,treated=treatedlabel)
+                                    parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                                    label = sex + " "+gene +" "+inducedlabel + " " + treatedlabel
+                                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                                    df.dropna()
+                                    test[label] = df
+                            else:
+                                m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,induced= inducedlabel)
+                                parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                                label = sex + " "+gene +" "+inducedlabel
+                                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                                df.dropna()
+                                test[label] = df
+                    elif(len(treated)>1 and treatedcount == 1):
+                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,treated=treatedlabel)
+                        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                        label = sex + " "+gene +" "+treatedlabel
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df                  	
+                    else:
+                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
+                        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                        label = sex + " "+gene
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df
+            elif(len(induced)>1 and inducedcount == 1):
+                for inducedlabel in induced:
+                    if(len(treated)>1 and treatedcount == 1):
+                       for treatedlabel in treated:
+                            m = Mouse.objects.filter(id__in= mouselist,gender=sex,induced= inducedlabel,treated=treatedlabel)
+                            parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                            label = sex +" "+inducedlabel + " " + treatedlabel
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            df.dropna()
+                            test[label] = df
+                    else:
+                        m = Mouse.objects.filter(id__in= mouselist,gender=sex,induced= inducedlabel)
+                        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                        label = sex + " "+inducedlabel
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df
+            elif(len(treated)>1 and treatedcount == 1):
+                m = Mouse.objects.filter(id__in= mouselist,gender=sex,treated=treatedlabel)
+                parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                label = sex+" "+treatedlabel
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()  
+                test[label] = df
+
+            else:
+                m = Mouse.objects.filter(id__in= mouselist,gender=sex)
+                parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                label = sex
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+    elif(len(genotype)>1 and genotypecount == 1):
+        for gene in genotype:
+            if(len(induced)>1 and inducedcount == 1):
+                for inducedlabel in induced:
+                    if(len(treated)>1 and treatedcount == 1):
+                        for treatedlabel in treated:
+                            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,induced= inducedlabel,treated=treatedlabel)
+                            parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                            label = gene +" "+inducedlabel + " " + treatedlabel
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            df.dropna()
+                            test[label] = df
+                    else:
+                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,induced= inducedlabel)
+                        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                        label = gene +" "+inducedlabel
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df
+            elif(len(treated)>1 and treatedcount == 1):
+                m = Mouse.objects.filter(id__in= mouselist,genotype=gene,treated=treatedlabel)
+                parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                label = gene +" "+treatedlabel
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+            else:
+                m = Mouse.objects.filter(id__in= mouselist,genotype=gene)
+                parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                label = gene
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+    elif(len(induced)>1 and inducedcount == 1):
+        for inducedlabel in induced:
+            if(len(treated)>1 and treatedcount == 1):
+                for treatedlabel in treated:
+                    m = Mouse.objects.filter(id__in= mouselist,induced= inducedlabel,treated=treatedlabel)
+                    parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                    label = inducedlabel + " " + treatedlabel
+                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                    df.dropna()
+                    test[label] = df
+            else:
+                m = Mouse.objects.filter(id__in= mouselist,induced= inducedlabel)
+                parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+                label = inducedlabel
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+    elif(len(treated)>1 and treatedcount == 1):
+    	for treatedlabel in treated:
+            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,treated=treatedlabel)
+            parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+            label = treatedlabel
+            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+            df.dropna()
+            test[label] = df
+    else:
+        if(all==False):
+            m = Mouse.objects.filter(id__in= mouselist)
+            parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+            label = 'All'
+            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+            df.dropna()
+            test[label] = df
+    if(all==True):
+        m = Mouse.objects.filter(id__in= mouselist)
+        parameter_measures = measures.filter(mid__in = m).values_list('timepoint',parameter)
+        label = 'All'
+        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+        df.dropna()
+        test[label] = df   	
+    if(df.empty):
+    	flag=True
+#    print('Out Parameter Measures')
+    #clean_dict = filter(lambda k: not isnan(test[k]), test)
+    return test,flag,genotype
+
+def parameterMeasures4(measures, parameter,time_var):
+    print("Version 4")
+    flag = False
+    mouselist = measures.values('mid').distinct().order_by('mid')
+    gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).exclude(gender__isnull=True).distinct()
+    genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).exclude(genotype__isnull=True).distinct()
+    induced = Mouse.objects.filter(id__in=mouselist).values_list('induced', flat=True).exclude(induced__isnull=True).distinct()
+    treated = Mouse.objects.filter(id__in=mouselist).values_list('treated', flat=True).exclude(treated__isnull=True).distinct()
+
+    gendercount = findlabels(mouselist,1,gender,measures)
+    genotypecount = findlabels(mouselist,2,genotype,measures)
+    inducedcount = findlabels(mouselist,3,induced,measures)
+    treatedcount = findlabels(mouselist,4,treated,measures)
+
+    #timepoints = measures.values('timepoint').distinct().order_by('timepoint')
+    
+    test = {}
+    if(len(gender)>1 and gendercount == 1):
+        for sex in gender:
+            if(len(genotype)>1 and genotypecount == 1):
+                #print("First flag")
+                for gene in genotype:
+                    if(len(induced)>1 and inducedcount == 1):
+                        for inducedlabel in induced:
+                            if(len(treated)>1 and treatedcount == 1):
+                                for treatedlabel in treated:
+                                    #To DO
+                                    m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,induced= inducedlabel,treated=treatedlabel)
+                                    parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                                    label = sex + " "+gene +" "+inducedlabel + " " + treatedlabel
+                                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                                    df.dropna()
+                                    test[label] = df
+                            else:
+                                m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,induced= inducedlabel)
+                                parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                                label = sex + " "+gene +" "+inducedlabel
+                                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                                df.dropna()
+                                test[label] = df
+                    elif(len(treated)>1 and treatedcount == 1):
+                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,treated=treatedlabel)
+                        parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                        label = sex + " "+gene +" "+treatedlabel
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df                  	
+                    else:
+                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
+                        parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                        label = sex + " "+gene
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df
+            elif(len(induced)>1 and inducedcount == 1):
+                for inducedlabel in induced:
+                    if(len(treated)>1 and treatedcount == 1):
+                       for treatedlabel in treated:
+                            m = Mouse.objects.filter(id__in= mouselist,gender=sex,induced= inducedlabel,treated=treatedlabel)
+                            parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                            label = sex +" "+inducedlabel + " " + treatedlabel
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            df.dropna()
+                            test[label] = df
+                    else:
+                        m = Mouse.objects.filter(id__in= mouselist,gender=sex,induced= inducedlabel)
+                        parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                        label = sex + " "+inducedlabel
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df
+            elif(len(treated)>1 and treatedcount == 1):
+                m = Mouse.objects.filter(id__in= mouselist,gender=sex,treated=treatedlabel)
+                parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                label = sex+" "+treatedlabel
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()  
+                test[label] = df
+
+            else:
+                m = Mouse.objects.filter(id__in= mouselist,gender=sex)
+                parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                label = sex
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+    elif(len(genotype)>1 and genotypecount == 1):
+        for gene in genotype:
+            if(len(induced)>1 and inducedcount == 1):
+                for inducedlabel in induced:
+                    if(len(treated)>1 and treatedcount == 1):
+                        for treatedlabel in treated:
+                            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,induced= inducedlabel,treated=treatedlabel)
+                            parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                            label = gene +" "+inducedlabel + " " + treatedlabel
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            df.dropna()
+                            test[label] = df
+                    else:
+                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,induced= inducedlabel)
+                        parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                        label = gene +" "+inducedlabel
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df
+            elif(len(treated)>1 and treatedcount == 1):
+                m = Mouse.objects.filter(id__in= mouselist,genotype=gene,treated=treatedlabel)
+                parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                label = gene +" "+treatedlabel
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+            else:
+                m = Mouse.objects.filter(id__in= mouselist,genotype=gene)
+                parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                label = gene
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+    elif(len(induced)>1 and inducedcount == 1):
+        for inducedlabel in induced:
+            if(len(treated)>1 and treatedcount == 1):
+                for treatedlabel in treated:
+                    m = Mouse.objects.filter(id__in= mouselist,induced= inducedlabel,treated=treatedlabel)
+                    parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                    label = inducedlabel + " " + treatedlabel
+                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                    df.dropna()
+                    test[label] = df
+            else:
+                m = Mouse.objects.filter(id__in= mouselist,induced= inducedlabel)
+                parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+                label = inducedlabel
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+    elif(len(treated)>1 and treatedcount == 1):
+        for treatedlabel in treated:
+            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,treated=treatedlabel)
+            parameter_measures = measures.filter(mid__in = m,timepoint=time_var).values_list('timepoint',parameter)
+            label = treatedlabel
+            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+            df.dropna()
+            test[label] = df
+    if(df.empty):
+    	flag=True
+    print("Finish Version 4")
+    return test,flag,genotype
+
+def parameterMeasures3(measures, parameter,all):
+    print("Version 3")
+    flag = False
+    mouselist = measures.values('mid').distinct().order_by('mid')
+    gender = Mouse.objects.filter(id__in=mouselist).values_list('gender', flat=True).exclude(gender__isnull=True).distinct()
+    genotype = Mouse.objects.filter(id__in=mouselist).values_list('genotype', flat=True).exclude(genotype__isnull=True).distinct()
+    induced = Mouse.objects.filter(id__in=mouselist).values_list('induced', flat=True).exclude(induced__isnull=True).distinct()
+    treated = Mouse.objects.filter(id__in=mouselist).values_list('treated', flat=True).exclude(treated__isnull=True).distinct()
+    #print('gender {} {}',genotype, len(genotype))
+    #print('sex {} {}',gender, len(genotype))
+    #print('induced {} {}',induced, len(induced))
+    #print('treated {} {}',treated, len(treated))
+
+    gendercount = findlabels(mouselist,1,gender,measures)
+    genotypecount = findlabels(mouselist,2,genotype,measures)
+    inducedcount = findlabels(mouselist,3,induced,measures)
+    treatedcount = findlabels(mouselist,4,treated,measures)
+
+    timepoints = measures.values('timepoint').distinct().order_by('timepoint')
+    #print('gendercount {}', genotypecount)
+    #print('sexcount {} ',gendercount)
+    #print('inducedcount {}',inducedcount)
+    #print('treatedcount {}',treatedcount)
+    
+    timetest = {}
+    for time in timepoints:
+        test = {}
+        if(len(gender)>1 and gendercount == 1):
+            for sex in gender:
+                if(len(genotype)>1 and genotypecount == 1):
+                    #print("First flag")
+                    for gene in genotype:
+                        if(len(induced)>1 and inducedcount == 1):
+                            for inducedlabel in induced:
+                                if(len(treated)>1 and treatedcount == 1):
+                                    for treatedlabel in treated:
+                                        #To DO
+                                        m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,induced= inducedlabel,treated=treatedlabel)
+                                        parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                                        label = sex + " "+gene +" "+inducedlabel + " " + treatedlabel
+                                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                                        df.dropna()
+                                        test[label] = df
+                                else:
+                                    m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,induced= inducedlabel)
+                                    parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                                    label = sex + " "+gene +" "+inducedlabel
+                                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                                    df.dropna()
+                                    test[label] = df
+                        elif(len(treated)>1 and treatedcount == 1):
+                            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex,treated=treatedlabel)
+                            parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                            label = sex + " "+gene +" "+treatedlabel
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            df.dropna()
+                            test[label] = df                  	
+                        else:
+                            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,gender=sex)
+                            parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                            label = sex + " "+gene
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            df.dropna()
+                            test[label] = df
+                elif(len(induced)>1 and inducedcount == 1):
+                    for inducedlabel in induced:
+                        if(len(treated)>1 and treatedcount == 1):
+                           for treatedlabel in treated:
+                                m = Mouse.objects.filter(id__in= mouselist,gender=sex,induced= inducedlabel,treated=treatedlabel)
+                                parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                                label = sex +" "+inducedlabel + " " + treatedlabel
+                                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                                df.dropna()
+                                test[label] = df
+                        else:
+                            m = Mouse.objects.filter(id__in= mouselist,gender=sex,induced= inducedlabel)
+                            parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                            label = sex + " "+inducedlabel
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            df.dropna()
+                            test[label] = df
+                elif(len(treated)>1 and treatedcount == 1):
+                    m = Mouse.objects.filter(id__in= mouselist,gender=sex,treated=treatedlabel)
+                    parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                    label = sex+" "+treatedlabel
+                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                    df.dropna()  
+                    test[label] = df
+
+                else:
+                    m = Mouse.objects.filter(id__in= mouselist,gender=sex)
+                    parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                    label = sex
+                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                    df.dropna()
+                    test[label] = df
+        elif(len(genotype)>1 and genotypecount == 1):
+            for gene in genotype:
+                if(len(induced)>1 and inducedcount == 1):
+                    for inducedlabel in induced:
+                        if(len(treated)>1 and treatedcount == 1):
+                            for treatedlabel in treated:
+                                m = Mouse.objects.filter(id__in= mouselist,genotype=gene,induced= inducedlabel,treated=treatedlabel)
+                                parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                                label = gene +" "+inducedlabel + " " + treatedlabel
+                                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                                df.dropna()
+                                test[label] = df
+                        else:
+                            m = Mouse.objects.filter(id__in= mouselist,genotype=gene,induced= inducedlabel)
+                            parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                            label = gene +" "+inducedlabel
+                            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                            df.dropna()
+                            test[label] = df
+                elif(len(treated)>1 and treatedcount == 1):
+                    m = Mouse.objects.filter(id__in= mouselist,genotype=gene,treated=treatedlabel)
+                    parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                    label = gene +" "+treatedlabel
+                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                    df.dropna()
+                    test[label] = df
+                else:
+                    m = Mouse.objects.filter(id__in= mouselist,genotype=gene)
+                    parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                    label = gene
+                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                    df.dropna()
+                    test[label] = df
+        elif(len(induced)>1 and inducedcount == 1):
+            for inducedlabel in induced:
+                if(len(treated)>1 and treatedcount == 1):
+                    for treatedlabel in treated:
+                        m = Mouse.objects.filter(id__in= mouselist,induced= inducedlabel,treated=treatedlabel)
+                        parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                        label = inducedlabel + " " + treatedlabel
+                        df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                        df.dropna()
+                        test[label] = df
+                else:
+                    m = Mouse.objects.filter(id__in= mouselist,induced= inducedlabel)
+                    parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                    label = inducedlabel
+                    df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                    df.dropna()
+                    test[label] = df
+        elif(len(treated)>1 and treatedcount == 1):
+            for treatedlabel in treated:
+                m = Mouse.objects.filter(id__in= mouselist,genotype=gene,treated=treatedlabel)
+                parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                label = treatedlabel
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+        else:
+            if(all==False):
+                m = Mouse.objects.filter(id__in= mouselist)
+                parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+                label = 'All'
+                df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+                df.dropna()
+                test[label] = df
+        if(all==True):
+            m = Mouse.objects.filter(id__in= mouselist)
+            parameter_measures = measures.filter(mid__in = m,timepoint=time['timepoint']).values_list('timepoint',parameter)
+            label = 'All'
+            df = pd.DataFrame(list(parameter_measures.values('timepoint',parameter)))
+            df.dropna()
+            test[label] = df   	
+        if(df.empty):
+        	flag=True
+        timetest[time['timepoint']] = test
+        #print(test)
+    #print('Out Parameter Measures')
+    #clean_dict = filter(lambda k: not isnan(test[k]), test)
+    return timetest,flag,genotype
+def findlabels(mouselist,flag,labelist,measures):
+	counter = 0
+	for label in labelist:
+		if(flag == 1):
+			m = Mouse.objects.filter(id__in= mouselist,gender=label)
+		elif(flag == 2):
+			m = Mouse.objects.filter(id__in= mouselist,genotype=label)
+		elif(flag == 3):
+			m = Mouse.objects.filter(id__in= mouselist,induced=label)
+		elif(flag == 4):
+			m = Mouse.objects.filter(id__in= mouselist,treated=label)
+		parameter_measures = measures.filter(mid__in = m)
+		#print("Find labels")
+		#print(parameter_measures)
+		if(len(parameter_measures)):
+			counter = counter + 1
+	if(counter==2):
+		return 1;
+	return -1
+
+##########################################################################################
+#             PLOT   TYPES                  ##############################################
+##########################################################################################
+
+def boxplot(measures,parameter,title,xtext,ytext):
+	data = {}
+	data['data'] = []
+	# Get parameter measurements 
+	[test,flag,genotype] = parameterMeasures2(measures,parameter,False)
+	symbols = ['circle', 'circle-open','square-open-dot','circle-open-dot']
+	i = 0
+	for key in test:
+		selected_rows = test[key].dropna()
+		if(not selected_rows.empty):
+			test2 = test[key].sort_values('timepoint').reset_index()
+			timepoint = test2['timepoint'].values.tolist()
+			parametervalue = test2[parameter].values.tolist()
+			parametervalue = [item for item in parametervalue if not(isnan(item)) == True]
+			print("ISNAN",parametervalue)
+			trace4 = {
+				'y': parametervalue,
+				'x': timepoint,
+				'boxpoints': 'all',
+				'name': key,
+				'jitter': 0.5,
+				'pointpos': 0.0,
+				'type': 'box',
+				'boxmean': 'yes',
+				'marker': {
+					'symbol': symbols[i],
+					'size': 5,
+					}
+				};
+			i=i+1
+			data['data'].append(trace4)
+	layout = {
+			'title': {
+				'text':title,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 24,
+				},
+			},
+			'xaxis': {
+				'title': xtext,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 'false',			},
+			'yaxis': {
+				'title': ytext,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 0,
+			},
+			'boxmode': 'group',
+			'colorway': ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
+		}
+	data['layout']=layout
+	return data
+
+def barplot(measures,parameter,title,xtext,ytext):
+	data = {}
+	data['data'] = []
+	# Get parameter measurements 
+	[test,flag,genotype] = parameterMeasures2(measures,parameter,False)
+	symbols = ['circle', 'circle-open','square-open-dot','circle-open-dot']
+	colorway= ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4']
+	i = 0
+	for key in test:
+		selected_rows = test[key].dropna()
+		if(not selected_rows.empty):
+			test2 = test[key].groupby('timepoint').mean().reset_index()
+			test3 = test[key].sort_values('timepoint').reset_index()
+			timepoint = test2['timepoint'].values.tolist()
+			timepoint3 = test3['timepoint'].values.tolist()
+			timepoint31 = [item - 0.4 for item in timepoint3]
+			timepoint32 = [item + 0.4 for item in timepoint3]
+			parametervalue = test2[parameter].values.tolist()
+			parametervalue = [item for item in parametervalue if not(isnan(item)) == True]
+			parametervalueall = test3[parameter].values.tolist()
+			parametervalueall = [item for item in parametervalueall if not(isnan(item)) == True]
+			if(i==0):
+				timepoint3 = timepoint31
+			else:
+				timepoint3 = timepoint32
+			trace4 = {
+				'y': parametervalue,
+				'x': timepoint,
+				'points': parametervalueall,
+				'name': key,
+				'jitter': 0.5,
+				'pointpos': 0.0,
+				'type': 'bar',
+				'mode': 'bars+markers',
+				'marker': {
+					'y': parametervalueall,
+					'x': timepoint3,
+					'symbol': symbols[i],
+					'type': 'data',
+					'size': 5,
+					},
+				'boxmean': 'yes',
+				};
+			trace5 = {
+				'y': parametervalueall,
+				'x': timepoint3,
+				'name': key,
+				'jitter': 0.5,
+				'type': 'scatter',
+				'mode': 'bars+markers',
+				'marker': {
+					'symbol': symbols[i],
+					'color': colorway[i],
+					'size': 5,
+					},
+				};
+			i=i+1
+			data['data'].append(trace4)
+			data['data'].append(trace5)
+	layout = {
+			'title': {
+				'text':title,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 24,
+				},
+			},
+			'xaxis': {
+				'title': xtext,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 'false',			},
+			'yaxis': {
+				'title': ytext,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 0,
+			},
+			'boxmode': 'group',
+			'colorway': ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
+		}
+	data['layout']=layout
+	return data
+
+def barplot_errors(measures,parameter,title,xtext,ytext):
+	data = {}
+	data['data'] = []
+	# Get parameter measurements 
+	[test,flag,genotype] = parameterMeasures2(measures,parameter,False)
+	symbols = ['circle', 'circle-open','square-open-dot','circle-open-dot']
+	colorway= ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4']
+	i = 0
+	for key in test:
+		selected_rows = test[key].dropna()
+		if(not selected_rows.empty):
+			test2 = test[key].groupby('timepoint').mean().reset_index()
+			testmax = test[key].groupby('timepoint').max().reset_index()
+			test3 = test[key].sort_values('timepoint').reset_index()
+			timepoint = test2['timepoint'].values.tolist()
+			timepoint3 = test3['timepoint'].values.tolist()
+			parametervalue = test2[parameter].values.tolist()
+			parametervaluemax = testmax[parameter].values.tolist()
+			subtracted = [element1 - element2 for (element1, element2) in zip(parametervaluemax, parametervalue)] 		
+			parametervalue = [item for item in parametervalue if not(isnan(item)) == True]
+			parametervalueall = test3[parameter].values.tolist()
+			parametervalueall = [item for item in parametervalueall if not(isnan(item)) == True]
+			trace4 = {
+				'y': parametervalue,
+				'x': timepoint,
+				'points': parametervalueall,
+				'name': key,
+				'error_y': {
+					'type': 'data',
+					'array': subtracted
+				},
+				'jitter': 0.5,
+				'pointpos': 0.0,
+				'type': 'bar',
+				'mode': 'bars+markers',
+				'marker': {
+					'y': parametervalueall,
+					'x': timepoint3,
+					'symbol': symbols[i],
+					'type': 'data',
+					'size': 5,
+					},
+				'boxmean': 'yes',
+				};
+			i=i+1
+			data['data'].append(trace4)
+	layout = {
+			'title': {
+				'text':title,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 24,
+				},
+			},
+			'xaxis': {
+				'title': xtext,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 'false',			},
+			'yaxis': {
+				'title': ytext,
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 0,
+			},
+			'boxmode': 'group',
+			'colorway': ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
+		}
+	data['layout']=layout
+	return data
+
+def barplot_errors_parameters(measures,time_var,parameters,names,title,xtext,ytext):
+	data2 = {}
+	data2['data'] = []
+	# Get parameter measurements
+	symbols = ['circle', 'circle-open','square-open-dot','circle-open-dot']
+	colorway= ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4']
+	i = 0
+
+	parameter_values = {}
+	timepoints = measures.values('timepoint').distinct().order_by('timepoint')
+	print([time['timepoint'] for time in timepoints])
+	data = {}
+	for parameter in parameters:
+		print("Selected parameter",parameter)
+		[test,flag,genotype] = parameterMeasures4(measures,parameter,time_var)
+		for key in test:
+			if(key in data):				
+				data[key]['parameters'].append(parameter)
+				data[key]['values'].append(test[key][parameter].mean())
+				data[key]['error_y'].append(test[key][parameter].max()-test[key][parameter].mean())
+			else:
+				data[key] = {'parameters': [], 'values': [], 'error_y': []}
+				data[key]['parameters'].append(parameter)
+				data[key]['values'].append(test[key][parameter].mean())
+				data[key]['error_y'].append(test[key][parameter].max()-test[key][parameter].mean())
+	print("Returned form parametermeasures3 ",data)
+	for key in data:
+		trace4 = {
+			'y': data[key]['values'],
+			'x': data[key]['parameters'],
+			'points': data[key]['values'],
+			'name': key,
+			'error_y': {
+				'type': 'data',
+				'array': data[key]['error_y']
+			},
+			'jitter': 0.5,
+			'pointpos': 0.0,
+			'type': 'bar',
+			'mode': 'bars+markers',
+			'boxmean': 'yes',
+			};
+		i=i+1
+		data2['data'].append(trace4)
+
+	return data2
+
+#############################################
+#              NANOU                        #
+#############################################
+
+def plot_hpibd02(test,parameter):
+	trace4 = {
+		'y': [0, 1, 1, 2, 3, 5, 8, 13, 21],
+		'boxpoints': 'all',
+		'name':"test1",
+		'jitter': 0.5,
+		'pointpos': 0.0,
+		'type': 'box',
+		'boxmean': '1',
+		'marker': {
+			'symbol': 'circle',
+			'size': 8,
+			'color':'black'
+		},
+	};
+	trace2= {
+		'y': [0, 1, 5, 2, 3, 5, 9, 13, 21],
+		'name':"test2",
+		'boxpoints': 'all',
+		'jitter': 1.5,
+		'pointpos': 0.0,
+		'type': 'box',
+		'boxmean': "true",
+		'marker': {
+			'symbol': 'circle-open-dot',
+			'size': 8,
+			'color':'black'
+		}
+	};
+
+	yaxis= {
+		'title':'USD (millions)'
+	};
+	layout = {
+			'title': {
+				'text':'IINFLC-04: Body Weight',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 24,
+				},
+			},
+			'xaxis': {
+				'title':'Days post immunization',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 'false',			},
+			'yaxis': {
+				'title':'Weight (%)',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'normal',
+				'showgrid': 0,
+				'range': [50, 120]
+			},
+			'colorway': ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
+		}
+	data = [trace4,trace2]
+
+	return [data,layout]
+
+def plot_iinflc04(measures):
+	parameter = "weight"
+	data2 = {}
+	[test,flag,genotype] = parameterMeasures2(measures,"weight",False)
+	data = []
+	symbols = ['square', 'circle','square-open-dot','circle-open-dot']
+	i = 0
+	data2[parameter]={}
+	data2[parameter]['data'] = []
+	#data2[parameter]['layout'] = {}
+	for key in test:
+		selected_rows = test[key].dropna()
+		if(not selected_rows.empty):
+			test2 = test[key].groupby('timepoint').mean().reset_index()
+			testmin = test[key].groupby('timepoint').min().reset_index()
+			testmax= test[key].groupby('timepoint').max().reset_index()
+			subtracted = [element1 - element2 for (element1, element2) in zip(testmax[parameter].values.tolist(), test2[parameter].values.tolist())]
+			timepoint = test2['timepoint'].values.tolist()
+			parametervalue = test2[parameter].values.tolist()
+			parametervalue = [x*100 / parametervalue[0] for x in parametervalue]
+			print('Mean',parametervalue)
+			print('Error',subtracted)
+			print(key)
+			trace1= {
+				'x': timepoint,
+				'y': parametervalue,
+				'error_y': {
+					'type': 'data',
+					'array': subtracted,
+				},
+				'name': key,
+				'mode': 'lines+markers',
+				'hovertemplate': '<i>Day</i>: %{x}' +
+
+		                        '<br><b>Weight(%)</b>: %{y}<br>',
+		        'marker': {
+		        	'symbol': symbols[i],
+		        	'size': 8
+				},
+				'boxpoints': 'all',
+				'jitter': 1.5,
+				'pointpos': 0.0,
+				'type': 'scatter',
+				'boxmean': '1',
+			};
+			i=i+1
+			data.append(trace1)
+			data2[parameter]['data'].append(trace1)
+
+	layout = {
+			'title': {
+				'text':'IINFLC-04: Body Weight',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 24,
+				},
+			},
+			'xaxis': {
+				'title':'Days post immunization',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 'false',			},
+			'yaxis': {
+				'title':'Weight (%)',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'normal',
+				'showgrid': 0,
+				'range': [50, 120]
+			},
+			'colorway': ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
+		}
+
+	data2[parameter]['layout'] = layout
+	print(data2[parameter]['data'])
+	return data2
+
+def plot_ni01(measures):
+	parameter = "clinical_score"
+	data2 = {}
+	data2[parameter]={}
+	data2[parameter]['data'] = []
+	[test,flag,genotype] = parameterMeasures2(measures,"clinical_score",False)
+	data = []
+	symbols = ['square', 'circle','square-open-dot','circle-open-dot']
+	i = 0
+
+	for key in test:
+		selected_rows = test[key].dropna()
+		if(not selected_rows.empty):
+			test2 = test[key].groupby('timepoint').mean().reset_index()
+			testmin = test[key].groupby('timepoint').min().reset_index()
+			testmax= test[key].groupby('timepoint').max().reset_index()
+			subtracted = [element1 - element2 for (element1, element2) in zip(testmax[parameter].values.tolist(), test2[parameter].values.tolist())]
+			timepoint = test2['timepoint'].values.tolist()
+			parametervalue = test2[parameter].values.tolist()
+			subtracted2 = [element1 - element2 for (element1, element2) in zip(testmax[parameter].values.tolist(), parametervalue)]
+			error = [(element1 + element2)/2 for (element1, element2) in zip(subtracted,subtracted2)]
+			trace1= {
+				'x': timepoint,
+				'y': parametervalue,
+				'error_y': {
+					'type': 'data',
+					'array': error,
+				},
+				'name': key,
+				'mode': 'lines+markers',
+				'hovertemplate': '<i>Day</i>: %{x}' +
+
+		                        '<br><b>Clinical score</b>: %{y}<br>',
+		        'marker': {
+		        	'symbol': symbols[i],
+		        	'size': 8
+				},
+				'boxpoints': 'all',
+				'jitter': 1.5,
+				'pointpos': 0.0,
+				'type': 'scatter',
+				'boxmean': '1',
+			};
+			i=i+1
+			data.append(trace1)
+			data2[parameter]['data'].append(trace1)
+
+	layout = {
+			'title': {
+				'text':'NI-01: Clinical score',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 24,
+				},
+			},
+			'xaxis': {
+				'title':'Days post immunization',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 'false',			},
+			'yaxis': {
+				'title':'Clinical score',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 0,
+				'range':[0,5]
+			},
+			'colorway': ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
+		}
+	data2[parameter]['layout']= layout
+	return data2
+
+def plot_ni02grs01(measures):
+	data2 = {}
+	data2['plot1'] = {}
+	parameter = "forelimb_mean_ratio"
+	data2['plot1'] = boxplot(measures,parameter,'NI-02-GRS-01: Grip strength (all)','Days post immunization','Grip strength (g)')
+	data2['plot2'] = barplot(measures,parameter,'NI-02-GRS-01: Grip strength (all)','Days post immunization','Grip strength (g)')
+	return data2
+
+def plot_hem01(measures):
+	data2 = {}
+	data2['rbc'] = {}
+	parameter = "rbc_count"
+	data2['rbc'] = barplot_errors(measures,"rbc_count",'HEM-01: RBC','Days post immunization','RBC (10^12/L)')
+	data2['hbg'] = barplot_errors(measures,"hb",'HEM-01: HGB','Days post immunization','HGB (g/dL)')
+	data2['hct'] = barplot_errors(measures,"ht",'HEM-01: HCT','Days post immunization','HCT (%)')
+	data2['mcv'] = barplot_errors(measures,"mcv",'HEM-01: MCV','Days post immunization','MCV (fL)')
+	data2['mch'] = barplot_errors(measures,"mch",'HEM-01: MCH','Days post immunization','MCH (pg)')
+	data2['mchc'] = barplot_errors(measures,"mchc",'HEM-01: MCHC','Days post immunization','MCHC (g/dL)')
+	data2['rdwcv'] = barplot_errors(measures,"rdwcv",'HEM-01: RDW-CV','Days post immunization','RDW-CV (%)')
+	data2['rdwsd'] = barplot_errors(measures,"rdwsd",'HEM-01: RDW-SD','Days post immunization','RDW-SD (fL)')
+	data2['plt'] = barplot_errors(measures,"plt",'HEM-01: PLT','Days post immunization','PLT')
+	data2['mpv'] = barplot_errors(measures,"mpv",'HEM-01: MPV','Days post immunization','MPV (fL)')
+	data2['pdw'] = barplot_errors(measures,"pdw",'HEM-01: PDW','Days post immunization','PDW')
+	data2['pct'] = barplot_errors(measures,"pct",'HEM-01: PCT','Days post immunization','PCT (%)')
+
+	parameters = ['wbc_count','neutrophils_num','lymphocytes_num','eosinophils_num','basophils_num','monocytes_num']
+	names = ['WBC','Neu #','Lym #','Mon #','Eos #','Bas #']
+
+	timepoints = measures.values('timepoint').distinct().order_by('timepoint')
+	for time in timepoints:
+		data2[time['timepoint']] = {}
+	for time in timepoints:
+		
+		data2[time['timepoint']] = barplot_errors_parameters(measures,time['timepoint'],parameters, names,'HEM-01: Blood cell counts ('+str(time['timepoint']) +' dpi)',' ','# Cells')
+		print("-------------------"+ str(time['timepoint']) +"---------------------------")
+		print(data2[time['timepoint']])
+		print("-------------------------------------------------------------------")
+	
+	print("return to views", data2)
+	return data2,timepoints
+#############################################
+#              KOLIARAKI                   #
+#############################################
+def plot_iinflc01(test,parameter):
+	data = []
+	symbols = ['square', 'circle','square-open-dot','circle-open-dot']
+	i = 0
+	for key in test:
+		if(len(test[key])):
+			test2 = test[key].groupby('timepoint').mean().reset_index()
+			if(len(test2)):
+				print("Inside iinflc01", test2)
+				testmin = test[key].groupby('timepoint').min().reset_index()
+				testmax= test[key].groupby('timepoint').max().reset_index()
+				subtracted = [element1 - element2 for (element1, element2) in zip(testmax[parameter].values.tolist(), test2[parameter].values.tolist())]
+				timepoint = test2['timepoint'].values.tolist()
+				parametervalue = test2[parameter].values.tolist()
+				parametervalue = [x*100 / parametervalue[0] for x in parametervalue]
+				print('Mean',parametervalue)
+				print('Error',subtracted)
+				print(key)
+				trace1= {
+					'x': timepoint,
+					'y': parametervalue,
+					'error_y': {
+						'type': 'data',
+						'array': subtracted,
+					},
+					'name': key,
+					'mode': 'lines+markers',
+					'hovertemplate': '<i>Day</i>: %{x}' +
+
+			                        '<br><b>Weight(%)</b>: %{y}<br>',
+			        'marker': {
+			        	'symbol': symbols[i],
+			        	'size': 8
+					},
+					'boxpoints': 'all',
+					'jitter': 1.5,
+					'pointpos': 0.0,
+					'type': 'scatter',
+					'boxmean': '1',
+				};
+				i=i+1
+				data.append(trace1)
+
+	layout = {
+			'title': {
+				'text':'IINFLC-01: Body Weight',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 24,
+				},
+			},
+			'xaxis': {
+				'title':'Days of treatement',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'tozero',
+				'showgrid': 'false',			},
+			'yaxis': {
+				'title':'Weight (%)',
+				'font': {
+					'family': 'Source Sans Pro',
+					'size': 14,
+				},
+				'rangemode': 'normal',
+				'showgrid': 0,
+			},
+			'colorway': ['#969c9c', '#4ed2c5', '#0c8b94', '#303144', '#212529', '#FF9655', '#FFF263', '#6AF9C4'],
+		}
+	return [data,layout]

@@ -18,7 +18,6 @@
                 <tr>
                   <th>Mouse ID</th>
                   <th>Timepoint({{assay.timesteps_in|default_if_none:"TBD"}})</th>        
-                  <th>Age</th>
                   <th>Measurement Date</th>
                   <th>sum Intensity</th>
                   <th>net Intensity</th>
@@ -43,7 +42,6 @@
                     <!--<td>{{ assay.assayid }}</td>-->
                     <td>{{ assay.mid }}</td>
                     <td>{{ assay.timepoint|default_if_none:"" }}</td>
-                    <td>{{ assay.age|default_if_none:"" }}</td>
                     <td>{{ assay.measurement_date|default_if_none:"" }}</td>
                     <td>{{ assay.sum_intensity|default_if_none:"" }}</td>
                     <td>{{ assay.net_intensity|default_if_none:"" }}</td>

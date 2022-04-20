@@ -41,3 +41,85 @@
 </div>
 </div>
 {% endblock %}
+      {% block sidebar_content %}
+        {% if user.is_authenticated %}
+        <!-- /.sidebar -->
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+              <!-- Add icons to the links using the .nav-icon class
+                   with font-awesome or any other icon font library -->
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+           <li class="nav-header">ASSAYS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'user-assays' user.username %}" class="nav-link">
+                      <i class="far fa-list-alt nav-icon"></i>
+                      <p>My Assays</p>
+                    </a>
+                  </li>
+                  {% if user.profile.facility %}
+                  <li class="nav-item">
+                    <a href="{% url 'group-assays' user.username %}" class="nav-link">
+                      <i class="fa fa-group nav-icon"></i>
+                      <p>{{user.profile.facility}}</p>
+                    </a>
+                  </li>
+                  {% endif %}
+                  <li class="nav-item">
+                    <a href="{% url 'add_atype'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>New SOP</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+           {% if assay.author == user or assay.scientist_in_charge == user %}
+           <li class="nav-header">PIPELINES</li>
+                  <li class="nav-item">
+                    <a href="{% url 'user-pipelines' user.username %}" class="nav-link">
+                      <i class="fas fa-sitemap nav-icon"></i>
+                      <p>My Experiments</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'add_pipelinetype'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>New Pipeline</p>
+                    </a>
+                  </li>
+                </ul>
+           {% endif %}
+                {% if user.groups.all.0.name == "Admin" %}
+                <ul class="nav nav-treeview">
+                  <li class="nav-header">USERS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'users_all'%}" class="nav-link">
+                      <i class="fas fa-cog nav-icon"></i>
+                      <p>Users</p>
+                    </a>
+                  </li>
+                </ul>  
+                {% endif %}
+                <ul class="nav nav-treeview">
+                  <li class="nav-header">REPORTS</li>
+                  <li class="nav-item">
+                    <a href="{% url 'build-report'%}" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>Build a Report</p>
+                    </a>
+                  </li>
+                </ul>                
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        {% endif %}
+      {% endblock %}

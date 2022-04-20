@@ -26,7 +26,8 @@ from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
 from django.views.generic import FormView
 
-from .functions import handle_uploaded_file, returnTemplateName, get_parameters, parameterMeasures
+from .functions import handle_uploaded_file, returnTemplateName, get_parameters, parameterMeasures, parameterMeasures2
+from .functions import *
 from .filters import AssayFilter, MouseFilter
 from django.db.models import Count
 from django.http import HttpResponseRedirect
@@ -41,10 +42,8 @@ def assayslist(request):
 	for assay in assays:
 		#print(len(returnMeasurements(assay)))
 		assay.counter = len(returnMeasurements(assay))
-		assay.listmembers = assay.get_members()
-		#for m in assay.members:
-		#	print(m.profile.first_name)
-		#	print(m.profile.image.url)
+		assay.listmembers = assay.members.all()
+
 	context = {'list_assays':assays,
 	'myFilter':myFilter}
 	return render(request, 'assays/assays.html',context)
@@ -76,11 +75,10 @@ def add_assay(request, *args, **kargs):
         form = AssayForm(request.user,request.POST, request.FILES)
         if form.is_valid():
             form.instance.author = request.user
+            test = form.save()
             form.instance.members.add(request.user)
             if(form.instance.scientist_in_charge):
             	form.instance.members.add(form.instance.scientist_in_charge)
-            print(request.user.profile.first_name)
-            test = form.save()
             #for filename, file in request.FILES.items():
             #    name = request.FILES[filename].url
                 #print(name)
@@ -142,6 +140,7 @@ def updateAssay(request, pk):
 		form = Assay2Form(request.user,request.POST, instance=assay)
 		if form.is_valid(self.request.user,form):
 			form.instance.updated_by = self.request.user
+			print(form.instance.members)
 			form.save()
 			return redirect('assays')
 
@@ -261,7 +260,7 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 	def dispatch(self, request, *args, **kwargs):
 		user_obj = self.request.user
 		assay = self.get_object()
-		if not (assay.author == user_obj or assay.scientist_in_charge== user_obj or user_obj.groups =='Admin'):
+		if not (assay.author == user_obj or assay.scientist_in_charge== user_obj or user_obj.groups =='Admin' or user_obj.profile.facility==assay.type.facilitylong):
 			return render(request,"error404.html")
 		return super().dispatch(request,*args,**kwargs)
 
@@ -309,19 +308,7 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 			44: self.get_object().hpa02s.annotate(),
 			45: self.get_object().fc04s.annotate(),
 		}
-		# mouselist = i4.values('mid').distinct().order_by('mid')
-		# objects = Mouse.objects.filter(id__in=mouselist)
-		#images = self.get_object().associated_images.annotate()
 
-		#	kwargs['par']=request.POST.get('parameterName')
-		'''form = ImageForm(self.request.POST, self.request.FILES or None)
-		if form.is_valid():
-			form.instance.assayid = self
-			test = form.save()
-		else:
-			form = ImageForm()
-		kwargs['imageform']= form
-		'''
 		measures = switcher.get(self.object.type.id,"Ivalid")
 		kwargs['measures'] = measures
 		[parameters,parameters_names] = get_parameters(self.object)
@@ -340,7 +327,6 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 		males = 	Mouse.objects.filter(id__in=mouselist).filter(gender='Male')
 		kwargs['mouselist'] = Mouse.objects.filter(id__in=mouselist)
 		kwargs['total'] = mouse_num
-		#kwargs['assayjson']= json.dumps(self.object.id)
 		kwargs['females'] = females.count()
 		kwargs['males'] = males.count()
 		kwargs['parameters'] = zip(parameters,parameters_names)
@@ -349,10 +335,8 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 			par = self.request.GET.get('parameterName')
 		kwargs['par'] = par
 		kwargs['title'] = par.replace("_"," ").title()
-#		source = parameters[0]
-#		if par:
-#			source = par
-		[test,flag,genotype] = parameterMeasures(measures,par)
+
+		[test,flag,genotype] = parameterMeasures2(measures,par,False)
 
 		series = []
 		for key in test:
@@ -363,37 +347,84 @@ class AssaysDetailView(LoginRequiredMixin,DetailView):
 		print('&&&&&&&&&&&&')
 		print(test)
 		series2 = []
-		for key in test:
-			if(len(test[key])):
+		'''for key in test:
+			selected_rows = test[key].dropna()
+			if(not selected_rows.empty):
 				test2 = test[key].groupby('timepoint').mean().reset_index()
+				testmax = test[key].groupby('timepoint').max().reset_index()
+				testmin= test[key].groupby('timepoint').min().reset_index()
 				print('sdsdsdsdsdsdssdsdsds')
-				print(test2)
+				errorlist = []
+				for i in range(len(testmin)):
+					errorlist.append([testmin['timepoint'][i],[testmin[par][i],testmax[par][i]]])
+				print(errorlist)
+				print('&&&&&&&&&&&&',test2.values.tolist())
 				data_dict = {}
 				data_dict['name'] = key
 				data_dict['type'] ='area'
 				data_dict['data'] = test2.values.tolist()
 				series2.append(data_dict)
+				'''
 		print(series2)
 		kwargs['genotype'] = genotype
 		kwargs['genotypecount'] = genotype.count()
 		kwargs['flag'] = series
 		kwargs['scarplot'] = [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], [155.8, 53.6], [170.0, 59.0], [159.1, 47.6], [166.0, 69.8], [176.2, 66.8], [160.2, 75.2]]
-		'''series = [{
-		'name': 'Female',
-		'color': '#343a40',
-		'data': [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], [155.8, 53.6], [170.0, 59.0], [159.1, 47.6], [166.0, 69.8], [176.2, 66.8], [160.2, 75.2]]
-		},
-		{
-		'name': 'Female WT',
-		'data': [[167.6, 58.3], [165.1, 56.2], [160.0, 50.2], [170.0, 72.9], [157.5, 59.8],
-		[167.6, 61.0], [160.7, 69.1], [163.2, 55.9], [152.4, 46.5], [157.5, 54.3],
-		[168.3, 54.8], [180.3, 60.7], [165.5, 60.0], [165.0, 62.0], [164.5, 60.3]]
-		}
-		]'''
 		kwargs['series'] = series
+		series2 = plot_line_chart(measures,par)
 		if(series2):
 			kwargs['series2'] = series2
+
+		##########################################
+		#              plots         			 #	
+		##########################################
+		if(self.object.type.id==12):
+			#kwargs['hpibddata'] = plot_hpibd02(measures)
+			#[test,flag,genotype] = parameterMeasures2(measures,par,False)
+			#[kwargs['hpibddata'],kwargs['layout']] = plot_hpibd02(test,par )
+			print("1")
+		if(self.object.type.id==5):
+			#[test,flag,genotype] = parameterMeasures2(measures,par,False)
+			#[kwargs['weightdata'],kwargs['layout']] = plot_iinflc04(test,par)
+			plotdata = plot_iinflc04(measures)
+			kwargs['iinflc04']= plotdata
+			#[kwargs['weightdata'],kwargs['layout']] = [plotdata[0]['data'], plotdata[0]['layout']]
+		if(self.object.type.id==7):
+			#[test,flag,genotype] = parameterMeasures2(measures,par,False)
+			#[kwargs['ni01data'],kwargs['layout']] = plot_ni01(test,par)
+			kwargs['ni01data'] = plot_ni01(measures)
+		if(self.object.type.id==10):
+			#[test,flag,genotype] = parameterMeasures2(measures,par,False)
+			#[kwargs['ni02grsdata'],kwargs['layout']] = plot_ni02grs01(test,par)
+			kwargs['ni02grsdata'] = plot_ni02grs01(measures)
+			print("1")
+		if(self.object.type.id==11):
+			kwargs['hem01data'],kwargs['timepoint'] = plot_hem01(measures)
+		if(self.object.type.id==35):
+			#[test,flag,genotype] = parameterMeasures2(measures,'weight',True)
+			#print(test)
+			#[kwargs['iinflc01data'],kwargs['layout']] = plot_iinflc01(test,par)
+			#[kwargs['iinflc01data'],kwargs['layout']] = plot_iinflc01(measures)
+			print("1")
 		return super().get_context_data(**kwargs)
+
+def plot_line_chart(measures,parameter):
+
+	[test,flag,genotype] = parameterMeasures2(measures,parameter,False)
+	series = []
+	for key in test:
+		selected_rows = test[key].dropna()
+		if(not selected_rows.empty):
+			test2 = test[key].groupby('timepoint').mean().reset_index()
+			testmin = test[key].groupby('timepoint').min().reset_index()
+			testmax= test[key].groupby('timepoint').max().reset_index()
+			data_dict = {}
+			data_dict['name'] = key
+			data_dict['type'] ='area'
+			data_dict['data'] = test2.values.tolist()
+			subtracted = [element1 - element2 for (element1, element2) in zip(testmax[parameter].values.tolist(), test2[parameter].values.tolist())]
+			series.append(data_dict)
+	return series
 
 
 def returnMeasurements(assay):
@@ -492,7 +523,7 @@ class GroupAssaysListView(LoginRequiredMixin,ListView):
 
 class FacilityAssaysListView(LoginRequiredMixin,ListView):
 	model = Assay
-	template_name = 'assays/user-assays.html'
+	template_name = 'assays/user-assays2.html'
 	context_object_name = 'list_assays'
 
 	def get_queryset(self):
